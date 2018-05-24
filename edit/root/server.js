@@ -118,7 +118,7 @@ Object.keys(appProcesses).forEach(appId =>
   }
 });
 
-server.listen(os.hostname() === 'msys' ? 1337 : 80);
+server.listen(os.hostname() === 'msys' ? 1339 : 80);
 
 if (!dev)
 {
@@ -204,7 +204,7 @@ function serveIndex(req, res)
   let lan = lo;
   let wlan = lo;
 
-  Object.keys(networkInterfaces).forEach(function(name)
+  Object.keys(networkInterfaces).forEach(name =>
   {
     const iface = networkInterfaces[name].filter(i => i.family === 'IPv4')[0] || lo;
 
@@ -218,14 +218,21 @@ function serveIndex(req, res)
     }
   });
 
-  const html = fs.readFileSync(`${__dirname}/server.html`, 'utf8')
-    .replace(/\{hostname\}/g, os.hostname())
-    .replace(/\{lanAddress\}/g, lan.address)
-    .replace(/\{lanMac\}/g, lan.mac)
-    .replace(/\{wlanAddress\}/g, wlan.address)
-    .replace(/\{wlanMac\}/g, wlan.mac)
-    .replace(/\{config\}/g, JSON.stringify(config))
-    .replace(/\{localStorage\}/g, JSON.stringify(localStorage));
+  const templateData = {
+    hostname: os.hostname(),
+    lanAddress: lan.address,
+    lanMac: lan.mac,
+    wlanAddress: wlan.address,
+    wlanMac: wlan.mac,
+    config: JSON.stringify(config),
+    localStorage: JSON.stringify(localStorage)
+  };
+  let html = fs.readFileSync(`${__dirname}/server.html`, 'utf8');
+
+  Object.keys(templateData).forEach(k =>
+  {
+    html = html.replace(new RegExp(`\{${k}\}`, 'g'), templateData[k]);
+  });
 
   res.writeHead(200, {
     'Content-Type': 'text/html; charset=utf-8'
@@ -270,9 +277,12 @@ function handleLocalStorage(req, res)
 
   req.on('data', chunk => body.push(chunk));
 
-  req.on('end', function()
+  req.on('end', () =>
   {
-    try { req.body = JSON.parse(Buffer.concat(body).toString()); }
+    try
+    {
+      req.body = JSON.parse(Buffer.concat(body).toString());
+    }
     catch (err) {}
 
     switch (req.url)
@@ -341,14 +351,14 @@ function scheduleLocalStorageSave()
     clearTimeout(localStorageSaveTimer);
   }
 
-  localStorageSaveTimer = setTimeout(saveLocalStorage, 1337);
+  localStorageSaveTimer = setTimeout(saveLocalStorage, 666);
 }
 
 function saveLocalStorage()
 {
   localStorageSaveTimer = null;
 
-  fs.writeFile(`${__dirname}/localStorage.json`, JSON.stringify(localStorage), function(err)
+  fs.writeFile(`${__dirname}/localStorage.json`, JSON.stringify(localStorage), err =>
   {
     if (err)
     {
@@ -405,7 +415,7 @@ function restartProcess(appId)
     clearTimeout(appProcess.timer);
   }
 
-  appProcess.timer = setTimeout(function()
+  appProcess.timer = setTimeout(() =>
   {
     appProcess.timer = null;
     stopProcess(appId);

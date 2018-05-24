@@ -1,0 +1,64 @@
+{
+  "guid": "10EDA1CE-8D27-4B75-97E9-003B3ADD4BA0",
+  "name": "walkner-xiconf",
+  "version": "2.24.2",
+  "description": "LED driver programming and testing application.",
+  "license": "CC-BY-NC-SA-4.0",
+  "homepage": "https://github.com/morkai/walkner-xiconf",
+  "author": {
+    "name": "Łukasz Walukiewicz",
+    "email": "lukasz@miracle.systems",
+    "url": "https://miracle.systems/"
+  },
+  "bugs": "https://github.com/morkai/walkner-xiconf/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/morkai/walkner-xiconf.git"
+  },
+  "engine": [
+    "node >=8.0.0"
+  ],
+  "main": "./backend/main.js",
+  "dependencies": {
+    "body-parser": "~1.17.2",
+    "csv": "~0.3.7",
+    "methods": "~1.1.2",
+    "express": "~4.15.3",
+    "ejs": "~2.5.6",
+    "ejs-amd": "~1.0.0",
+    "socket.io-client": "~1.7.4",
+    "socket.io": "~1.7.4",
+    "lodash": "~4.17.4",
+    "messageformat": "~0.2.2",
+    "messageformat-amd": "git+http://github.com/morkai/messageformat-amd.git#d41fd5caba",
+    "moment": "~2.18.1",
+    "h5.step": "git+http://github.com/morkai/h5.step.git#14ea69a759",
+    "h5.pubsub": "git+http://github.com/morkai/h5.pubsub.git#c1a899cb7e",
+    "h5.rql": "git+http://github.com/morkai/h5.rql.git#56221896655",
+    "h5.main": "git+http://github.com/morkai/h5.main.git#775f3a9ba7",
+    "h5.buffers": "~0.1.1",
+    "h5.modbus": "git+http://github.com/morkai/h5.modbus.git#0993906e41",
+    "h5.coap": "git+http://github.com/morkai/h5.coap.git#51c3b2a4cb",
+    "sqlite3": "~3.1.8",
+    "ursa": "~0.9.4",
+    "semver": "~5.3.0",
+    "jszip": "~2.5.0",
+    "request": "~2.81.0",
+    "serialport": "~4.0.7",
+    "mkdirp": "~0.5.1",
+    "xml2js": "~0.4.17",
+    "transliteration": "~1.6.2",
+    "glob": "~7.1.2"
+  },
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-contrib-clean": "~1.0.0",
+    "grunt-contrib-copy": "~1.0.0",
+    "grunt-contrib-jshint": "~1.0.0",
+    "grunt-contrib-requirejs": "~1.0.0",
+    "grunt-ejs-amd": "git+http://github.com/morkai/grunt-ejs-amd.git#a09723eabe",
+    "grunt-messageformat-amd": "git+http://github.com/morkai/grunt-messageformat-amd.git#7c47f564a5",
+    "grunt-run": "~0.6.0",
+    "grunt-text-replace": "~0.4.0"
+  }
+}

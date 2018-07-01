@@ -106,7 +106,7 @@ function publish()
   {
     const status = meta ? meta.status : 0;
 
-    if (status !== 203)
+    if (status !== 204)
     {
       console.error(`Failed to publish: ${err ? err.message : `invalid status: ${status}`}`);
 

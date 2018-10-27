@@ -1,3 +1,18 @@
+2.24.5 @ 2018-10-24
+===================
+
+  * Added UI locking functionality.
+
+2.24.4 @ 2018-09-27
+===================
+
+  * Changed the allowed HID ID length from 13 to up to 20.
+
+2.24.3 @ 2018-08-31
+===================
+
+  * Changed the maximum allowed order quantity from 999 to 9999.
+
 2.24.2 @ 2017-11-02
 ===================
 

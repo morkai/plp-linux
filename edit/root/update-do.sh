@@ -1,16 +1,10 @@
 #!/bin/bash
 
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
+
+dpkg -i /root/google-chrome-stable_70.0.3538.77-1_amd64.deb
+rm -rf /root/google-chrome-stable_70.0.3538.77-1_amd64.deb
+
 chmod +x /root/*.sh
 chmod +w /root/*.json
-
-mv /root/unzip /usr/bin/unzip
-chown root:root /usr/bin/unzip
-chmod 0755 /usr/bin/unzip
-chmod +x /root/ps-load/node
-
-cp -R /root/etc/* /etc
-rm -rf /root/etc
-
-service ntp stop
-ntpd -qg
-service ntp start

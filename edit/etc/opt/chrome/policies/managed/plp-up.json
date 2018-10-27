@@ -20,7 +20,10 @@
   "AlwaysOpenPdfExternally": false,
   "ApplicationLocaleValue": "pl",
   "AutoFillEnabled": false,
+  "AutofillAddressEnabled": false,
+  "AutofillCreditCardEnabled": false,
   "BackgroundModeEnabled": true,
+  "BrowserSignin": 0,
   "BookmarkBarEnabled": false,
   "BrowserAddPersonEnabled": false,
   "BrowserGuestModeEnabled": false,
@@ -43,6 +46,8 @@
   "SafeBrowsingExtendedReportingOptInAllowed": false,
   "SearchSuggestEnabled": false,
   "SpellCheckServiceEnabled": false,
+  "SpellcheckEnabled": false,
   "SyncDisabled": true,
-  "TranslateEnabled": false
+  "TranslateEnabled": false,
+  "RelaunchNotification": 2
 }

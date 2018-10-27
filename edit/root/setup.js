@@ -7,11 +7,11 @@ let reboot = false;
 
 if (fs.existsSync(`/root/grub`))
 {
-  execSync(`cp -Rpf /root/setup/* /; echo`);
-  execSync(`rm -rf /root/setup; echo`);
-  execSync(`mv -f /root/grub /etc/default/grub; echo`);
-  execSync(`update-grub2; echo`);
-  execSync(`service ntp stop; ntpd -qg; service ntp start; echo`);
+  tryExec(`cp -Rpf /root/setup/* /; echo`);
+  tryExec(`rm -rf /root/setup; echo`);
+  tryExec(`mv -f /root/grub /etc/default/grub; echo`);
+  tryExec(`update-grub2; echo`);
+  tryExec(`service ntp stop; ntpd -qg; service ntp start; echo`);
 
   if (process.argv[2] !== 'first')
   {
@@ -19,16 +19,16 @@ if (fs.existsSync(`/root/grub`))
   }
 }
 
-execSync(`sed -i 's/TimeoutStartSec=5min/TimeoutStartSec=10/' /etc/systemd/system/network-online.target.wants/networking.service`);
-execSync(`sed -i 's/timeout 300/timeout 10/' /etc/dhcp/dhclient.conf`);
-execSync(`systemctl disable apt-daily.service`);
-execSync(`systemctl disable apt-daily.timer`);
-execSync(`systemctl disable apt-daily-upgrade.service`);
-execSync(`systemctl disable apt-daily-upgrade.timer`);
-execSync(`apt remove --purge unattened-upgrades`);
-execSync(`chmod +x /root/*.sh /root/xiconf/bin/fake-programmer.sh /root/ps-load/node`);
-execSync(`chmod +w /root/*.json /root/ps-load/*.json`);
-execSync(`chmod -R +w /root/xiconf/data /root/xiconf/logs`);
+tryExec(`sed -i 's/TimeoutStartSec=5min/TimeoutStartSec=10/' /etc/systemd/system/network-online.target.wants/networking.service`);
+tryExec(`sed -i 's/timeout 300/timeout 10/' /etc/dhcp/dhclient.conf`);
+tryExec(`systemctl disable apt-daily.service`);
+tryExec(`systemctl disable apt-daily.timer`);
+tryExec(`systemctl disable apt-daily-upgrade.service`);
+tryExec(`systemctl disable apt-daily-upgrade.timer`);
+tryExec(`apt-get remove -y --purge unattended-upgrades`);
+tryExec(`chmod +x /root/*.sh /root/xiconf/bin/fake-programmer.sh /root/ps-load/node`);
+tryExec(`chmod +w /root/*.json /root/ps-load/*.json`);
+tryExec(`chmod -R +w /root/xiconf/data /root/xiconf/logs`);
 
 const networkInterfaces = {
   lo: {
@@ -41,7 +41,7 @@ const networkInterfaces = {
 
 (function()
 {
-  const ifconfig = execSync('ifconfig -a');
+  const ifconfig = tryExec('ifconfig -a');
   const re = /(eth[0-9]+|enp[0-9]+s[0-9]+|wlan[0-9]+|wlx[a-f0-9]+).*?HWaddr (.*?)\n/g;
   let matches;
 
@@ -83,11 +83,13 @@ wpa-conf /etc/wpa_supplicant.conf
 fs.writeFileSync('/etc/network/interfaces', etcNetworkInterfaces);
 
 const mac = (networkInterfaces.lan || networkInterfaces.wlan || networkInterfaces.lo).mac;
-const biosVendor = execSync('dmidecode -s bios-vendor').toString();
-const systemSerialNumber = execSync('dmidecode -s system-serial-number').toString();
-const systemProductName = execSync('dmidecode -s system-product-name').toString();
+const biosVendor = tryExec('dmidecode -s bios-vendor').toString();
+const systemSerialNumber = tryExec('dmidecode -s system-serial-number').toString();
+const systemProductName = tryExec('dmidecode -s system-product-name').toString();
 const vendor = biosVendor.toUpperCase().includes('DELL') ? 'DELL' : systemProductName.startsWith('UP') ? 'UP' : 'HP';
-const suffix = !systemSerialNumber.includes('fill') ? systemSerialNumber : mac.toUpperCase().replace(/:/g, '').substring(6);
+const suffix = /fill|default/i.test(systemSerialNumber)
+  ? mac.toUpperCase().replace(/:/g, '').substring(6)
+  : systemSerialNumber;
 const hostname = `${vendor}-${suffix}`;
 
 fs.writeFileSync('/etc/hostname', hostname);
@@ -97,17 +99,29 @@ if (networkInterfaces.wlan)
 {
   if (networkInterfaces.lan)
   {
-    execSync(`ifconfig ${networkInterfaces.lan.name} down`);
+    tryExec(`ifconfig ${networkInterfaces.lan.name} down`);
   }
 
-  execSync(`ifconfig ${networkInterfaces.wlan.name} up`);
+  tryExec(`ifconfig ${networkInterfaces.wlan.name} up`);
 }
 else if (networkInterfaces.lan)
 {
-  execSync(`ifconfig ${networkInterfaces.lan.name} up`);
+  tryExec(`ifconfig ${networkInterfaces.lan.name} up`);
 }
 
 if (reboot)
 {
-  execSync(`reboot`);
+  tryExec(`reboot`);
+}
+
+function tryExec(cmd)
+{
+  try
+  {
+    return execSync(cmd);
+  }
+  catch (err)
+  {
+    console.error(err.message);
+  }
 }

@@ -12,6 +12,11 @@ try
   {
     localState.user_experience_metrics.exited_cleanly = true;
 
+    if (localState.user_experience_metrics.stability)
+    {
+      localState.user_experience_metrics.stability.exited_cleanly = true;
+    }
+
     fs.writeFileSync('/root/google-chrome/Local State', JSON.stringify(localState));
   }
 }

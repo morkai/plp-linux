@@ -52,6 +52,11 @@ if (Array.isArray(config.hosts))
   delete config.hosts;
 }
 
+if (config.host)
+{
+  updateEtcHosts();
+}
+
 server.on('error', onError);
 
 server.on('request', function(req, res)
@@ -248,6 +253,8 @@ function saveConfig(req, res)
 
     config = JSON.parse(fs.readFileSync(`${__dirname}/server.json`, 'utf8'));
 
+    updateEtcHosts();
+
     Object.keys(appProcesses).forEach(appId =>
     {
       if (config.apps.includes(appId))
@@ -421,4 +428,20 @@ function restartProcess(appId)
     stopProcess(appId);
     startProcess(appId);
   }, 333);
+}
+
+function updateEtcHosts()
+{
+  let etcHosts = fs.readFileSync('/etc/hosts', 'utf8');
+
+  if (etcHosts.includes('ket.wmes.walkner.pl'))
+  {
+    etcHosts = etcHosts.replace(/(.*?) ket.wmes.walkner.pl/, `${config.host} ket.wmes.walkner.pl`);
+  }
+  else
+  {
+    etcHosts += `\n\n${config.host} ket.wmes.walkner.pl\n`;
+  }
+
+  fs.writeFileSync('/etc/hosts', etcHosts);
 }

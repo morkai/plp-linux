@@ -23,6 +23,9 @@ execSync(`sed -i 's/TimeoutStartSec=5min/TimeoutStartSec=10/' /etc/systemd/syste
 execSync(`sed -i 's/timeout 300/timeout 10/' /etc/dhcp/dhclient.conf`);
 execSync(`systemctl disable apt-daily.service`);
 execSync(`systemctl disable apt-daily.timer`);
+execSync(`systemctl disable apt-daily-upgrade.service`);
+execSync(`systemctl disable apt-daily-upgrade.timer`);
+execSync(`apt remove --purge unattened-upgrades`);
 execSync(`chmod +x /root/*.sh /root/xiconf/bin/fake-programmer.sh /root/ps-load/node`);
 execSync(`chmod +w /root/*.json /root/ps-load/*.json`);
 execSync(`chmod -R +w /root/xiconf/data /root/xiconf/logs`);

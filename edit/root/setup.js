@@ -11,7 +11,21 @@ if (fs.existsSync(`/root/grub`))
   tryExec(`rm -rf /root/setup; echo`);
   tryExec(`mv -f /root/grub /etc/default/grub; echo`);
   tryExec(`update-grub2; echo`);
-  tryExec(`service ntp stop; ntpd -qg; service ntp start; echo`);
+  tryExec(`service ntp stop; killall ntpd; echo`);
+
+  try
+  {
+    execSync(`ntpd -qg`, {timeout: 60});
+  }
+  catch (err)
+  {
+    if (err.code === 'ETIMEDOUT')
+    {
+      fs.writeFileSync('/root/.sync-clock', '1');
+    }
+  }
+
+  tryExec(`killall ntpd; service ntp start; echo`);
 
   if (process.argv[2] !== 'first')
   {
@@ -113,12 +127,29 @@ if (reboot)
 {
   tryExec(`reboot`);
 }
+else
+{
+  if (fs.existsSync('/root/.sync-clock') && (networkInterfaces.lan || networkInterfaces.wlan))
+  {
+    tryExec(`service ntp stop; echo`);
 
-function tryExec(cmd)
+    try
+    {
+      execSync(`ntpd -qg`, {timeout: 30});
+
+      fs.unlinkSync('/root/.sync-clock');
+    }
+    catch (err) {}
+
+    tryExec(`killall ntpd; service ntp start; echo`);
+  }
+}
+
+function tryExec(cmd, timeout)
 {
   try
   {
-    return execSync(cmd);
+    return execSync(cmd, {timeout: (timeout || 120) * 1000});
   }
   catch (err)
   {

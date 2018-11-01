@@ -565,6 +565,11 @@ function toggleConfig()
     hostEl.checked = true;
   }
 
+  for (let el of document.querySelectorAll('input[name="apps"]'))
+  {
+    el.checked = CONFIG.apps.includes(el.value);
+  }
+
   document.querySelector('input[name="remote"]').value = CONFIG.remote;
 }
 

@@ -1,5 +1,6 @@
 'use strict';
 
+const fs = require('fs');
 const {host} = require('./server.json');
 
 let etcHosts = fs.readFileSync('/etc/hosts', 'utf8');

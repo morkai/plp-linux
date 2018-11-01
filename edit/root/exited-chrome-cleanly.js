@@ -2,6 +2,10 @@
 
 const fs = require('fs');
 
+try { fs.unlinkSync('/root/google-chrome/SingletonCookie'); } catch (err) {}
+try { fs.unlinkSync('/root/google-chrome/SingletonLock'); } catch (err) {}
+try { fs.unlinkSync('/root/google-chrome/SingletonSocket'); } catch (err) {}
+
 try
 {
   const localState = JSON.parse(fs.readFileSync('/root/google-chrome/Local State', 'utf8'));

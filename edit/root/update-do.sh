@@ -30,6 +30,7 @@ apt-get install -y curl unzip
 wget -q --connect-timeout=10 --read-timeout=10 -t 3 -O - https://deb.nodesource.com/setup_10.x | bash -
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
 apt-get install -y nodejs
+apt-get autoremove -y
 
 dpkg -i /root/google-chrome-stable_70.0.3538.77-1_amd64.deb
 rm -rf /root/google-chrome-stable_70.0.3538.77-1_amd64.deb
@@ -42,8 +43,6 @@ chmod +w /root/*.json
 
 node /root/update-do.js
 rm /root/update-do.js
-
-node /root/setup.js
 
 service ntp stop
 ntpd -qg

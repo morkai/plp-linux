@@ -1,6 +1,6 @@
 'use strict';
 
-const {execSync, spawn} = require('child_process');
+const {exec, execSync, spawn} = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const server = require('http').createServer();
@@ -54,7 +54,8 @@ if (Array.isArray(config.hosts))
 
 if (config.host)
 {
-  updateEtcHosts();
+  try { updateEtcHosts(); }
+  catch (err) {}
 }
 
 server.on('error', onError);
@@ -107,6 +108,11 @@ server.on('request', function(req, res)
   if (req.method === 'POST' && req.url.startsWith('/config'))
   {
     return saveConfig(req, res);
+  }
+
+  if (req.method === 'POST' && req.url === '/syncClock')
+  {
+    return syncClock(req, res);
   }
 
   res.writeHead(404, {
@@ -243,6 +249,15 @@ function serveIndex(req, res)
     'Content-Type': 'text/html; charset=utf-8'
   });
   res.end(html);
+}
+
+function syncClock(req, res)
+{
+  exec(`service ntp stop; killall ntpd; ntpd -qg; killall ntpd; service ntp start`, {timeout: 44000}, err =>
+  {
+    res.writeHead(err ? 400 : 204);
+    res.end();
+  });
 }
 
 function saveConfig(req, res)

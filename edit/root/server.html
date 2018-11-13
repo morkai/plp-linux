@@ -291,6 +291,9 @@
 </div>
 <div id=frames></div>
 <script>
+const REMOTE_ORIGIN = 'https://ket.wmes.pl';
+const CLOCK_DIFF = 5000;
+
 const CONFIG = Object.assign({
   host: null,
   apps: [],
@@ -304,6 +307,7 @@ let readyApps = {};
 let activeApp = null;
 let overlayTimer = null;
 let lastSwitchAppAt = 0;
+let startTries = 0;
 
 CONFIG.apps.forEach(app =>
 {
@@ -371,7 +375,7 @@ setInterval(focusActiveApp, 5000);
 
 if (CONFIG.host && CONFIG.apps.length)
 {
-  loadApps();
+  start();
 }
 
 function handleInitMessage(msg, app)
@@ -489,6 +493,117 @@ function focusActiveApp()
   }
 }
 
+function start()
+{
+  startTries += 1;
+
+  if (startTries === 4)
+  {
+    return loadApps();
+  }
+
+  console.log('Starting');
+
+  getRemoteTime(remoteTime =>
+  {
+    if (remoteTime <= 0)
+    {
+      return setTimeout(start, 10000);
+    }
+
+    const diff = Date.now() - remoteTime;
+
+    if (Math.abs(diff) > CLOCK_DIFF)
+    {
+      console.log(`Clock desynced by ${diff}. Syncing clock...`);
+
+      return syncClock();
+    }
+
+    console.log('Clock synced!');
+
+    loadApps();
+  });
+}
+
+function getRemoteTime(done)
+{
+  const xhr = new XMLHttpRequest();
+
+  xhr.timeout = 5000;
+
+  xhr.onreadystatechange = function()
+  {
+    if (xhr.readyState !== XMLHttpRequest.DONE)
+    {
+      return;
+    }
+
+    const remoteTime = parseInt(xhr.responseText) || 0;
+
+    if (remoteTime <= 0)
+    {
+      console.log('Failed to get remote time:', xhr);
+    }
+
+    done(remoteTime);
+  };
+
+  xhr.open('GET', `${REMOTE_ORIGIN}/time`, true);
+  xhr.send();
+}
+
+function syncClock()
+{
+  const xhr = new XMLHttpRequest();
+
+  xhr.timeout = 45000;
+
+  xhr.onreadystatechange = function()
+  {
+    if (xhr.readyState !== XMLHttpRequest.DONE)
+    {
+      return;
+    }
+
+    if (xhr.status !== 204)
+    {
+      console.log('Failed to sync clock:', xhr);
+
+      return setTimeout(start, 10000);
+    }
+
+    waitForClockSync();
+  };
+
+  xhr.open('POST', `${window.location.origin}/syncClock`, true);
+  xhr.send();
+}
+
+function waitForClockSync()
+{
+  getRemoteTime(remoteTime =>
+  {
+    if (remoteTime <= 0)
+    {
+      return setTimeout(start, 10000);
+    }
+
+    const diff = Date.now() - remoteTime;
+
+    if (Math.abs(diff) < CLOCK_DIFF)
+    {
+      console.log('Clock synced!');
+
+      return loadApps();
+    }
+
+    console.log(`Clock not synced yet: ${diff}`);
+
+    setTimeout(waitForClockSync, 10000);
+  });
+}
+
 function loadApps()
 {
   const frames = document.getElementById('frames').children;
@@ -515,7 +630,7 @@ function loadApps()
     }
     else
     {
-      frame.src = `https://ket.wmes.pl/${app}?COMPUTERNAME=${CLIENT_ID}&touch=1&fullscreen=1&_=${Date.now()}`;
+      frame.src = `${REMOTE_ORIGIN}/${app}?COMPUTERNAME=${CLIENT_ID}&touch=1&fullscreen=1&_=${Date.now()}`;
     }
   }
 

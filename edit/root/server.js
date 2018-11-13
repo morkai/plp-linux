@@ -436,11 +436,15 @@ function updateEtcHosts()
 
   if (etcHosts.includes('ket.wmes.walkner.pl'))
   {
-    etcHosts = etcHosts.replace(/(.*?) ket.wmes.walkner.pl/, `${config.host} ket.wmes.walkner.pl`);
+    etcHosts = etcHosts.replace(/(.*?) ket.wmes.walkner.pl/, `${config.host} ket.wmes.pl`);
+  }
+  else if (etcHosts.includes('ket.wmes.pl'))
+  {
+    etcHosts = etcHosts.replace(/(.*?) ket.wmes.pl/, `${config.host} ket.wmes.pl`);
   }
   else
   {
-    etcHosts += `\n\n${config.host} ket.wmes.walkner.pl\n`;
+    etcHosts += `\n\n${config.host} ket.wmes.pl\n`;
   }
 
   fs.writeFileSync('/etc/hosts', etcHosts);

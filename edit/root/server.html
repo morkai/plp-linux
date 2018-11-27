@@ -291,6 +291,9 @@
         <input type="checkbox" name="apps" value="ps-load"> Obciążenie malarnii
       </label>
       <label>
+        <input type="checkbox" name="apps" value="isa"> Pola odkładcze
+      </label>
+      <label>
         <input type="checkbox" name="apps" value="remote"> <input name="remote" type="text" placeholder="http://zdalna-aplikacja/">
       </label>
     </h3>
@@ -312,7 +315,6 @@ const LOCAL_STORAGE = {localStorage};
 
 let frames = [];
 let readyApps = {};
-let activeApp = null;
 let overlayTimer = null;
 let lastSwitchAppAt = 0;
 let startTries = 0;
@@ -337,8 +339,9 @@ const messageHandlers = {
   init: handleInitMessage,
   ready: handleReadyMessage,
   switch: handleSwitchMessage,
+  apps: handleAppsMessage,
   localStorage: handleLocalStorageMessage,
-  refresh: () => window.location.reload(),
+  refresh: handleRefreshMessage,
   reboot: reboot,
   shutdown: shutdown,
   config: toggleConfig
@@ -405,6 +408,11 @@ function handleSwitchMessage(msg, app)
 {
   console.log(`Switch app from: ${app}`);
 
+  if (msg.newApp)
+  {
+    return switchToApp(msg.newApp);
+  }
+
   if (Object.keys(readyApps).length <= 1 || Date.now() - lastSwitchAppAt < 1337)
   {
     return;
@@ -447,6 +455,27 @@ function handleSwitchMessage(msg, app)
   focusActiveApp();
 }
 
+function switchToApp(newApp)
+{
+  const frames = document.querySelectorAll('iframe');
+
+  for (let i = 0; i < frames.length; ++i)
+  {
+    const frame = frames[i];
+
+    frame.classList.toggle('off', frame.dataset.app !== newApp);
+  }
+
+  focusActiveApp();
+}
+
+function handleAppsMessage(msg, app, src)
+{
+  const apps = Object.keys(readyApps).filter(a => a !== app);
+
+  src.postMessage({type: 'apps', data: {apps}}, '*');
+}
+
 function handleLocalStorageMessage(msg, app, src)
 {
   if (msg.action === 'read')
@@ -486,6 +515,13 @@ function handleLocalStorageMessage(msg, app, src)
   xhr.send(JSON.stringify(msg));
 }
 
+function handleRefreshMessage()
+{
+  focusActiveApp();
+
+  window.location.reload();
+}
+
 function focusActiveApp()
 {
   const frames = document.querySelectorAll('iframe');
@@ -496,6 +532,8 @@ function focusActiveApp()
 
     if (!frame.classList.contains('off'))
     {
+      sessionStorage.setItem('NEXT_ACTIVE_APP_ID', frame.dataset.app);
+
       frame.contentWindow.focus();
     }
   }
@@ -657,7 +695,18 @@ function hideOverlay()
     return;
   }
 
-  const app = activeApp ? activeApp : readyApps.operator ? 'operator' : Object.keys(readyApps)[0];
+  let app = Object.keys(readyApps)[0];
+
+  if (sessionStorage.getItem('NEXT_ACTIVE_APP_ID'))
+  {
+    app = sessionStorage.getItem('NEXT_ACTIVE_APP_ID');
+
+    sessionStorage.removeItem('NEXT_ACTIVE_APP_ID');
+  }
+  else if (readyApps.operator)
+  {
+    app = 'operator';
+  }
 
   document.querySelector(`iframe[data-app="${app}"]`).classList.remove('off');
 

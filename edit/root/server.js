@@ -6,6 +6,8 @@ const os = require('os');
 const server = require('http').createServer();
 const dev = os.hostname() === 'msys';
 
+const PORT = os.hostname() === 'msys' ? 1339 : 80;
+
 const appProcesses = {
   xiconf: {
     process: null,
@@ -89,7 +91,11 @@ server.on('request', function(req, res)
   {
     res.end();
 
-    if (!dev)
+    if (dev)
+    {
+      console.log('shutdown requested');
+    }
+    else
     {
       execSync('shutdown -P now');
     }
@@ -99,7 +105,11 @@ server.on('request', function(req, res)
   {
     res.end();
 
-    if (!dev)
+    if (dev)
+    {
+      console.log('reboot requested');
+    }
+    else
     {
       execSync('reboot now');
     }
@@ -129,7 +139,9 @@ Object.keys(appProcesses).forEach(appId =>
   }
 });
 
-server.listen(os.hostname() === 'msys' ? 1339 : 80);
+server.once('listening', () => console.log(`listening on *:${PORT}`));
+
+server.listen(PORT);
 
 if (!dev)
 {
@@ -230,6 +242,7 @@ function serveIndex(req, res)
   });
 
   const templateData = {
+    remoteOrigin: dev ? 'https://ket.wmes.walkner.pl' : 'https://ket.wmes.pl',
     hostname: os.hostname(),
     lanAddress: lan.address,
     lanMac: lan.mac,
@@ -246,7 +259,8 @@ function serveIndex(req, res)
   });
 
   res.writeHead(200, {
-    'Content-Type': 'text/html; charset=utf-8'
+    'Content-Type': 'text/html; charset=utf-8',
+    'Access-Control-Allow-Origin': '*'
   });
   res.end(html);
 }

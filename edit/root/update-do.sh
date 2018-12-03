@@ -27,13 +27,25 @@ apt-get remove -y --purge unattended-upgrades
 
 apt-get update
 apt-get install -y curl unzip
-wget -q --connect-timeout=10 --read-timeout=10 -t 3 -O - https://deb.nodesource.com/setup_10.x | bash -
+
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
-apt-get install -y nodejs
+
+if ! [[ `node -v` == v10* ]] ;
+then
+  wget -q --connect-timeout=10 --read-timeout=10 -t 3 -O - https://deb.nodesource.com/setup_10.x | bash -
+  apt-get install -y nodejs
+fi
+
 apt-get autoremove -y
 
-dpkg -i /root/google-chrome-stable_70.0.3538.77-1_amd64.deb
-rm -rf /root/google-chrome-stable_70.0.3538.77-1_amd64.deb
+if [[ `google-chrome-stable --version` =~ ([0-9]+)\. ]] ;
+then
+  if (( ${BASH_REMATCH[1]} < 70 )) ;
+  then
+    dpkg -i /root/google-chrome-stable_70.0.3538.77-1_amd64.deb
+    rm -rf /root/google-chrome-stable_70.0.3538.77-1_amd64.deb
+  fi
+fi
 
 cp -Rf /root/etc/* /etc
 rm -rf /root/etc

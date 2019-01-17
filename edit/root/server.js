@@ -4,9 +4,9 @@ const {exec, execSync, spawn} = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const server = require('http').createServer();
-const dev = os.hostname() === 'msys';
+const dev = /msys/i.test(os.hostname());
 
-const PORT = os.hostname() === 'msys' ? 1339 : 80;
+const PORT = dev ? 1339 : 80;
 
 const appProcesses = {
   xiconf: {
@@ -255,7 +255,7 @@ function serveIndex(req, res)
   });
 
   const templateData = {
-    remoteOrigin: dev ? 'https://ket.wmes.walkner.pl' : 'https://ket.wmes.pl',
+    remoteOrigin: dev ? 'https://dev.wmes.pl' : 'https://ket.wmes.pl',
     hostname: os.hostname(),
     lanAddress: lan.address,
     lanMac: lan.mac,

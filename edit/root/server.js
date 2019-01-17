@@ -99,6 +99,8 @@ server.on('request', function(req, res)
     {
       execSync('shutdown -P now');
     }
+
+    return;
   }
 
   if (req.method === 'POST' && req.url === '/reboot')
@@ -113,6 +115,17 @@ server.on('request', function(req, res)
     {
       execSync('reboot now');
     }
+
+    return;
+  }
+
+  if (req.method === 'POST' && req.url === '/resetBrowser')
+  {
+    res.end();
+
+    resetBrowser();
+
+    return;
   }
 
   if (req.method === 'POST' && req.url.startsWith('/config'))
@@ -465,16 +478,28 @@ function updateEtcHosts()
 
   if (etcHosts.includes('ket.wmes.walkner.pl'))
   {
-    etcHosts = etcHosts.replace(/(.*?) ket.wmes.walkner.pl/, `${config.host} ket.wmes.pl`);
+    etcHosts = etcHosts.replace(/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\s+ket.wmes.walkner.pl/, `${config.host} ket.wmes.pl`);
   }
   else if (etcHosts.includes('ket.wmes.pl'))
   {
-    etcHosts = etcHosts.replace(/(.*?) ket.wmes.pl/, `${config.host} ket.wmes.pl`);
+    etcHosts = etcHosts.replace(/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\s+ket.wmes.pl/, `${config.host} ket.wmes.pl`);
   }
   else
   {
     etcHosts += `\n\n${config.host} ket.wmes.pl\n`;
   }
 
-  fs.writeFileSync('/etc/hosts', etcHosts);
+  fs.writeFileSync('/etc/hosts', etcHosts.replace(/\n+/g, '\n'));
+}
+
+function resetBrowser()
+{
+  try
+  {
+    execSync('killall chrome; rm -rf /root/google-chrome');
+  }
+  catch (err)
+  {
+    console.error(`Failed to reset browser: ${err.message}`);
+  }
 }

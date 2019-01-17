@@ -2,6 +2,14 @@
 
 echo "`date -Is` kiosk.sh..."
 
+kiosk=--kiosk
+locale=pl_PL.utf8
+
+if [[ `hostname` == VM-* ]] ;
+then
+  kiosk=
+fi
+
 xset -dpms
 xset s off
 openbox-session &
@@ -13,7 +21,8 @@ do
   node /root/exited-chrome-cleanly.js
   node /root/set-resolution.js
   sleep 0.25
-  google-chrome --user-data-dir=/root/google-chrome \
+  LANG=$locale LANGUAGE=$locale google-chrome --user-data-dir=/root/google-chrome \
+    $kiosk \
     --allow-insecure-localhost \
     --allow-running-insecure-content \
     --disable-background-timer-throttling \
@@ -31,7 +40,6 @@ do
     --disable-virtual-keyboard-overscroll \
     --enable-web-notification-custom-layouts \
     --ignore-certificate-errors \
-    --kiosk \
     --no-default-browser-check \
     --no-first-run \
     --no-pings \

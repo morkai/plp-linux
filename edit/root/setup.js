@@ -94,20 +94,54 @@ wpa-conf /etc/wpa_supplicant.conf
 `;
 }
 
-fs.writeFileSync('/etc/network/interfaces', etcNetworkInterfaces);
-
 const mac = (networkInterfaces.lan || networkInterfaces.wlan || networkInterfaces.lo).mac;
-const biosVendor = tryExec('dmidecode -s bios-vendor').toString();
-const systemSerialNumber = tryExec('dmidecode -s system-serial-number').toString();
-const systemProductName = tryExec('dmidecode -s system-product-name').toString();
-const vendor = biosVendor.toUpperCase().includes('DELL') ? 'DELL' : systemProductName.startsWith('UP') ? 'UP' : 'HP';
-const suffix = /fill|default/i.test(systemSerialNumber)
-  ? mac.toUpperCase().replace(/:/g, '').substring(6)
-  : systemSerialNumber;
-const hostname = `${vendor}-${suffix}`;
+const biosVendor = tryExec('dmidecode -s bios-vendor').toString().trim();
+const systemSerialNumber = tryExec('dmidecode -s system-serial-number').toString().trim();
+const systemProductName = tryExec('dmidecode -s system-product-name').toString().trim();
+let hostname = '';
 
+if (biosVendor.toUpperCase().includes('DELL'))
+{
+  hostname = 'DELL';
+}
+else if (systemProductName.startsWith('UP'))
+{
+  hostname = 'UP';
+}
+else if (systemProductName === 'Virtual Machine')
+{
+  hostname = 'VM';
+  etcNetworkInterfaces = `
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 192.168.21.62
+netmask 255.255.255.0
+`;
+}
+else
+{
+  hostname = 'HP';
+}
+
+hostname += '-';
+
+if (/fill|default/i.test(systemSerialNumber) || hostname === 'VM-')
+{
+  hostname += mac.toUpperCase().replace(/:/g, '').substring(6);
+}
+else
+{
+  hostname += systemSerialNumber;
+}
+
+fs.writeFileSync('/etc/network/interfaces', etcNetworkInterfaces);
 fs.writeFileSync('/etc/hostname', hostname);
-fs.writeFileSync('/etc/hosts', fs.readFileSync('/etc/hosts', 'utf8').replace(/127.0.1.1\s+.*?\n/, `127.0.1.1\t${hostname}\n`));
+fs.writeFileSync('/etc/hosts', fs.readFileSync('/etc/hosts', 'utf8')
+  .replace(/127.0.1.1\s+.*?\n/, `127.0.1.1\t${hostname}\n`)
+  .replace(/\n+/g, '\n'));
 
 if (networkInterfaces.wlan)
 {

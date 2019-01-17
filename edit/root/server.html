@@ -344,7 +344,8 @@ const messageHandlers = {
   refresh: handleRefreshMessage,
   reboot: reboot,
   shutdown: shutdown,
-  config: toggleConfig
+  config: toggleConfig,
+  resetBrowser: resetBrowser
 };
 
 window.addEventListener('message', function(e)
@@ -808,6 +809,16 @@ function shutdown()
   const xhr = new XMLHttpRequest();
 
   xhr.open('POST', `${window.location.origin}/shutdown`, false);
+  xhr.send();
+}
+
+function resetBrowser()
+{
+  console.log('Resetting browser...');
+
+  const xhr = new XMLHttpRequest();
+
+  xhr.open('POST', `${window.location.origin}/resetBrowser`, false);
   xhr.send();
 }
 </script>

@@ -262,7 +262,8 @@ function serveIndex(req, res)
     wlanAddress: wlan.address,
     wlanMac: wlan.mac,
     config: JSON.stringify(config),
-    localStorage: JSON.stringify(localStorage)
+    localStorage: JSON.stringify(localStorage),
+    version: fs.readFileSync(`${__dirname}/version.txt`, 'utf8')
   };
   let html = fs.readFileSync(`${__dirname}/server.html`, 'utf8');
 

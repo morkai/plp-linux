@@ -15,7 +15,7 @@ apt-ftparchive -c ../apt-ftparchive/release.conf generate ../apt-ftparchive/apt-
 apt-ftparchive -c ../apt-ftparchive/release.conf generate ../apt-ftparchive/apt-ftparchive-extras.conf
 apt-ftparchive -c ../apt-ftparchive/release.conf release dists/xenial > dists/xenial/Release
 rm dists/xenial/Release.gpg
-gpg --default-key "ECF415D4" --output dists/xenial/Release.gpg -ba dists/xenial/Release
+gpg --batch --passphrase $BUILD_ISO_PASSPHRASE --default-key "ECF415D4" --output dists/xenial/Release.gpg -ba dists/xenial/Release
 find . -type f -print0 | xargs -0 md5sum > md5sum.txt
 
 cd /root/custom-img

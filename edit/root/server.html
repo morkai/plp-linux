@@ -544,12 +544,12 @@ function start()
 {
   startTries += 1;
 
+  console.log(`Starting ${startTries}...`);
+
   if (startTries === 4)
   {
     return loadApps();
   }
-
-  console.log('Starting');
 
   getRemoteTime(remoteTime =>
   {
@@ -653,6 +653,8 @@ function waitForClockSync()
 
 function loadApps()
 {
+  console.log(`Loading apps...`);
+
   const frames = document.getElementById('frames').children;
 
   for (let i = 0; i < frames.length; ++i)
@@ -662,8 +664,12 @@ function loadApps()
 
     if (readyApps[app])
     {
+      console.log(`App ${app} is ready!`);
+
       continue;
     }
+
+    console.log(`Loading app: ${app}...`);
 
     frame.src = 'about:blank';
 

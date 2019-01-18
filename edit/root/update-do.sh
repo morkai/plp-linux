@@ -1,17 +1,5 @@
 #!/bin/bash
 
-old_version=`cat version.txt | tr -d [:space:]`
-new_version=14
-
-echo Current version: $old_version
-echo New version: $new_version
-
-if [[ ! $old_version < $new_version ]] ;
-then
-  echo Skipping update!
-  exit
-fi
-
 export no_proxy=192.168.21.60,161.87.64.46,192.168.1.250
 
 http_proxy=http://192.168.21.60:8080/
@@ -55,11 +43,12 @@ then
   if (( ${BASH_REMATCH[1]} < 71 )) ;
   then
     dpkg -i /root/google-chrome-stable_71.0.3578.98-1_amd64.deb
-    rm -rf /root/google-chrome-stable_71.0.3578.98-1_amd64.deb
   fi
 fi
 
+rm -rf /root/google-chrome-stable_71.0.3578.98-1_amd64.deb
 rm /etc/opt/chrome/policies/managed/plp.json
+
 cp -Rf /root/etc/* /etc
 rm -rf /root/etc
 

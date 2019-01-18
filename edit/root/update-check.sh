@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm -f /root/latest.7z /root/update-do.sh
+rm -f /root/update /root/latest.7z /root/update-do.sh
 
 wget --connect-timeout=3 --read-timeout=3 -t 1 -O /root/latest.7z http://192.168.21.60/plp-up/latest.7z
 
@@ -12,7 +12,19 @@ if [ $? -ne 0 ]; then
   fi
 fi
 
-7zr x -y /root/latest.7z
-chmod +x /root/*.sh
-/root/update-do.sh
-rm -f /root/latest.7z /root/update-do.sh
+7zr x -y -o/root/update /root/latest.7z
+
+old_version=`cat /root/version.txt | tr -d [:space:]`
+new_version=`cat /root/update/version.txt | tr -d [:space:]`
+
+echo Current version: $old_version
+echo New version: $new_version
+
+if [[ $old_version < $new_version ]] ;
+then
+  cp -rf /root/update /root
+  chmod +x /root/*.sh
+  /root/update-do.sh
+fi
+
+rm -f /root/update /root/latest.7z /root/update-do.sh

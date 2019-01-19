@@ -28,6 +28,13 @@ apt-get remove -y --purge unattended-upgrades
 apt-get update
 apt-get install -y curl unzip
 
+if [ ! -f /usr/bin/x11vnc ] ;
+then
+  apt-get install -y x11vnc
+  mkdir /root/.vnc/
+  x11vnc -storepasswd x11vncplx /root/.vnc/passwd
+fi
+
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
 
 if ! [[ `node -v` == v10* ]] ;

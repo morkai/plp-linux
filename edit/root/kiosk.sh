@@ -13,6 +13,7 @@ fi
 xset -dpms
 xset s off
 openbox-session &
+x11vnc -no6 -noipv6 -nevershared -forever -usepw -xkb -noxrecord -noxfixes -noxdamage -logfile /var/log/x11vnc.log -display :0 &
 
 while true
 do

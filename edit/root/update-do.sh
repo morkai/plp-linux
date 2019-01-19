@@ -2,16 +2,19 @@
 
 export no_proxy=192.168.21.60,161.87.64.46,192.168.1.250
 
-http_proxy=http://192.168.21.60:8080/
-wget -q --no-proxy --connect-timeout=3 --read-timeout=3 -t 1 -O - http://192.168.21.60/ping
+base_url=http://192.168.21.60
+http_proxy=$base_url:8080/
+wget -q --no-proxy --connect-timeout=3 --read-timeout=3 -t 1 -O - $base_url/ping
 
 if [ $? -ne 0 ]; then
-  http_proxy=http://161.87.64.46:8080/
-  wget -q --no-proxy --connect-timeout=3 --read-timeout=3 -t 1 -O - http://161.87.64.46/ping
+  base_url=http://161.87.64.46
+  http_proxy=$base_url:8080/
+  wget -q --no-proxy --connect-timeout=3 --read-timeout=3 -t 1 -O - $base_url/ping
 
   if [ $? -ne 0 ]; then
-    http_proxy=http://192.168.1.250:8080/
-    wget -q --no-proxy --connect-timeout=3 --read-timeout=3 -t 1 -O - http://192.168.1.250/ping
+    base_url=http://192.168.1.250
+    http_proxy=$base_url:8080/
+    wget -q --no-proxy --connect-timeout=3 --read-timeout=3 -t 1 -O - $base_url/ping
   fi
 fi
 
@@ -49,11 +52,12 @@ if [[ `google-chrome-stable --version` =~ ([0-9]+)\. ]] ;
 then
   if (( ${BASH_REMATCH[1]} < 71 )) ;
   then
-    dpkg -i /root/google-chrome-stable_71.0.3578.98-1_amd64.deb
+    wget $base_url/plp-up/google-chrome-stable.deb
+    dpkg -i /root/google-chrome-stable.deb
+    rm -rf /root/google-chrome-stable.deb
   fi
 fi
 
-rm -rf /root/google-chrome-stable_71.0.3578.98-1_amd64.deb
 rm /etc/opt/chrome/policies/managed/plp.json
 
 cp -Rf /root/etc/* /etc

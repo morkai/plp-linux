@@ -72,3 +72,11 @@ rm /root/update-do.js
 service ntp stop
 ntpd -qg
 service ntp start
+
+killall xinit
+sleep 1
+rm -rf /root/google-chrome
+mkdir /root/google-chrome
+echo -e '#!/bin/bash\nsleep 3\nreboot\n' > /tmp/reboot3s.sh
+chmod +x /tmp/reboot3s.sh
+nohup /tmp/reboot3s.sh > /dev/null 2>&1 &

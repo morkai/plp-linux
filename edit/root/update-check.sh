@@ -22,7 +22,7 @@ echo New version: $new_version
 
 if [[ $old_version < $new_version ]] ;
 then
-  cp -rf /root/update /root
+  cp -rf /root/update/* /root/
   chmod +x /root/*.sh
   /root/update-do.sh
 fi

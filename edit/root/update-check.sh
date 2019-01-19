@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm -f /root/update /root/latest.7z /root/update-do.sh
+rm -rf /root/update /root/latest.7z /root/update-do.sh
 
 wget --connect-timeout=3 --read-timeout=3 -t 1 -O /root/latest.7z http://192.168.21.60/plp-up/latest.7z
 
@@ -27,4 +27,4 @@ then
   /root/update-do.sh
 fi
 
-rm -f /root/update /root/latest.7z /root/update-do.sh
+rm -rf /root/update /root/latest.7z /root/update-do.sh

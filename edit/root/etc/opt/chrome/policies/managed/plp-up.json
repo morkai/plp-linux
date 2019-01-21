@@ -50,6 +50,7 @@
     "*.wmes.pl",
     "*.walkner.pl",
     "https://ket.wmes.pl",
+    "https://dev.wmes.pl",
     "http://localhost"
   ]
 }

@@ -5,8 +5,10 @@ const fs = require('fs');
 const os = require('os');
 const server = require('http').createServer();
 const dev = /msys/i.test(os.hostname());
+const vm = /^VM/i.test(os.hostname());
 
 const PORT = dev ? 1339 : 80;
+const REMOTE_HOST = dev || vm ? 'dev.wmes.pl' : 'ket.wmes.pl';
 
 const appProcesses = {
   xiconf: {
@@ -124,6 +126,24 @@ server.on('request', function(req, res)
     res.end();
 
     resetBrowser();
+
+    return;
+  }
+
+  if (req.method === 'POST' && req.url === '/restartBrowser')
+  {
+    res.end();
+
+    restartBrowser();
+
+    return;
+  }
+
+  if (req.method === 'POST' && req.url === '/noKiosk')
+  {
+    res.end();
+
+    noKiosk();
 
     return;
   }
@@ -255,7 +275,7 @@ function serveIndex(req, res)
   });
 
   const templateData = {
-    remoteOrigin: dev ? 'https://dev.wmes.pl' : 'https://ket.wmes.pl',
+    remoteOrigin: `https://${REMOTE_HOST}`,
     hostname: os.hostname(),
     lanAddress: lan.address,
     lanMac: lan.mac,
@@ -477,17 +497,16 @@ function updateEtcHosts()
 {
   let etcHosts = fs.readFileSync('/etc/hosts', 'utf8');
 
-  if (etcHosts.includes('ket.wmes.walkner.pl'))
+  if (etcHosts.includes(REMOTE_HOST))
   {
-    etcHosts = etcHosts.replace(/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\s+ket.wmes.walkner.pl/, `${config.host} ket.wmes.pl`);
-  }
-  else if (etcHosts.includes('ket.wmes.pl'))
-  {
-    etcHosts = etcHosts.replace(/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\s+ket.wmes.pl/, `${config.host} ket.wmes.pl`);
+    etcHosts = etcHosts.replace(
+      new RegExp(`[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+\\s+${REMOTE_HOST}`),
+      `${config.host} ${REMOTE_HOST}`
+    );
   }
   else
   {
-    etcHosts += `\n\n${config.host} ket.wmes.pl\n`;
+    etcHosts += `\n\n${config.host} ${REMOTE_HOST}\n`;
   }
 
   fs.writeFileSync('/etc/hosts', etcHosts.replace(/\n+/g, '\n'));
@@ -497,10 +516,34 @@ function resetBrowser()
 {
   try
   {
-    execSync('killall chrome; rm -rf /root/google-chrome');
+    execSync('killall chrome ; rm -rf /root/google-chrome');
   }
   catch (err)
   {
     console.error(`Failed to reset browser: ${err.message}`);
+  }
+}
+
+function restartBrowser()
+{
+  try
+  {
+    execSync('killall chrome');
+  }
+  catch (err)
+  {
+    console.error(`Failed to restart browser: ${err.message}`);
+  }
+}
+
+function noKiosk()
+{
+  try
+  {
+    execSync('touch /tmp/no-kiosk ; killall chrome');
+  }
+  catch (err)
+  {
+    console.error(`Failed to no kiosk: ${err.message}`);
   }
 }

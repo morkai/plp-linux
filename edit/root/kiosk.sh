@@ -2,13 +2,7 @@
 
 echo "`date -Is` kiosk.sh..."
 
-kiosk=--kiosk
 locale=pl_PL.utf8
-
-if [[ `hostname` == VM-* ]] ;
-then
-  kiosk=
-fi
 
 xset -dpms
 xset s off
@@ -22,6 +16,12 @@ do
   node /root/exited-chrome-cleanly.js
   node /root/set-resolution.js
   sleep 0.25
+  kiosk=--kiosk
+  if [[ `hostname` == VM-* ]] || [[ -f /tmp/no-kiosk ]] ;
+  then
+    kiosk=
+  fi
+  rm /tmp/no-kiosk
   LANG=$locale LANGUAGE=$locale google-chrome --user-data-dir=/root/google-chrome \
     $kiosk \
     --allow-insecure-localhost \

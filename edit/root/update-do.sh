@@ -28,6 +28,8 @@ systemctl disable apt-daily-upgrade.service
 systemctl disable apt-daily-upgrade.timer
 apt-get remove -y --purge unattended-upgrades
 
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1655A0AB68576280
+
 apt-get update
 apt-get install -y curl unzip
 

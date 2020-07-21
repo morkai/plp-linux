@@ -1,0 +1,3 @@
+// Part of <https://miracle.systems/p/walkner-snf> licensed under <CC BY-NC-SA 4.0>
+
+define(["underscore","app/pubsub","app/snf-programs/ProgramCollection","./createStorage"],function(e,a,r,i){"use strict";var s=i("PROGRAMS","programs",r);return a.subscribe("snf.programs.*.images.*",function(e,a){var r=s.get(e.program);if(r){var i=r.get("images"),t=a.split(".")[3];switch(t){case"added":i=[].concat(i,e.images);break;case"deleted":i=i.filter(function(a){return a._id!==e.image});break;case"edited":for(var c=0;c<i.length;++c){if(i[c]._id===e.image._id){i=[].concat(i),i[c]=e.image;break}}}r.set("images",i,{action:t,message:e})}}),s});

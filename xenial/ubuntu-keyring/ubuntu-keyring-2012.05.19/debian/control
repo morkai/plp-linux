@@ -1,0 +1,24 @@
+Source: ubuntu-keyring
+Section: misc
+Priority: optional
+Maintainer: Michael Vogt <michael.vogt@canonical.com>
+Standards-Version: 3.8.3
+
+Package: ubuntu-keyring
+Priority: important
+Architecture: all
+Multi-Arch: foreign
+Recommends: gpgv
+Description: GnuPG keys of the Ubuntu archive
+ The Ubuntu project digitally signs its Release files. This package
+ contains the archive keys used for that.
+
+Package: ubuntu-keyring-udeb
+Priority: optional
+Architecture: all
+Section: debian-installer
+Recommends: gpgv-udeb
+Description: GnuPG keys of the Ubuntu archive
+ The Ubuntu project digitally signs its Release files. This package
+ contains the archive keys used for that, in a minimal form for use
+ in the installer.

@@ -1,0 +1,13 @@
+Package: ubuntu-keyring
+Version: 2018.09.18.1
+Architecture: all
+Maintainer: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Installed-Size: 48
+Breaks: ubuntu-cloudimage-keyring (<< 2018.02.05)
+Replaces: ubuntu-cloudimage-keyring (<< 2018.02.05)
+Section: misc
+Priority: important
+Multi-Arch: foreign
+Description: GnuPG keys of the Ubuntu archive
+ The Ubuntu project digitally signs its Release files. This package
+ contains the archive keys used for that.

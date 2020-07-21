@@ -1,0 +1,68 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Tue, 18 Sep 2018 17:03:46 +0200
+Source: ubuntu-keyring
+Binary: ubuntu-keyring ubuntu-keyring-udeb ubuntu-cloud-keyring ubuntu-dbgsym-keyring ubuntu-cloudimage-keyring
+Architecture: source all
+Version: 2018.09.18.1
+Distribution: cosmic
+Urgency: medium
+Maintainer: Lukasz Walukiewicz <lukasz@miracle.systems>
+Changed-By: Dimitri John Ledkov <xnox@ubuntu.com>
+Description:
+ ubuntu-cloud-keyring - GnuPG keys of the Ubuntu Cloud Archive
+ ubuntu-cloudimage-keyring - dummy transitional package for GnuPG keys of cloudimage keyring
+ ubuntu-dbgsym-keyring - GnuPG keys of the Ubuntu Debug Symbols Archive
+ ubuntu-keyring - GnuPG keys of the Ubuntu archive
+ ubuntu-keyring-udeb - GnuPG keys of the Ubuntu archive (udeb)
+Changes:
+ ubuntu-keyring (2018.09.18.1) cosmic; urgency=medium
+ .
+   * Improve README.Source with upgrade/change instructions.
+   * Validate that all shipped fragments are signed.
+Checksums-Sha1:
+ 82d31ffc31299c4b90312ffeb4339e7409e076fa 1796 ubuntu-keyring_2018.09.18.1.dsc
+ f346234e762a59da116bbeb0a2db820a6293d228 41623 ubuntu-keyring_2018.09.18.1.tar.gz
+ 127fc3f39a992f27cf2e90168f4b3234f1cddfe7 7304 ubuntu-cloud-keyring_2018.09.18.1_all.deb
+ 113b195153c9d7bdf86766c0ab24360b936105e2 4456 ubuntu-cloudimage-keyring_2018.09.18.1_all.deb
+ e036b86ca091ffecb37e9763876b27e444cb3e93 8572 ubuntu-dbgsym-keyring_2018.09.18.1_all.deb
+ 7fe80eb937ba7d175201170519e612185f2034e9 10368 ubuntu-keyring-udeb_2018.09.18.1_all.udeb
+ 1de33c476ea1f6937ae4e603cb0b3ee9cb22bbd4 25832 ubuntu-keyring_2018.09.18.1_all.deb
+ 28d254548abe3dcc96334f7b826d8147c3622ea1 12335 ubuntu-keyring_2018.09.18.1_amd64.buildinfo
+Checksums-Sha256:
+ 09c766d4b7ab81aa1aa473c1369d5633ae8df1ba058859ee3da23d79aa8c9b18 1796 ubuntu-keyring_2018.09.18.1.dsc
+ 87d37e68ad387e0546911658f35ff677aa101a95f078d4f0bf74f011c7c993b5 41623 ubuntu-keyring_2018.09.18.1.tar.gz
+ 2ab1f51fd5064d947c651c4ea91aaca010c3fa8680b498821fd818a40a2adbfa 7304 ubuntu-cloud-keyring_2018.09.18.1_all.deb
+ 0bc345f73c0eb952a78e1a74f5e924a4560f2d52ecad66dc97b774daf5344ea6 4456 ubuntu-cloudimage-keyring_2018.09.18.1_all.deb
+ f7655a765d5c7bfdeb8afe2db70d48ef710cc9eab8997233d0ca930700c6b9e2 8572 ubuntu-dbgsym-keyring_2018.09.18.1_all.deb
+ 65ce75099a7c1c8bea168b3a59637c0ba5bd4114aa13066774512944af5b08ed 10368 ubuntu-keyring-udeb_2018.09.18.1_all.udeb
+ 7c6a3eaff9c7bb11100e6fa37cf9f5f8febc8509d15c46ec32ab3db39a377df5 25832 ubuntu-keyring_2018.09.18.1_all.deb
+ dd7cf73910ba2df4986b4a246cfb2ceb02ffe35802908e6ccff6b6d4ef27772f 12335 ubuntu-keyring_2018.09.18.1_amd64.buildinfo
+Files:
+ 34165cd34c2bc6d6293be46f01861859 1796 misc optional ubuntu-keyring_2018.09.18.1.dsc
+ ed541ccda26cb921efcac442c0e21e7b 41623 misc optional ubuntu-keyring_2018.09.18.1.tar.gz
+ 954c2d02e88d2fec9108f944e6b55b34 7304 misc optional ubuntu-cloud-keyring_2018.09.18.1_all.deb
+ a72932b73e111f8f28bd5c08099ad521 4456 misc optional ubuntu-cloudimage-keyring_2018.09.18.1_all.deb
+ 848ba026c90325ceefa99b747f53b3f2 8572 misc optional ubuntu-dbgsym-keyring_2018.09.18.1_all.deb
+ c9aaf293b75a60686b09850dbf750264 10368 debian-installer standard ubuntu-keyring-udeb_2018.09.18.1_all.udeb
+ 9bf01c34622aeb6cc1ac2a92d4878b77 25832 misc important ubuntu-keyring_2018.09.18.1_all.deb
+ 56b1a27547fe4c128275bcea31803dfc 12335 misc optional ubuntu-keyring_2018.09.18.1_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEIQeRleL/SH1cNaX9zY7SJYuGHeAFAlyL1voACgkQzY7SJYuG
+HeBhjw/8Dd+7Q9hya+iQ4D53d6yDaT5neeAZkJJXp+cTVdvqxy0HjDP4Cko5sV00
+9eHcn/S2Iku3h1lO87yDMGiswmIq3vtoxa1QS0ub3ZeXxtE5KazCygJy2osiaJdl
+X5hrq+rD9itkm4/CD8mU8s7VPbX74jISx+uROxglpWRHNlRhnd9iegI1VIeV/noe
+4t3g9wvZE++24XXzBZOVAV8l0hlCOPnJCbZRlw3cZTgtGqfxOOj/T7KcFr9YGEiG
+NkLUKY8SRCZvv1HOeYWpsVjTvVxN64y5SMTabUcd2XZ9ZRJVULi3sRUgrLNJQO02
+I395D97WUPRL3VndAQAwPNliallbG5OCPySGKgScc7G0kzIJxvaCiiIgUPtTG1xN
+23f52/aqAFw3q8ZhtEzDn++YgObNegqSe7uyO9OMEQNzFDi11XyXMNo+qa7k9zKx
+7OoiXOnNbEbVddQ0kPcUnYFYCO66IO5539kAHJVsko7VQp2AxttZ4nOgpBaALrGP
+1C7vGiHw3xpgx+N3NeXyDZGHrmL4iq5vKzFrb1VzaXqSGfjbB1aX5xkC8vvD4FoX
+fIfS/XWiUd6wG5WI1JYcXy3RvBuZG/XYW3qsFCNYSziM2zYleIWUQqPQB/PnawB0
+WVLSH+9ptH4nVGm7F+u5aHlY2guFDpxoH48RSP8htF3hZ2VqeJE=
+=fkmX
+-----END PGP SIGNATURE-----

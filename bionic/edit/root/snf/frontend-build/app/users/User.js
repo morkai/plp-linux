@@ -1,0 +1,3 @@
+// Part of <https://miracle.systems/p/walkner-snf> licensed under <CC BY-NC-SA 4.0>
+
+define(["../core/Model"],function(e){"use strict";return e.extend({urlRoot:"/users",clientUrlRoot:"#users",topicPrefix:"users",privilegePrefix:"USERS",nlsDomain:"users",labelAttribute:"login",defaults:{},initialize:function(){Array.isArray(this.get("privileges"))||this.set("privileges",[])},getLabel:function(){var e=this.get("lastName")||"",t=this.get("firstName")||"";return e.length&&t.length?e+" "+t:this.get("login")},serialize:function(){return this.toJSON()}})});

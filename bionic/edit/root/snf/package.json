@@ -1,0 +1,69 @@
+{
+  "name": "walkner-snf",
+  "version": "2.1.0",
+  "updater": {
+    "snf": {
+      "backend": 3,
+      "frontend": 4,
+      "controller": 3
+    }
+  },
+  "description": "Application for SNF/AV tester.",
+  "license": "CC-BY-NC-SA-4.0",
+  "homepage": "https://github.com/morkai/walkner-snf",
+  "author": {
+    "name": "Łukasz Walukiewicz",
+    "email": "lukasz@miracle.systems",
+    "url": "http://miracle.systems/"
+  },
+  "bugs": "https://github.com/morkai/walkner-snf/issues",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/morkai/walkner-snf.git"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "main": "./backend/main",
+  "dependencies": {
+    "axon": "^2.0.3",
+    "bcrypt": "3.0.6",
+    "body-parser": "^1.19.0",
+    "cookie": "^0.4.0",
+    "cookie-parser": "^1.4.4",
+    "csv": "1.1.1",
+    "deep-equal": "^1.1.1",
+    "ejs": "~2.7.4",
+    "ejs-amd": "morkai/ejs-amd",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "fs-extra": "^8.1.0",
+    "h5.main": "morkai/h5.main",
+    "h5.modbus": "morkai/h5.modbus",
+    "h5.pubsub": "morkai/h5.pubsub",
+    "h5.rql": "morkai/h5.rql",
+    "h5.step": "morkai/h5.step",
+    "lodash": "^4.17.15",
+    "messageformat": "0.2.2",
+    "messageformat-amd": "morkai/messageformat-amd",
+    "moment": "^2.24.0",
+    "mongodb": "^3.3.5",
+    "mongoose": "^5.7.12",
+    "multer": "^1.4.2",
+    "request": "^2.88.0",
+    "socket.io": "1.7.4",
+    "transliteration": "^2.1.7",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "chalk": "^3.0.0",
+    "grunt": "^1.0.4",
+    "grunt-contrib-clean": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-requirejs": "~1.0.0",
+    "grunt-uglify-es-multicore": "morkai/grunt-uglify-es-multicore",
+    "grunt-ejs-amd": "morkai/grunt-ejs-amd",
+    "grunt-eslint": "^22.0.0",
+    "grunt-messageformat-amd": "morkai/grunt-messageformat-amd"
+  }
+}

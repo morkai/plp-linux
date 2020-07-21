@@ -1,0 +1,168 @@
+name,description,master,kind,unit,address,readable,writable,type,rawMin,rawMax,scaleUnit,scaleFunction,scaleMin,scaleMax,noise,archive,valueMap
+,I/O,,,,,,,,,,,,,,,,
+tester.status,Tester zaświecenia lampa zielona styk pomocniczy stycznika S3,snfPlc,input,1,X0,1,0,bool,-,-,-,-,-,-,-,-,-
+tester.redLed,Czerwona lampa testera,snfPlc,input,1,X16,1,0,bool,-,-,-,-,-,-,-,-,-
+tester.greenLed,Zielona lampa testera,snfPlc,input,1,X17,1,0,bool,-,-,-,-,-,-,-,-,-
+estop,Układ bezpieczeństwa E-Stop,snfPlc,input,1,X11,1,0,bool,-,-,-,-,-,-,-,-,-
+start,Przycisk rozpoczęcia pracy (START),snfPlc,input,1,X1,1,0,bool,-,-,-,-,-,-,-,-,-
+stop,Przycisk zakończenia pracy (STOP),snfPlc,input,1,X2,1,0,bool,-,-,-,-,-,-,-,-,-
+test.success,Flaga powodzenia testu,snfPlc,output,1,M10,1,0,bool,-,-,-,-,-,-,-,-,-
+test.failure,Flaga niepowodzenia testu,snfPlc,output,1,M9,1,0,bool,-,-,-,-,-,-,-,-,-
+test.failure.current,Porażka: pobór mocy,snfPlc,output,1,M13,1,0,bool,-,-,-,-,-,-,-,-,-
+test.failure.light,Porażka: za słabe światło,snfPlc,output,1,M14,1,0,bool,-,-,-,-,-,-,-,-,-
+test.failure.time,Porażka: test zakończony przed czasem,snfPlc,output,1,M15,1,0,bool,-,-,-,-,-,-,-,-,-
+test.failure.bulbHolder,Porażka: test porcelanki,snfPlc,output,1,M27,1,0,bool,-,-,-,-,-,-,-,-,-
+test.elapsedTime,Aktualny czas testu,snfPlc,register,1,T100,1,0,uint16,-,-,-,div(10); floor,-,-,-,-,-
+test.hrsIntervalTime,Aktualny czas odstępu HRS,snfPlc,register,1,T103,1,0,uint16,-,-,-,div(10); floor,-,-,-,-,-
+test.hrsElapsedTime,Aktualny czas iteracji HRS,snfPlc,register,1,T101,1,0,uint16,-,-,-,div(10); floor,-,-,-,-,-
+test.hrsIteration,Aktualna iteracja HRS,snfPlc,register,1,C3,1,0,uint16,-,-,-,-,-,-,-,-,-
+test.schleich,Pozwolenie testu Schleich,snfPlc,output,1,M11,1,0,bool,-,-,-,-,-,-,-,-,-
+test.probe.son1,Test: jedna sonda SON/HPI,snfPlc,output,1,M18,1,0,bool,-,-,-,-,-,-,-,-,-
+test.probe.son2,Test: dwie sondy SON/HPI,snfPlc,output,1,M19,1,0,bool,-,-,-,-,-,-,-,-,-
+test.probe.mnh,Test: jedna sonda SON/HPI,snfPlc,output,1,M20,1,0,bool,-,-,-,-,-,-,-,-,-
+program.30s,Program przypisany do testu 30s,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
+program.hrs,Program przypisany do testu HRS,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
+program.tester,Program przypisany do testu Tester,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
+program.mnh,Test MNH,snfPlc,output,1,M17,1,1,bool,-,-,-,-,-,-,-,-,-
+program.lampCount,Ilość lamp,snfPlc,output,1,M21,1,1,bool,-,-,-,-,-,-,-,-,-
+program.lightSensors,Czujniki światła aktywne?,snfPlc,output,1,M16,1,1,bool,-,-,-,-,-,-,-,-,-
+program.hrsCount.plc,Ilość powtórzeń HRS (PLC),snfPlc,register,1,D4,1,0,uint16,-,-,-,-,-,-,-,-,-
+program.hrsCount.pc,Ilość powtórzeń HRS (PC),snfPlc,register,1,D5,1,1,uint16,-,-,-,-,-,-,-,-,-
+program.hrsDuration,Czas trwania HRS,snfPlc,register,1,D6,1,1,uint16,-,-,-,div(10),-,-,-,-,-
+program.limitSwitch,Sprawdzać wyłącznik krańcowy w lampie?,snfPlc,output,1,M22,1,1,bool,-,-,-,-,-,-,-,-,-
+program.lampBulb,Żarówka w lampie?,snfPlc,output,1,M24,1,1,bool,-,-,-,-,-,-,-,-,-
+program.duration.plc,Czas trwania testu (PLC),snfPlc,register,1,D10,1,1,uint16,-,-,-,div(10),-,-,-,-,-
+program.duration.pc,Czas trwania testu (PC),snfPlc,register,1,D9,1,1,uint16,-,-,-,div(10),-,-,-,-,-
+program.timeToShine,Czas oczekiwania na zaświecenie,snfPlc,register,1,D234,1,1,uint16,-,-,-,div(10),-,-,-,-,-
+program.hrsInterval.plc,Czas odstępu HRS (PLC),snfPlc,register,1,D11,1,1,uint16,-,-,-,div(10),-,-,-,-,-
+program.hrsInterval.pc,Czas odstępu HRS (PC),snfPlc,register,1,D12,1,1,uint16,-,-,-,div(10),-,-,-,-,-
+program.contactors,Konfiguracja styczników,snfPlc,register,1,D0,1,1,uint16,-,-,-,-,-,-,-,-,-
+program.current.min,Dolna tolerancja prądu,snfPlc,register,1,D232,1,1,uint16,-,-,-,div(10),-,-,-,-,-
+program.current.max,Górna tolerancja prądu,snfPlc,register,1,D233,1,1,uint16,-,-,-,div(10),-,-,-,-,-
+program.bulbHolder,Test porcelanki aktywny?,snfPlc,output,1,M25,1,1,bool,-,-,-,-,-,-,-,-,-
+limitSwitch,Wyłącznik krańcowy w lampie,snfPlc,input,1,X3,1,0,bool,-,-,-,-,-,-,-,-,-
+programStart.count,Kluczyk typu uruchomienia programu,snfPlc,input,1,X10,1,0,bool,-,-,-,-,-,-,-,-,-
+programStart.left,Przycisk uruchomienia programu (lewy),snfPlc,input,1,X4,1,0,bool,-,-,-,-,-,-,-,-,-
+programStart.right,Przycisk uruchomienia programu (prawy),snfPlc,input,1,X5,1,0,bool,-,-,-,-,-,-,-,-,-
+interlock.mnh,Blokada MNH,snfPlc,input,1,X27,1,0,bool,-,-,-,-,-,-,-,-,-
+interlock.e40Left,Blokada sonda E40 (lewa),snfPlc,input,1,X26,1,0,bool,-,-,-,-,-,-,-,-,-
+interlock.e40Right,Blokada sonda E40 (prawa),snfPlc,input,1,X21,1,0,bool,-,-,-,-,-,-,-,-,-
+temperature.max,Czujnik maks. temperatury,snfPlc,input,1,X12,1,0,bool,-,-,-,-,-,-,-,-,-
+testKind.1,Rodzaj testu (bit 1),snfPlc,input,1,X13,1,0,bool,-,-,-,-,-,-,-,-,-
+testKind.2,Rodzaj testu (bit 2),snfPlc,input,1,X14,1,0,bool,-,-,-,-,-,-,-,-,-
+fan,Wentylator: wyłączenie,snfPlc,output,1,Y5,1,1,bool,-,-,-,-,-,-,-,-,-
+transformer.1,SSR TRAFO 1,snfPlc,output,1,Y3,1,1,bool,-,-,-,-,-,-,-,-,-
+transformer.2,SSR TRAFO 2,snfPlc,output,1,Y4,1,1,bool,-,-,-,-,-,-,-,-,-
+redLed,Czerwona lampa,snfPlc,output,1,Y6,1,1,bool,-,-,-,-,-,-,-,-,-
+greenLed,Zielona lampa,snfPlc,output,1,Y7,1,1,bool,-,-,-,-,-,-,-,-,-
+buzzer,Buzer,snfPlc,output,1,Y10,1,1,bool,-,-,-,-,-,-,-,-,-
+test.1.status,Test 1 OK 230 V opcja,snfPlc,input,1,X22,1,0,bool,-,-,-,-,-,-,-,-,-
+test.2.status,Test 2 OK 230 V opcja,snfPlc,input,1,X23,1,0,bool,-,-,-,-,-,-,-,-,-
+voltage.switch.230,Przełącznik 230V,snfPlc,input,1,X24,1,0,bool,-,-,-,-,-,-,-,-,-
+voltage.switch.400,Przełacznik 400V,snfPlc,input,1,X25,1,0,bool,-,-,-,-,-,-,-,-,-
+contactors.main,Stycznik główny S1,snfPlc,output,1,Y11,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.2,Stycznik S2 Tester,snfPlc,output,1,Y12,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.3,Stycznik S3 Tester,snfPlc,output,1,Y13,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.testerK12,Stycznik Testera K12,snfPlc,output,1,Y21,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.ballast400W1,Stycznik S6 Balast 1 0.4kW,snfPlc,output,1,Y22,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.ballast400W2,Stycznik S7 Balast 2 0.4kW,snfPlc,output,1,Y23,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.ballast2000W,Stycznik S8 Balast 2kW,snfPlc,output,1,Y24,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.ignitron400W1,Stycznik S9 Ignitron 1 0.4kW,snfPlc,output,1,Y25,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.ignitron400W2,Stycznik S10 Ignitron 2 0.4kW,snfPlc,output,1,Y26,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.ignitron2000W,Stycznik S11 Ignitron 2kW,snfPlc,output,1,Y27,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.k15,Stycznik Lampy K15,snfPlc,output,1,Y34,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.k16,Stycznik Lampy K16,snfPlc,output,1,Y35,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.k17,Stycznik Lampy K17,snfPlc,output,1,Y36,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.k18,Stycznik Lampy K18,snfPlc,output,1,Y37,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.k19,Stycznik Lampy K19,snfPlc,output,1,Y0,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.k20,Stycznik Lampy K20,snfPlc,output,1,Y1,1,1,bool,-,-,-,-,-,-,-,-,-
+contactors.k21,Stycznik Lampy K21,snfPlc,output,1,Y2,1,1,bool,-,-,-,-,-,-,-,-,-
+bcd.1,Wybór programu (BCD1),snfPlc,input,1,X30,0,0,bool,-,-,-,-,-,-,-,-,-
+bcd.2,Wybór programu (BCD2),snfPlc,input,1,X31,0,0,bool,-,-,-,-,-,-,-,-,-
+bcd.3,Wybór programu (BCD3),snfPlc,input,1,X32,0,0,bool,-,-,-,-,-,-,-,-,-
+bcd.4,Wybór programu (BCD4),snfPlc,input,1,X33,0,0,bool,-,-,-,-,-,-,-,-,-
+bcd.5,Wybór programu (BCD5) 1 cyfra,snfPlc,input,1,X34,0,0,bool,-,-,-,-,-,-,-,-,-
+arrow.left,Strzałka czarna na kasecie (lewa),snfPlc,input,1,X36,1,0,bool,-,-,-,-,-,-,-,-,-
+arrow.right,Strzałka czarna na kasecie (prawa),snfPlc,input,1,X37,1,0,bool,-,-,-,-,-,-,-,-,-
+temperature,Wartość czujnika temperatury,snfPlc,register,1,D1,1,0,int16,-,-,-,-,-,-,-,-,-
+current,Wartość prądu,snfPlc,register,1,D2,1,0,int16,-,-,-,div(10),-,-,-,-,-
+voltage,Wartość napięcia,snfPlc,register,1,D3,1,0,int16,-,-,-,-,-,-,-,-,-
+light.1,Wartość czujnika światła 1,snfPlc,register,1,D7,1,0,int16,-,-,-,-,-,-,-,-,-
+light.2,Wartość czujnika światła 2,snfPlc,register,1,D8,1,0,int16,-,-,-,-,-,-,-,-,-
+light.1.min.plc,Min. wartość czujnika światła 1 (PLC),snfPlc,register,1,D230,1,1,uint16,0,2000,-,-,-,-,-,-,-
+light.2.min.plc,Min. wartość czujnika światła 2 (PLC),snfPlc,register,1,D231,1,1,uint16,0,2000,-,-,-,-,-,-,-
+light.1.min.pc,Min. wartość czujnika światła 1 (PC),-,setting,-,-,0,1,uint16,0,2000,-,-,-,-,-,-,-
+light.2.min.pc,Min. wartość czujnika światła 2 (PC),-,setting,-,-,0,1,uint16,0,2000,-,-,-,-,-,-,-
+,Wartości predefiniowane,,,,,,,,,,,,,,,,
+predef.1.contactors,Konfiguracja styczników 1,snfPlc,register,1,D200,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.1.hrsCount,Ilość powtórzeń HRS 1,snfPlc,register,1,D300,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.1.current.min,Dolna tolerancja prądu 1,snfPlc,register,1,D316,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.1.current.max,Górna tolerancja prądu 1,snfPlc,register,1,D332,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.2.contactors,Konfiguracja styczników 2,snfPlc,register,1,D201,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.2.hrsCount,Ilość powtórzeń HRS 2,snfPlc,register,1,D301,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.2.current.min,Dolna tolerancja prądu 2,snfPlc,register,1,D317,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.2.current.max,Górna tolerancja prądu 2,snfPlc,register,1,D333,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.3.contactors,Konfiguracja styczników 3,snfPlc,register,1,D202,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.3.hrsCount,Ilość powtórzeń HRS 3,snfPlc,register,1,D302,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.3.current.min,Dolna tolerancja prądu 3,snfPlc,register,1,D318,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.3.current.max,Górna tolerancja prądu 3,snfPlc,register,1,D334,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.4.contactors,Konfiguracja styczników 4,snfPlc,register,1,D203,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.4.hrsCount,Ilość powtórzeń HRS 4,snfPlc,register,1,D303,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.4.current.min,Dolna tolerancja prądu 4,snfPlc,register,1,D319,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.4.current.max,Górna tolerancja prądu 4,snfPlc,register,1,D335,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.5.contactors,Konfiguracja styczników 5,snfPlc,register,1,D204,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.5.hrsCount,Ilość powtórzeń HRS 5,snfPlc,register,1,D304,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.5.current.min,Dolna tolerancja prądu 5,snfPlc,register,1,D320,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.5.current.max,Górna tolerancja prądu 5,snfPlc,register,1,D336,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.6.contactors,Konfiguracja styczników 6,snfPlc,register,1,D205,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.6.hrsCount,Ilość powtórzeń HRS 6,snfPlc,register,1,D305,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.6.current.min,Dolna tolerancja prądu 6,snfPlc,register,1,D321,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.6.current.max,Górna tolerancja prądu 6,snfPlc,register,1,D337,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.7.contactors,Konfiguracja styczników 7,snfPlc,register,1,D206,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.7.hrsCount,Ilość powtórzeń HRS 7,snfPlc,register,1,D306,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.7.current.min,Dolna tolerancja prądu 7,snfPlc,register,1,D322,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.7.current.max,Górna tolerancja prądu 7,snfPlc,register,1,D338,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.8.contactors,Konfiguracja styczników 8,snfPlc,register,1,D207,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.8.hrsCount,Ilość powtórzeń HRS 8,snfPlc,register,1,D307,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.8.current.min,Dolna tolerancja prądu 8,snfPlc,register,1,D323,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.8.current.max,Górna tolerancja prądu 8,snfPlc,register,1,D339,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.9.contactors,Konfiguracja styczników 9,snfPlc,register,1,D208,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.9.hrsCount,Ilość powtórzeń HRS 9,snfPlc,register,1,D308,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.9.current.min,Dolna tolerancja prądu 9,snfPlc,register,1,D324,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.9.current.max,Górna tolerancja prądu 9,snfPlc,register,1,D340,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.10.contactors,Konfiguracja styczników 10,snfPlc,register,1,D209,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.10.hrsCount,Ilość powtórzeń HRS 10,snfPlc,register,1,D309,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.10.current.min,Dolna tolerancja prądu 10,snfPlc,register,1,D325,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.10.current.max,Górna tolerancja prądu 10,snfPlc,register,1,D341,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.11.contactors,Konfiguracja styczników 11,snfPlc,register,1,D210,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.11.hrsCount,Ilość powtórzeń HRS 11,snfPlc,register,1,D310,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.11.current.min,Dolna tolerancja prądu 11,snfPlc,register,1,D326,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.11.current.max,Górna tolerancja prądu 11,snfPlc,register,1,D342,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.12.contactors,Konfiguracja styczników 12,snfPlc,register,1,D211,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.12.hrsCount,Ilość powtórzeń HRS 12,snfPlc,register,1,D311,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.12.current.min,Dolna tolerancja prądu 12,snfPlc,register,1,D327,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.12.current.max,Górna tolerancja prądu 12,snfPlc,register,1,D343,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.13.contactors,Konfiguracja styczników 13,snfPlc,register,1,D212,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.13.hrsCount,Ilość powtórzeń HRS 13,snfPlc,register,1,D312,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.13.current.min,Dolna tolerancja prądu 13,snfPlc,register,1,D328,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.13.current.max,Górna tolerancja prądu 13,snfPlc,register,1,D344,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.14.contactors,Konfiguracja styczników 14,snfPlc,register,1,D213,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.14.hrsCount,Ilość powtórzeń HRS 14,snfPlc,register,1,D313,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.14.current.min,Dolna tolerancja prądu 14,snfPlc,register,1,D329,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.14.current.max,Górna tolerancja prądu 14,snfPlc,register,1,D345,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.15.contactors,Konfiguracja styczników 15,snfPlc,register,1,D214,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.15.hrsCount,Ilość powtórzeń HRS 15,snfPlc,register,1,D314,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.15.current.min,Dolna tolerancja prądu 15,snfPlc,register,1,D330,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.15.current.max,Górna tolerancja prądu 15,snfPlc,register,1,D346,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.16.contactors,Konfiguracja styczników 16,snfPlc,register,1,D215,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.16.hrsCount,Ilość powtórzeń HRS 16,snfPlc,register,1,D315,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.16.current.min,Dolna tolerancja prądu 16,snfPlc,register,1,D331,0,1,uint16,-,-,-,-,-,-,-,-,-
+predef.16.current.max,Górna tolerancja prądu 16,snfPlc,register,1,D347,0,1,uint16,-,-,-,-,-,-,-,-,-
+,Inne,,,,,,,,,,,,,,,,
+watchdog,Watchdog,snfPlc,output,1,M8,1,1,bool,-,-,-,-,-,-,-,-,-
+prodLine,ID linii produkcyjnej WMES,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
+currentOrder,Nr aktualnego zlecenia,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
+currentQty,Aktualna ilość w zleceniu,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
+,Stany połączenia z urządzeniami,,,,,,,,,,,,,,,,
+masters.controlProcess,Stan połączenia z urządzeniami sterowania (snfPlc),-,virtual,-,-,0,0,bool,-,-,-,-,-,-,-,-,-
+masters.snfPlc,Stan połączenia ze sterownikiem delta,snfPlc,virtual,-,-,0,0,bool,-,-,-,-,-,-,0,-,-

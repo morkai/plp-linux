@@ -1,0 +1,3 @@
+// Part of <https://miracle.systems/p/walkner-snf> licensed under <CC BY-NC-SA 4.0>
+
+define(["app/time"],function(t){"use strict";return function(r,u){var e=u&&u.shiftLength||8,o=u&&"number"==typeof u.startHour?u.startHour:6,s=(u&&u.utc?t.utc:t).getMoment(r),n=s.valueOf(),a=1,f=24/e;for(s.hours()<o&&s.subtract(24,"hours"),s.hours(o).startOf("hours");a<=f;++a){var h=s.valueOf(),i=s.add(e,"hours").valueOf();if(n>=h&&n<i)return{moment:s.subtract(e,"hours").startOf("hour"),no:a,startTime:h,endTime:i,startHour:o,length:e,count:f}}throw new Error("Could resolve the shift start info!")}});

@@ -1,0 +1,22 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+274895dfe6dd331fa1ae109c14745907  keyrings/ubuntu-archive-keyring.gpg
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+Comment: Colin Watson <cjwatson@debian.org> -- Debian developer
+
+iQIVAwUBT7b3pTk1h9l9hlALAQggjg/9GXnlz3nz0t1ndnYXWSKdR++mVaelRHBo
+3oUbeo88TV1k/jkEFYNxmmoXOIvwKTXF6gmj5Am9R5qZ1QhrpJVci8KOx68EQ9LI
+plOMZ+l3zCF1v/eENOiyCziNjHn1oMPlEdEu/b00YSWlSjafKRoTzRIv2bj4xJBj
+s1tr8C7IquYFjnlmwyBBno2V+hELiA+1iocltoevuG7wgNAEYWviZ800p65oWrju
+6BCIfmJVX0UgTEFEF23UbRzRFbIyJEmd2l6ML6lL8ipSZTkTWBAFpE4bXLBqI+pW
+TVt1B9Y3zFkN7AM/b+mXv4WYSf7og/D+XPCAvLYH//3fbcMl2o0PMQctj7zNWG33
+qiLpb52qsNVJNnOuUmgs+HthMWqSa9EGwN+C4mnhA2LqUkNchZhV+0QrEOD/YdPn
+t0XrsIXQlNg1abYTqw0OWDmpFWHlWJBQnv2f8M3NHkSnetrfvK67CvQ6DuScDKr5
+15Hi+1LkeX0PK3LOQt66l3EYmjGJ+Ua0emv52c3EjzEDdR6lQM6DuSu9ftGsmeRH
+QvQm7J/koUJIXJG8X9nEoHVYF6MwwMulLpCkIGhd9WHOXIoRYz85dSpc+yWl9Bqe
+sJcjuETNOAXDqKnyto6RK67Ch4QGH2DRIDG8KOVYVyUDIeNpn4udxjJCglGmpovw
+eyR/+tFl6ZI=
+=ZdJk
+-----END PGP SIGNATURE-----

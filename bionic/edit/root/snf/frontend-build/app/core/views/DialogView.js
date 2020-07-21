@@ -1,0 +1,3 @@
+// Part of <https://miracle.systems/p/walkner-snf> licensed under <CC BY-NC-SA 4.0>
+
+define(["underscore","../View"],function(i,e){"use strict";return e.extend({events:{"click .dialog-answer":function(e){var s=this.$(e.target).closest(".dialog-answer"),t=s.attr("data-answer");i.isString(t)&&t.length>0&&(this.disableAnswers(),this.trigger("answered",t),!1!==this.options.autoHide&&i.isFunction(this.closeDialog)&&this.closeDialog())}},serialize:function(){return i.assign(this.getCommonTemplateData(),this.model)},onDialogShown:function(i){this.closeDialog=i.closeDialog.bind(i)},disableAnswers:function(){this.$(".btn[data-answer]").prop("disabled",!0)},enableAnswers:function(){this.$(".btn[data-answer]").prop("disabled",!1)},closeDialog:function(){}})});

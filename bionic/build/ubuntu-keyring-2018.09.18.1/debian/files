@@ -1,0 +1,6 @@
+ubuntu-cloud-keyring_2018.09.18.1_all.deb misc optional
+ubuntu-cloudimage-keyring_2018.09.18.1_all.deb misc optional
+ubuntu-dbgsym-keyring_2018.09.18.1_all.deb misc optional
+ubuntu-keyring-udeb_2018.09.18.1_all.udeb debian-installer standard
+ubuntu-keyring_2018.09.18.1_all.deb misc important
+ubuntu-keyring_2018.09.18.1_amd64.buildinfo misc optional

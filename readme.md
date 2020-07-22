@@ -1,2 +1,1 @@
-.idea
-apikey.txt
+# Custom Ubuntu image

@@ -253,7 +253,7 @@ async function sendCode(stationNo)
 
     const res = await axios({
       method: 'GET',
-      url: `https://${config.domain}/ct/todos/${config.line}/${config.station}`
+      url: `https://${config.domain}/ct/todos/${config.line}/${stationNo}`
         + `?id=${readResult.id}&time=${readResult.time}`,
       headers: {
         'X-API-KEY': process.env.WMES_API_KEY || '?'

@@ -4,7 +4,8 @@ const logger = require('h5.logger');
 const {BufferQueueReader} = require('h5.buffers');
 const TcpConnection = require('./TcpConnection');
 
-const MIN_ID_OCCURENCES = 3;
+const MIN_ID_OCCURRENCES = 3;
+const DEFAULT_BEAM_POWER = 22;
 
 const STX = 0x02;
 const EOT = 0x04;
@@ -166,7 +167,7 @@ class BalluffProcessorController
       {
         this.logger.debug('Keep-alive already enabled.');
 
-        this.readNext();
+        this.readBeamPower(0);
       }
       else
       {
@@ -221,9 +222,140 @@ class BalluffProcessorController
     }
   }
 
+  readBeamPower(stationI)
+  {
+    const station = this.options.stations[stationI];
+
+    if (!station)
+    {
+      this.timers.readNext = setTimeout(this.readNext.bind(this), 250);
+
+      return;
+    }
+
+    this.logger.debug('Reading beam power...', {
+      stationNo: station.stationNo,
+      headNo: station.headNo
+    });
+
+    this.request(`o${station.headNo}`, this.handleReadBeamPower1.bind(this, stationI));
+  }
+
+  handleReadBeamPower1(stationI)
+  {
+    if (this.reader.length === 2 && this.reader.readByte(0) === ACK && this.reader.readByte(1) === 0x30)
+    {
+      this.request(Buffer.from([STX]), this.handleReadBeamPower2.bind(this, stationI));
+    }
+    else
+    {
+      const {stationNo, headNo} = this.options.stations[stationI];
+
+      this.logger.warn('Unexpected read beam power ACK response.', {
+        stationNo,
+        headNo,
+        response: this.reader.readBuffer(this.reader.length)
+      });
+    }
+  }
+
+  handleReadBeamPower2(stationI)
+  {
+    const station = this.options.stations[stationI];
+
+    if (this.reader.length === 4 && this.reader.shiftByte() === ACK)
+    {
+      const actualPower = Math.round(parseInt(`0x${this.reader.shiftString(2, 'ascii')}`, 16) / 4);
+      const requiredPower = station.beamPower || DEFAULT_BEAM_POWER;
+
+      this.logger.debug('Beam power read.', {
+        stationNo: station.stationNo,
+        headNo: station.headNo,
+        actualPower,
+        requiredPower
+      });
+
+      if (actualPower === requiredPower)
+      {
+        this.readBeamPower(stationI + 1);
+      }
+      else
+      {
+        this.setBeamPower(stationI, requiredPower);
+      }
+    }
+    else
+    {
+      this.logger.warn('Unexpected read beam power STX response.', {
+        stationNo: station.stationNo,
+        headNo: station.headNo,
+        response: this.reader.readBuffer(this.reader.length)
+      });
+    }
+  }
+
+  setBeamPower(stationI, requiredPower)
+  {
+    const station = this.options.stations[stationI];
+    const power = (requiredPower * 4).toString(16).padStart(2, '0').toUpperCase();
+
+    this.logger.debug('Setting beam power.', {
+      stationNo: station.stationNo,
+      headNo: station.headNo,
+      requiredPower,
+      sentPower: power
+    });
+
+    this.request(`p${station.headNo}${power}`, this.handleSetBeamPower1.bind(this, stationI));
+  }
+
+  handleSetBeamPower1(stationI)
+  {
+    if (this.reader.length === 2 && this.reader.readByte(0) === ACK && this.reader.readByte(1) === 0x30)
+    {
+      this.request(Buffer.from([STX]), this.handleSetBeamPower2.bind(this, stationI));
+    }
+    else
+    {
+      const {stationNo, headNo} = this.options.stations[stationI];
+
+      this.logger.warn('Unexpected set beam power ACK response.', {
+        stationNo,
+        headNo,
+        response: this.reader.readBuffer(this.reader.length)
+      });
+    }
+  }
+
+  handleSetBeamPower2(stationI)
+  {
+    const station = this.options.stations[stationI];
+
+    if (this.reader.length === 2 && this.reader.readByte(0) === ACK && this.reader.readByte(1) === 0x30)
+    {
+      this.logger.debug('Beam power set.', {
+        stationNo: station.stationNo,
+        headNo: station.headNo
+      });
+
+      this.readBeamPower(stationI + 1);
+    }
+    else
+    {
+      const {stationNo, headNo} = this.options.stations[stationI];
+
+      this.logger.warn('Unexpected set beam power STX response.', {
+        stationNo,
+        headNo,
+        response: this.reader.readBuffer(this.reader.length)
+      });
+    }
+  }
+
   readNext()
   {
     clearTimeout(this.timers.readNext);
+    this.timers.readNext = null;
 
     const {stations} = this.options;
 
@@ -434,7 +566,7 @@ class BalluffProcessorController
     {
       station.candidate.count += 1;
 
-      if (station.candidate.count === MIN_ID_OCCURENCES)
+      if (station.candidate.count === MIN_ID_OCCURRENCES)
       {
         station.current = {...station.candidate};
 

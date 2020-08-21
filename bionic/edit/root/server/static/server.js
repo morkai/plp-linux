@@ -373,15 +373,20 @@ function syncClock()
       return setTimeout(start, 10000);
     }
 
-    waitForClockSync();
+    waitForClockSync(Date.now());
   };
 
   xhr.open('POST', `${window.location.origin}/syncClock`, true);
   xhr.send();
 }
 
-function waitForClockSync()
+function waitForClockSync(waitSince)
 {
+  if (Date.now() - waitSince > 60000)
+  {
+    return syncClock();
+  }
+
   getRemoteTime(remoteTime =>
   {
     if (remoteTime <= 0)
@@ -400,7 +405,7 @@ function waitForClockSync()
 
     console.log(`Clock not synced yet: ${diff}`);
 
-    setTimeout(waitForClockSync, 10000);
+    setTimeout(waitForClockSync, 10000, waitSince);
   });
 }
 

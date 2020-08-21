@@ -30,12 +30,12 @@ apt-get update
 echo APT upgrade...
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
 
+echo update-do-1.js...
+node /root/update-do-1.js
+rm /root/update-do-1.js
+
 echo APT cleanup...
 apt-get autoremove -y
-
-echo update-do.js...
-node /root/update-do.js
-rm /root/update-do.js
 
 if [ -d "/root/node_modules_new" ]; then
   echo Updating node_modules...
@@ -48,6 +48,10 @@ if [ -d "/root/update" ]; then
   cp -rf /root/update/* /
   rm -rf /root/update
 fi
+
+echo update-do-2.js...
+node /root/update-do-2.js
+rm /root/update-do-2.js
 
 chmod +x /root/set-permissions.sh
 /root/set-permissions.sh

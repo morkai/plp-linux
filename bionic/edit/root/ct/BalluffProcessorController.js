@@ -2,10 +2,13 @@
 
 const logger = require('h5.logger');
 const {BufferQueueReader} = require('h5.buffers');
+const axios = require('axios');
 const TcpConnection = require('./TcpConnection');
 
 const MIN_ID_OCCURRENCES = 3;
 const DEFAULT_BEAM_POWER = 22;
+const NO_CODES_DELAY = 10;
+const NEXT_READ_DELAY = 10;
 
 const STX = 0x02;
 const EOT = 0x04;
@@ -16,6 +19,8 @@ class BalluffProcessorController
 {
   constructor(options)
   {
+    this.readNext = this.readNext.bind(this);
+
     this.options = options;
 
     this.callback = null;
@@ -40,6 +45,8 @@ class BalluffProcessorController
       };
     });
     this.lastRead = [];
+    this.wasConnected = true;
+    this.connRefusedCount = 0;
 
     this.logger = logger.create({
       module: 'ct-balluff',
@@ -94,13 +101,30 @@ class BalluffProcessorController
 
   onError(err)
   {
-    this.logger.error(err, 'Connection error.');
+    if (this.wasConnected || err.code !== 'ECONNREFUSED')
+    {
+      this.logger.error(err, 'Connection error.');
+    }
+
+    if (err.code === 'ECONNREFUSED')
+    {
+      this.connRefusedCount += 1;
+
+      if (this.connRefusedCount === 5)
+      {
+        this.restartProcessor();
+      }
+    }
   }
 
   onClose()
   {
-    this.logger.warn('Disconnected.');
+    if (this.wasConnected)
+    {
+      this.logger.warn('Disconnected.');
+    }
 
+    this.wasConnected = false;
     this.stationI = -1;
     this.responseHandler = null;
   }
@@ -109,8 +133,10 @@ class BalluffProcessorController
   {
     this.logger.warn('Connected.');
 
+    this.connRefusedCount = 0;
     this.stationI = -1;
     this.responseHandler = null;
+    this.wasConnected = true;
 
     this.readKeepAlive();
   }
@@ -228,7 +254,7 @@ class BalluffProcessorController
 
     if (!station)
     {
-      this.timers.readNext = setTimeout(this.readNext.bind(this), 250);
+      this.timers.readNext = setTimeout(this.readNext, 250);
 
       return;
     }
@@ -266,7 +292,7 @@ class BalluffProcessorController
     if (this.reader.length === 4 && this.reader.shiftByte() === ACK)
     {
       const actualPower = Math.round(parseInt(`0x${this.reader.shiftString(2, 'ascii')}`, 16) / 4);
-      const requiredPower = station.beamPower || DEFAULT_BEAM_POWER;
+      const requiredPower = parseInt(station.beamPower, 10) || DEFAULT_BEAM_POWER;
 
       this.logger.debug('Beam power read.', {
         stationNo: station.stationNo,
@@ -445,7 +471,7 @@ class BalluffProcessorController
         })
       }
 
-      this.timers.readNext = setTimeout(this.readNext.bind(this), 100);
+      this.timers.readNext = setTimeout(this.readNext, NO_CODES_DELAY);
 
       return;
     }
@@ -477,7 +503,7 @@ class BalluffProcessorController
           });
         }
 
-        this.timers.readNext = setTimeout(this.readNext.bind(this), 100);
+        this.timers.readNext = setTimeout(this.readNext, NO_CODES_DELAY);
 
         return;
       }
@@ -493,14 +519,22 @@ class BalluffProcessorController
         this.reader.skip(1);
 
         const data = this.reader.shiftBuffer(62);
-        const id = [];
+        let id = '';
 
         for (let i = 1; i <= dataLength; ++i)
         {
-          id.push(data[62 - i].toString(16).toUpperCase().padStart(2, '0'));
+          id += data[62 - i].toString(16).toUpperCase().padStart(2, '0');
         }
 
-        this.lastRead.push(id.join(''));
+        if (this.options.carts.has(id))
+        {
+          id = this.options.carts.get(id);
+        }
+
+        if (!this.lastRead.includes(id))
+        {
+          this.lastRead.push(id);
+        }
       }
     }
 
@@ -513,7 +547,7 @@ class BalluffProcessorController
 
     this.handleData();
 
-    this.timers.readNext = setTimeout(this.readNext.bind(this), 100);
+    this.timers.readNext = setTimeout(this.readNext, NEXT_READ_DELAY);
   }
 
   handleData()
@@ -611,6 +645,47 @@ class BalluffProcessorController
         stationNo: station.no,
         lastRead: this.lastRead
       });
+    }
+  }
+
+  async restartProcessor()
+  {
+    this.logger.debug('Restarting the processor controller...');
+
+    try
+    {
+      const res = await axios({
+        method: 'POST',
+        url: `http://${this.options.processorIp}/reset`,
+        headers: {
+          'User-Agent': process.env.WMES_USER_AGENT || 'wmes-client',
+          'Authorization': 'Basic YWRtaW46cmU=',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': '8'
+        },
+        timeout: 10000,
+        maxRedirects: 0,
+        validateStatus: null,
+        data: 'cnf=true'
+      });
+
+      if (res.status !== 200)
+      {
+        throw Object.assign(new Error('Invalid response status.'), {
+          expectedStatus: 200,
+          actualStatus: res.status
+        });
+      }
+
+      this.logger.info('Restarted the processor controller.');
+    }
+    catch (err)
+    {
+      this.logger.error(err, 'Failed to restart the processor controller.');
+    }
+    finally
+    {
+      this.connRefusedCount = 0;
     }
   }
 

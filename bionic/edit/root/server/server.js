@@ -714,7 +714,7 @@ function startSubProcess(appId, subAppId)
     return;
   }
 
-  logger.info(`Starting process ${appId}:${subAppId}...`);
+  logger.info(`Starting process...`, {appId, subAppId});
 
   if (!appProcess.log)
   {

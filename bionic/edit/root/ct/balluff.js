@@ -14,7 +14,8 @@ const DEBUG_FILE = `${__dirname}/../debug.txt`;
 const config = {
   domain: '',
   line: '',
-  stations: []
+  stations: [],
+  carts: []
 };
 const timers = {};
 const requests = {};
@@ -102,6 +103,15 @@ function restartMonitor()
   processorControllers = [];
 
   const groupedProcessors = new Map();
+  const carts = new Map();
+
+  config.carts.forEach(cards =>
+  {
+    cards.forEach(card =>
+    {
+      carts.set(card, cards[0]);
+    });
+  });
 
   config.stations.forEach((station, i) =>
   {
@@ -115,7 +125,8 @@ function restartMonitor()
         debug,
         processorIp: station.processorIp,
         headPort: station.headPort,
-        stations: []
+        stations: [],
+        carts
       });
     }
 
@@ -173,7 +184,7 @@ async function readRemoteConfig(restart)
 
     const res = await axios({
       method: 'GET',
-      url: `https://${config.domain}/ct/lines/${config.line}`,
+      url: `https://${config.domain}/ct/lines/${config.line}?carts=balluff`,
       headers: {
         'User-Agent': process.env.WMES_USER_AGENT || 'wmes-client',
         'X-API-KEY': process.env.WMES_API_KEY || '?'
@@ -208,8 +219,12 @@ async function readRemoteConfig(restart)
       }
 
       config.stations = res.data.stations;
+      config.carts = res.data.carts || [];
 
-      writeFileSync(BALLUFF_CONFIG_FILE, JSON.stringify({stations: config.stations}, null, 2));
+      writeFileSync(BALLUFF_CONFIG_FILE, JSON.stringify({
+        stations: config.stations,
+        carts: config.carts
+      }, null, 2));
     }
   }
   catch (err)

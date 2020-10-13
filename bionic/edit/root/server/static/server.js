@@ -531,6 +531,13 @@ function updateConfig()
     hostEl.checked = true;
   }
 
+  const orientationEl = $('input[name="orientation"][value="' + CONFIG.orientation + '"]');
+
+  if (orientationEl)
+  {
+    orientationEl.checked = true;
+  }
+
   for (let el of $all('input[name="apps"]'))
   {
     el.checked = CONFIG.apps.includes(el.value);
@@ -575,7 +582,8 @@ async function saveConfig(e)
     remote: '',
     staticIp: '',
     line: '',
-    station: 0
+    station: 0,
+    orientation: $(`input[name="orientation"]:checked`).value
   };
 
   for (let el of $all('.config-value'))

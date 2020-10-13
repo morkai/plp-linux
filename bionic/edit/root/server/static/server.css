@@ -225,6 +225,12 @@ iframe {
 #apps label {
   width: 450px;
 }
+#orientation {
+  display: flex;
+}
+#orientation label + label {
+  margin-left: 30px;
+}
 #powerOptions {
   position: fixed;
   bottom: 100px;

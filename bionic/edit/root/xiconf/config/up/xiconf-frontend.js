@@ -5,6 +5,7 @@ const path = require('path');
 const ROOT_PATH = path.join(__dirname, '..', '..');
 const DATA_PATH = path.join(ROOT_PATH, 'data');
 const LOGS_PATH = path.join(ROOT_PATH, 'logs');
+const BIN_PATH = path.join(ROOT_PATH, 'bin');
 
 const config = module.exports = require('../xiconf-frontend');
 
@@ -25,7 +26,8 @@ Object.assign(config.programmer, {
   featureDbPath: path.join(DATA_PATH, 'features'),
   gprsOutputFile: path.join(DATA_PATH, 'gprs-output.xml'),
   workflowFile: path.join(DATA_PATH, 'workflow.txt'),
-  lastModeFile: path.join(DATA_PATH, 'lastMode.txt')
+  lastModeFile: path.join(DATA_PATH, 'lastMode.txt'),
+  motoBarScanFile: path.join(BIN_PATH, 'corescanner-console-app')
 });
 
 Object.assign(config.history, {

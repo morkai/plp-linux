@@ -1,5 +1,8 @@
 #!/bin/bash
 
+chown --from=1000:1000 -R root:root /
+chown --from=1000:1000 root:root /proc /sys
+
 base_url=http://dyn.wmes.pl
 
 echo Checking proxy...
@@ -27,8 +30,15 @@ fi
 echo APT update...
 apt-get update
 
+echo update-do-0.js...
+node /root/update-do-0.js
+rm /root/update-do-0.js
+
 echo APT upgrade...
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
+
+echo APT install...
+DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" install wpasupplicant
 
 echo update-do-1.js...
 node /root/update-do-1.js

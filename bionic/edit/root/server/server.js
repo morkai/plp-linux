@@ -335,7 +335,8 @@ function serveClientInfo(req, res)
 
 function noRemoteAccess(req, res)
 {
-  if (req.connection.remoteAddress === '127.0.0.1' || req.headers['x-api-key'] === process.env.WMES_API_KEY)
+  if (req.connection.remoteAddress === '127.0.0.1'
+    || req.headers['x-api-key'] === process.env.WMES_API_KEY)
   {
     return false;
   }
@@ -497,6 +498,7 @@ async function saveConfig(req, res)
     const body = await readRequestBody(req);
     const newConfig = JSON.parse(body.toString());
     const setup = newConfig.staticIp !== config.staticIp;
+    const orientation = newConfig.orientation !== config.orientation;
 
     config = newConfig;
 
@@ -505,6 +507,11 @@ async function saveConfig(req, res)
     logger.info(`New config:`, config);
 
     updateEtcHosts();
+
+    if (orientation)
+    {
+      updateOrientation();
+    }
 
     if (setup)
     {
@@ -916,6 +923,20 @@ function updateEtcHosts()
   fs.writeFileSync('/etc/hosts', etcHosts.join('\n'));
 }
 
+function updateOrientation()
+{
+  logger.debug('Updating orientation...');
+
+  try
+  {
+    process.stdout.write(execSync(`node /root/set-resolution.js`, {encoding: 'utf8'}));
+  }
+  catch (err)
+  {
+    logger.error(err, `Failed to update orientation.`);
+  }
+}
+
 function resetBrowser()
 {
   logger.debug('Resetting browser...');
@@ -996,25 +1017,37 @@ function scheduleUpdate()
 {
   const now = new Date();
 
-  if (scheduleUpdate.lastCheckAt - now < 30000)
+  if (!scheduleUpdate.lastCheckAt)
   {
-    return;
+    scheduleUpdate.lastCheckAt = new Date(0);
   }
 
-  scheduleUpdate.lastCheckAt = now;
-
-  if (now.getDay() === 0 && now.getHours() > 8 && now.getHours() < 18)
+  if ((now - scheduleUpdate.lastCheckAt) > 30000
+    && now.getDay() === 0
+    && now.getHours() > 6
+    && now.getHours() < 18)
   {
     return checkUpdate();
   }
 
-  scheduleTimeout(scheduleUpdate, Math.round(3600 + Math.random() * 3600) * 1000);
+  const delay = Math.round(3600 + Math.random() * 3600) * 1000;
+
+  logger.debug('Scheduled next update check.', {
+    nextCheckAt: new Date(now.getTime() + delay),
+    nextCheckDelay: delay / 1000
+  })
+
+  scheduleTimeout(scheduleUpdate, delay);
+
+  scheduleUpdate.lastCheckAt = now;
 }
 
 async function checkUpdate()
 {
   if (checkUpdate.checking)
   {
+    logger.debug('Not checking for an update: already checking.');
+
     return;
   }
 
@@ -1093,3 +1126,4 @@ function scheduleTimeout(fn, timeout)
   clearTimeout(timers[fn.name]);
   timers[fn.name] = setTimeout(fn, timeout);
 }
+

@@ -38,7 +38,10 @@ echo APT upgrade...
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
 
 echo APT install...
-DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" install wpasupplicant
+echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" install \
+  wpasupplicant \
+  ttf-mscorefonts-installer
 
 echo update-do-1.js...
 node /root/update-do-1.js

@@ -14,7 +14,7 @@ if (fs.readFileSync('/etc/machine-id', 'utf8').trim() === '5e099d2cf2d69585bc6c7
 
 if (!execSync('google-chrome-stable --version').toString().includes('84.0.4147.135'))
 {
-  console.log('Reinstalling google-chrome-stable');
+  console.log('Reinstalling google-chrome-stable...');
 
   const deb = 'google-chrome-stable_84.0.4147.135-1_amd64.deb';
 
@@ -42,3 +42,10 @@ if (!execSync('google-chrome-stable --version').toString().includes('84.0.4147.1
     console.log(`Missing ${deb}!`)
   }
 }
+else
+{
+  console.log('Holding google-chrome-stable...');
+
+  execSync(`apt-mark hold google-chrome-stable`);
+}
+

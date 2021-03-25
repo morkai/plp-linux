@@ -927,6 +927,11 @@ function updateOrientation()
 {
   logger.debug('Updating orientation...');
 
+  if (DEV)
+  {
+    return;
+  }
+
   try
   {
     process.stdout.write(execSync(`node /root/set-resolution.js`, {encoding: 'utf8'}));

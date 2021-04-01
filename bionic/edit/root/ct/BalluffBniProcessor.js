@@ -177,8 +177,6 @@ class BalluffBniProcessor
             actualStatus: res.status
           });
         }
-
-        console.log(res.data);
       }
     }
     catch (err)

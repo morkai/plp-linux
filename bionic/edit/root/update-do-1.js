@@ -3,7 +3,7 @@
 const fs = require('fs');
 const {execSync} = require('child_process');
 
-if (fs.existsSync('/root/zebra-scanner-corescanner_4.4.1-11_amd64.deb'))
+if (fs.existsSync('/root/zebra-scanner-corescanner_4.4.1-11_amd64.deb') && !fs.existsSync('/usr/bin/cscore'))
 {
   console.log('Installing zebra-scanner-corescanner_4.4.1-11_amd64.deb...');
 

@@ -19,12 +19,12 @@ if (!execSync('google-chrome-stable --version').toString().includes('84.0.4147.1
   const deb = 'google-chrome-stable_84.0.4147.135-1_amd64.deb';
 
   console.log('Trying dyn.wmes.pl...');
-  execSync(`wget --no-check-certificate https://dyn.wmes.pl/files/clients/${deb}`);
+  tryExecSync(`wget --no-check-certificate https://dyn.wmes.pl/files/clients/${deb}`);
 
   if (!fs.existsSync(`/root/${deb}`))
   {
     console.log('Trying dl.google.com...');
-    execSync(`wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/${deb}`);
+    tryExecSync(`wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/${deb}`);
   }
 
   if (fs.existsSync(`/root/${deb}`))
@@ -49,3 +49,14 @@ else
   execSync(`apt-mark hold google-chrome-stable`);
 }
 
+function tryExecSync(cmd)
+{
+  try
+  {
+    execSync(cmd);
+  }
+  catch (err)
+  {
+    console.error(err.stack);
+  }
+}

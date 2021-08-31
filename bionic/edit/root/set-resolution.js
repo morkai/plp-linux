@@ -3,6 +3,7 @@
 const {execSync} = require('child_process');
 const logger = require('h5.logger').create({module: 'set-resolution'});
 const config = require('./server/config.json');
+const fs = require("fs");
 
 const ORIENTATIONS = {
   normal: '1 0 0 0 1 0 0 0 1',
@@ -69,4 +70,33 @@ if (output && mode && rate)
       execSync(`xinput set-prop "${id}" "Coordinate Transformation Matrix" ${transform}`);
     }
   });
+
+  logger.debug('Fixing google-chrome preferences...');
+
+  try
+  {
+    const preferences = JSON.parse(fs.readFileSync('/root/google-chrome/Default/Preferences', 'utf8'));
+
+    if (!preferences.browser)
+    {
+      preferences.browser = {};
+    }
+
+    const [width, height] = mode.split('x');
+
+    preferences.browser.window_placement = {
+      bottom: +height,
+      left: 0,
+      maximized: true,
+      right: +width,
+      top: 0,
+      work_area_bottom: +height,
+      work_area_left: 0,
+      work_area_right: +width,
+      work_area_top: 0
+    };
+
+    fs.writeFileSync('/root/google-chrome/Default/Preferences', JSON.stringify(preferences));
+  }
+  catch (err) {}
 }

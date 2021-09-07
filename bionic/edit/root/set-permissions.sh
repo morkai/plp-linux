@@ -3,7 +3,6 @@
 chmod +x /root/*.sh \
          /root/xiconf/bin/*.sh \
          /root/xiconf/bin/corescanner-console-app \
-         /root/ps-load/node \
          /root/ct/*.sh
 
 chmod -R +w /root/server/config.json \

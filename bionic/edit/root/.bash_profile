@@ -15,6 +15,7 @@ then
   LOG_DATE=$(date +%F_%H-%M-%S)
   mkdir -p /root/log/$LOG_DATE
   mv /root/log/*.txt /root/log/$LOG_DATE
+  rm -rf /var/log/mongodb/mongodb.txt.*
 
   node /root/setup.js >>/root/log/setup.txt 2>&1
   ( sleep 20 ; node /root/setup.js >>/root/log/setup.txt 2>&1 ) &

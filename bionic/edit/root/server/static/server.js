@@ -884,6 +884,8 @@ async function setUpProdLines()
 
       selectEl.append(document.createElement('option'));
 
+      body.collection.sort((a, b) => a._id.localeCompare(b._id, undefined, {numeric: true, ignorePunctuation: true}));
+
       body.collection.forEach(prodLine =>
       {
         var optionEl = document.createElement('option');

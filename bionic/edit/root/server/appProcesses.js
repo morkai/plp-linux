@@ -19,6 +19,7 @@ module.exports = {
     }
   },
   xiconf: {
+    $services: ['cscored'],
     frontend: {
       spawn: () => spawn(process.execPath, [
         `${ROOT}/xiconf/backend/main.js`,

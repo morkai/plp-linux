@@ -294,7 +294,7 @@ function tryExec(cmd)
 {
   try
   {
-    return execSync(cmd).toString().trim();
+    return execSync(cmd, {stdio: ['ignore', 'pipe', 'ignore']}).toString().trim();
   }
   catch (err)
   {
@@ -335,7 +335,7 @@ function serveClientInfo(req, res)
 
 function noRemoteAccess(req, res)
 {
-  if (req.connection.remoteAddress === '127.0.0.1'
+  if (req.connection.remoteAddress.includes('127.0.0.1')
     || req.headers['x-api-key'] === process.env.WMES_API_KEY)
   {
     return false;
@@ -384,7 +384,7 @@ function getVersions()
   let java = '';
 
   try { java = fs.readFileSync('/usr/lib/jvm/java-11-amazon-corretto/version.txt', 'utf8').trim(); } catch (err) {}
-  try { mongodb = tryExec('mongod --version').match('db version v(.*?)\n')[1] } catch (err) {}
+  try { mongodb = tryExec('mongod --version').match('db version v(.*?)\n')[1]; } catch (err) {}
 
   return {
     client: fs.readFileSync(`${ROOT}/version.txt`, 'utf8').trim(),

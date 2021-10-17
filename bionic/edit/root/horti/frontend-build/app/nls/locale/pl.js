@@ -1,0 +1,1 @@
+define(function(){return{}.pl=function(n){return 1==n?"one":n%10>=2&&n%10<=4&&(n%100<12||n%100>14)&&n==Math.floor(n)?"few":n%10==0||1!=n&&n%10==1||(n%10>=5&&n%10<=9||n%100>=12&&n%100<=14)&&n==Math.floor(n)?"many":"other"}});

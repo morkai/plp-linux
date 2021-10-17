@@ -1,0 +1,1 @@
+define(["app/core/pages/DetailsPage","app/horti-tests/templates/details"],function(e,t){"use strict";return e.extend({detailsTemplate:t,actions:[]})});

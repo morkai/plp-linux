@@ -439,6 +439,10 @@ function loadApps()
     {
       frame.src = `http://local.wmes.pl:1338/`;
     }
+    else if (app === 'horti')
+    {
+      frame.src = `http://local.wmes.pl:1339/`;
+    }
     else if (app === 'remote'
       && typeof CONFIG.remote === 'string'
       && CONFIG.remote.startsWith('http'))

@@ -1,0 +1,1 @@
+define(function(){return{}.en=function(n){return 1===n?"one":"other"}});

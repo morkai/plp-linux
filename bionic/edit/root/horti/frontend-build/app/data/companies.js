@@ -1,0 +1,1 @@
+define(["app/core/Collection"],function(e){"use strict";return new e});

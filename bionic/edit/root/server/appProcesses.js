@@ -56,6 +56,31 @@ module.exports = {
       })
     }
   },
+  horti: {
+    $services: ['mongod'],
+    frontend: {
+      spawn: () => spawn(process.execPath, [
+        `${ROOT}/horti/backend/main.js`,
+        `${ROOT}/horti/config/up/horti-frontend.js`,
+        '--require-cache',
+        `${ROOT}/horti/backend-build/horti-frontend.json`
+      ], {
+        cwd: `${ROOT}/horti`,
+        env: {...ENV}
+      })
+    },
+    controller: {
+      spawn: () => spawn(process.execPath, [
+        `${ROOT}/horti/backend/main.js`,
+        `${ROOT}/horti/config/up/horti-controller.js`,
+        '--require-cache',
+        `${ROOT}/horti/backend-build/horti-controller.json`
+      ], {
+        cwd: `${ROOT}/horti`,
+        env: {...ENV}
+      })
+    }
+  },
   'ct-camera': {
     main: {
       spawn: () => spawn(process.execPath, [`${ROOT}/ct/camera.js`], {

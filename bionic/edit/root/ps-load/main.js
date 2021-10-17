@@ -1,8 +1,8 @@
 'use strict';
 
-const {execSync, readFileSync} = require('child_process');
+const {execSync, readFileSync, spawn} = require('child_process');
 const {writeFile} = require('fs');
-const {fetchUrl} = require('fetch');
+const axios = require('axios');
 
 const config = {
   secretKey: '?',
@@ -35,31 +35,57 @@ function idle()
 
 function start()
 {
-  const mraa = require('mraa');
-
   Object.assign(
     config,
     require(`${__dirname}/../server/config.json`),
     require(`${__dirname}/config.json`)
   );
 
-  pin = new mraa.Gpio(config.pinNumber);
+  console.log('mraa-gpio starting...', {config});
 
-  pin.dir(mraa.DIR_IN);
-  pin.isr(mraa[`EDGE_${config.edge}`], monitor);
+  const mraa = spawn('unbuffer', ['mraa-gpio', 'monitor', config.pinNumber.toString()]);
+
+  mraa.stderr.setEncoding('utf8');
+  mraa.stderr.on('data', data =>
+  {
+    process.stdout.write(data);
+  });
+
+  mraa.stdout.setEncoding('utf8');
+  mraa.stdout.on('data', data =>
+  {
+    const matches = data.match(/Pin [0-9]+ = ([01])/);
+
+    if (matches)
+    {
+      handleState(+matches[1]);
+    }
+  });
+
+  mraa.on('error', err =>
+  {
+    console.error(`mraa-gpio error: ${err.message}`);
+
+    setTimeout(start, 5000);
+  });
+
+  mraa.on('close', () =>
+  {
+    console.log('mraa-gpio closed.');
+
+    setTimeout(start, 5000);
+  });
+
+  mraa.stdin.write('\n');
 
   if (buffer.length)
   {
     publish();
   }
-
-  idle();
 }
 
-function monitor()
+function handleState(state)
 {
-  const state = pin.read();
-
   if ((config.edge === 'RISING' && state === 0) || (config.edge === 'FALLING' && state === 1))
   {
     return;
@@ -83,7 +109,7 @@ function monitor()
   publish();
 }
 
-function publish()
+async function publish()
 {
   if (publishing)
   {
@@ -93,45 +119,36 @@ function publish()
   const items = buffer;
 
   buffer = [];
+
   publishing = true;
 
-  fetchUrl(`https://${config.domain}/paintShop/load/update`, {
-    method: 'POST',
-    timeout: 10000,
-    maxRedirects: 3,
-    disableGzip: true,
-    headers: {'Content-Type': 'application/json'},
-    payload: JSON.stringify({
+  try
+  {
+    await axios.post(`https://${config.domain}/paintShop/load/update`, {
       secretKey: config.secretKey,
       items
-    })
-  }, (err, meta) =>
-  {
-    const status = meta ? meta.status : 0;
+    });
 
-    if (status !== 204)
+    writeFile(`${__dirname}/buffer.json`, '[]', () => {});
+
+    publishing = false;
+
+    if (buffer.length)
     {
-      console.error(`Failed to publish: ${err ? err.message : `invalid status: ${status}`}`);
-
-      buffer = items.concat(buffer);
-
-      writeFile(`${__dirname}/buffer.json`, JSON.stringify(buffer), () =>
-      {
-        publishing = false;
-
-        setTimeout(publish, 5000);
-      });
+      setImmediate(publish);
     }
-    else
-    {
-      writeFile(`${__dirname}/buffer.json`, '[]', () => {});
+  }
+  catch (err)
+  {
+    console.log(`Failed to publish: ${err.message}`);
 
+    buffer = items.concat(buffer);
+
+    writeFile(`${__dirname}/buffer.json`, JSON.stringify(buffer), () =>
+    {
       publishing = false;
 
-      if (buffer.length)
-      {
-        setImmediate(publish);
-      }
-    }
-  });
+      setTimeout(publish, 5000);
+    });
+  }
 }

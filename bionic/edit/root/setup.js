@@ -46,6 +46,30 @@ if (fs.existsSync(`/root/setup`))
   reboot = true;
 }
 
+try
+{
+  let blacklist = fs.readFileSync('/etc/modprobe.d/blacklist.conf', 'utf8');
+
+  if (!blacklist.includes('blacklist dw_dmac'))
+  {
+    console.log('Updating modprobe blacklist...');
+
+    blacklist += `
+blacklist dw_dmac
+blacklist dw_dmac_core
+install dw_dmac /bin/true
+install dw_dmac_core /bin/true`;
+
+    fs.writeFileSync('/etc/modprobe.d/blacklist.conf', blacklist);
+
+    tryExec('update-initramfs -u');
+  }
+}
+catch (err)
+{
+  console.log(`modprobe blacklist failure: ${err.message}`);
+}
+
 console.log('Setting up the network...');
 
 const networkInterfaces = {};

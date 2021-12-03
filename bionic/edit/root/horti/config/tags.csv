@@ -6,69 +6,75 @@ zones.1.program,Aktualny program strefy 1,-,setting,-,-,0,1,object,-,-,-,-,-,-,-
 zones.1.serialNumbers,Numery seryjne strefy 1,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.1.startTime,Czas rozpoczęcia strefy 1,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.1.finishTime,Czas zakończenia strefy 1,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
+zones.1.metric,Pomiar 1,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.1.greenLed,Sygnalizator zielony 1,moxa,register,1,1,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.1.orangeLed,Sygnalizator pomarańczowy 1,moxa,register,1,2,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.1.redLed,Sygnalizator czerwony 1,moxa,register,1,3,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.1.buzzer,Buzer 1,moxa,register,1,4,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.1.on,Stan strefy 1,moxa,register,1,9,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.1.on,Stan strefy 1,moxa,register,1,16,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.2.status,Status strefy 2,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.2.testId,ID ostatniego testu na strefie 2,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.2.program,Aktualny program strefy 2,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.2.serialNumbers,Numery seryjne strefy 2,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.2.startTime,Czas rozpoczęcia strefy 2,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.2.finishTime,Czas zakończenia strefy 2,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
+zones.2.metric,Pomiar 2,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.2.greenLed,Sygnalizator zielony 2,moxa,register,1,5,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.2.orangeLed,Sygnalizator pomarańczowy 2,moxa,register,1,6,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.2.redLed,Sygnalizator czerwony 2,moxa,register,1,7,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.2.buzzer,Buzer 2,moxa,register,1,8,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.2.on,Stan strefy 2,moxa,register,1,13,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.2.on,Stan strefy 2,moxa,register,1,12,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.3.status,Status strefy 3,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.3.testId,ID ostatniego testu na strefie 3,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.3.program,Aktualny program strefy 3,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.3.serialNumbers,Numery seryjne strefy 3,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.3.startTime,Czas rozpoczęcia strefy 3,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.3.finishTime,Czas zakończenia strefy 3,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
+zones.3.metric,Pomiar 3,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.3.greenLed,Sygnalizator zielony 3,moxa,register,2,1,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.3.orangeLed,Sygnalizator pomarańczowy 3,moxa,register,2,2,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.3.redLed,Sygnalizator czerwony 3,moxa,register,2,3,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.3.buzzer,Buzer 3,moxa,register,2,4,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.3.on,Stan strefy 3,moxa,register,2,9,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.3.on,Stan strefy 3,moxa,register,2,16,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.4.status,Status strefy 4,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.4.testId,ID ostatniego testu na strefie 4,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.4.program,Aktualny program strefy 4,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.4.serialNumbers,Numery seryjne strefy 4,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.4.startTime,Czas rozpoczęcia strefy 4,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.4.finishTime,Czas zakończenia strefy 4,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
-zones.4.greenLed,Sygnalizator zielony 4,moxa,register,2,1,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.4.orangeLed,Sygnalizator pomarańczowy 4,moxa,register,2,2,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.4.redLed,Sygnalizator czerwony 4,moxa,register,2,3,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.4.buzzer,Buzer 4,moxa,register,2,4,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.4.on,Stan strefy 4,moxa,register,2,13,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.4.metric,Pomiar 4,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
+zones.4.greenLed,Sygnalizator zielony 4,moxa,register,2,5,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.4.orangeLed,Sygnalizator pomarańczowy 4,moxa,register,2,6,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.4.redLed,Sygnalizator czerwony 4,moxa,register,2,7,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.4.buzzer,Buzer 4,moxa,register,2,8,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.4.on,Stan strefy 4,moxa,register,2,12,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.5.status,Status strefy 5,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.5.testId,ID ostatniego testu na strefie 5,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.5.program,Aktualny program strefy 5,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.5.serialNumbers,Numery seryjne strefy 5,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.5.startTime,Czas rozpoczęcia strefy 5,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.5.finishTime,Czas zakończenia strefy 5,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
+zones.5.metric,Pomiar 5,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.5.greenLed,Sygnalizator zielony 5,moxa,register,3,1,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.5.orangeLed,Sygnalizator pomarańczowy 5,moxa,register,3,2,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.5.redLed,Sygnalizator czerwony 5,moxa,register,3,3,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.5.buzzer,Buzer 5,moxa,register,3,4,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.5.on,Stan strefy 5,moxa,register,3,9,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.5.on,Stan strefy 5,moxa,register,3,16,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 zones.6.status,Status strefy 6,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.6.testId,ID ostatniego testu na strefie 6,-,setting,-,-,0,1,string,-,-,-,-,-,-,-,-,-
 zones.6.program,Aktualny program strefy 6,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.6.serialNumbers,Numery seryjne strefy 6,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 zones.6.startTime,Czas rozpoczęcia strefy 6,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
 zones.6.finishTime,Czas zakończenia strefy 6,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
-zones.6.greenLed,Sygnalizator zielony 6,moxa,register,3,1,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.6.orangeLed,Sygnalizator pomarańczowy 6,moxa,register,3,2,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.6.redLed,Sygnalizator czerwony 6,moxa,register,3,3,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.6.buzzer,Buzer 6,moxa,register,3,4,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
-zones.6.on,Stan strefy 6,moxa,register,3,13,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.6.metric,Pomiar 6,-,setting,-,-,0,1,double,-,-,-,-,-,-,-,-,-
+zones.6.greenLed,Sygnalizator zielony 6,moxa,register,3,5,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.6.orangeLed,Sygnalizator pomarańczowy 6,moxa,register,3,6,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.6.redLed,Sygnalizator czerwony 6,moxa,register,3,7,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.6.buzzer,Buzer 6,moxa,register,3,8,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
+zones.6.on,Stan strefy 6,moxa,register,3,12,1,1,uint16,-,-,-,"onOffWrite(256, 512)",-,-,-,-,-
 ,Inne,,,,,,,,,,,,,,,,
 zoneCount,Ilość stref,-,setting,-,-,0,1,uint16,-,-,-,-,-,-,-,-,-
-program,Aktualny program,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
+program,Aktualny domyślny program,-,setting,-,-,0,1,object,-,-,-,-,-,-,-,-,-
 ,Stany połączenia z urządzeniami,,,,,,,,,,,,,,,,
 masters.controlProcess,Stan połączenia z urządzeniami sterowania,-,virtual,-,-,0,0,bool,-,-,-,-,-,-,-,-,-
 masters.moxa,Stan połączenia ze sterownikiem MOXA,moxa,virtual,-,-,0,0,bool,-,-,-,-,-,-,-,-,-

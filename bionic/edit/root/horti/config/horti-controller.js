@@ -53,7 +53,7 @@ exports['messenger/server'] = {
   pubPort: 5050,
   repHost: '0.0.0.0',
   repPort: 5051,
-  broadcastTopics: ['events.saved', 'horti.tests.finished']
+  broadcastTopics: ['events.saved', 'horti.tests.added']
 };
 
 exports['messenger/client:frontend'] = {

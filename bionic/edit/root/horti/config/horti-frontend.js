@@ -18,7 +18,6 @@ exports.modules = [
   'users',
   'horti-tests',
   {id: 'messenger/client', name: 'messenger/client:controller'},
-  // {id: 'messenger/client', name: 'messenger/client:wmes'},
   'controller',
   'messenger/server',
   'httpServer',
@@ -160,17 +159,6 @@ exports['messenger/client:controller'] = {
   repHost: '127.0.0.1',
   repPort: 5051,
   responseTimeout: 15000
-};
-
-exports['messenger/client:wmes'] = {
-  pubHost: '127.0.0.1',
-  pubPort: 28010,
-  repHost: '127.0.0.1',
-  repPort: 28011,
-  responseTimeout: 15000,
-  subscribeTopics: [
-    'horti.tests.saved'
-  ]
 };
 
 exports['horti-tests'] = {

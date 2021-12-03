@@ -19,12 +19,6 @@ config.remoteApi = {
   apiKey: '431ce304f1e448c5a6240992eea7c4a09a7f1bffd2584236bb60eef7c7d16d25'
 };
 
-config['messenger/client:wmes'] = {
-  ...config['messenger/client:wmes'],
-  pubHost: domain,
-  repHost: domain
-};
-
 config['messenger/server'] = {
   ...config['messenger/server'],
   pubPort: 5062,

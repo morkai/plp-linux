@@ -34,14 +34,26 @@ echo update-do-0.js...
 node /root/update-do-0.js
 rm /root/update-do-0.js
 
+echo node.js update...
+if [[ `node -v` == v12* ]] ;
+then
+  curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+fi
+
 echo APT upgrade...
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
 
 echo APT install...
+
+add-apt-repository ppa:mraa/mraa -y
+add-apt-repository ppa:aaeon-cm/5.4-upboard -y
+
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" install \
+  software-properties-common \
   wpasupplicant \
-  ttf-mscorefonts-installer
+  ttf-mscorefonts-installer \
+  mraa-tools
 
 echo update-do-1.js...
 node /root/update-do-1.js

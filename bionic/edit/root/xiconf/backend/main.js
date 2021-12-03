@@ -18,7 +18,7 @@ else if (process.platform === 'linux' && fs.existsSync(`${__dirname}/../node_mod
 
 const startTime = Date.now();
 
-process.on('uncaughtException', function(err)
+process.on('uncaughtException', err =>
 {
   console.error(err.stack);
 

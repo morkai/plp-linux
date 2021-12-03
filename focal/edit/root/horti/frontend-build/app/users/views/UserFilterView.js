@@ -1,0 +1,1 @@
+define(["app/core/views/FilterView","app/users/templates/filter"],function(e,a){"use strict";return e.extend({template:a,defaultFormData:{lastName:""},termToForm:{lastName:function(e,a,t){"regex"===a.name&&(t[e]=a.args[1].replace("^",""))}},serializeFormToQuery:function(e){var a=this.$id("lastName").val().trim();a.length&&e.push({name:"regex",args:["lastName","^"+a,"i"]})}})});

@@ -1,0 +1,1 @@
+define(["./horti-dashboard/routes","./events/routes","./users/routes","./diagnostics/routes","./horti-tests/routes"],function(){"use strict"});

@@ -1,0 +1,3 @@
+// Part of <https://miracle.systems/p/walkner-snf> licensed under <CC BY-NC-SA 4.0>
+
+define(["app/core/pages/DetailsPage","../views/DetailsView","../views/GalleryView","app/snf-programs/templates/detailsPage"],function(e,i,s,t){"use strict";return e.extend({pageClassName:"page-max-flex",template:t,actions:[],defineViews:function(){this.detailsView=new i({model:this.model}),this.galleryView=new s({model:this.model}),this.setView("#-details",this.detailsView),this.setView("#-gallery",this.galleryView)}})});

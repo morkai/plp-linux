@@ -1,0 +1,1 @@
+define([],function(){"use strict";var e=window.PRIVILEGES||[];return delete window.PRIVILEGES,e});

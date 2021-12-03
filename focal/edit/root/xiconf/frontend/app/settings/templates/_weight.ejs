@@ -1,0 +1,96 @@
+<div id="<%- idPrefix %>-weight" class="panel-body">
+  <div class="form-group">
+    <label class="control-label"><%- t('settings', 'setting:weightEnabled') %></label>
+    <div>
+      <label class="radio-inline">
+        <input name="weightEnabled" type="radio" value="1" required> <%- t('settings', 'setting:weightEnabled:on') %>
+      </label>
+      <label class="radio-inline">
+        <input name="weightEnabled" type="radio" value="0" required> <%- t('settings', 'setting:weightEnabled:off') %>
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label"><%- t('settings', 'setting:weightRequireComponent') %></label>
+    <div>
+      <label class="radio-inline">
+        <input name="weightRequireComponent" type="radio" value="1" required> <%- t('settings', 'setting:weightRequireComponent:on') %>
+      </label>
+      <label class="radio-inline">
+        <input name="weightRequireComponent" type="radio" value="0" required> <%- t('settings', 'setting:weightRequireComponent:off') %>
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label"><%- t('settings', 'setting:weightCheckScope') %></label>
+    <div>
+      <% ['none', 'current', 'all'].forEach(function(scope) { %>
+      <label class="radio-inline">
+        <input name="weightCheckScope" type="radio" value="<%- scope %>" required> <%- t('settings', 'setting:weightCheckScope:' + scope) %>
+      </label>
+      <% }) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-3">
+      <label for="<%- idPrefix %>-weightHost" class="control-label"><%- t('settings', 'setting:weightHost') %></label>
+      <input id="<%- idPrefix %>-weightHost" class="form-control" name="weightHost" type="text" placeholder="0.0.0.0">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="<%- idPrefix %>-weightPort" class="control-label"><%- t('settings', 'setting:weightPort') %></label>
+      <input id="<%- idPrefix %>-weightPort" class="form-control" name="weightPort" type="number" required min="1" max="65535" step="1">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label"><%- t('settings', 'setting:weightStabilized') %></label>
+    <div>
+      <label class="radio-inline">
+        <input name="weightStabilized" type="radio" value="1" required> <%- t('settings', 'setting:weightStabilized:on') %>
+      </label>
+      <label class="radio-inline">
+        <input name="weightStabilized" type="radio" value="0" required> <%- t('settings', 'setting:weightStabilized:off') %>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-3">
+      <label for="<%- idPrefix %>-weightTolerance" class="control-label"><%- t('settings', 'setting:weightTolerance') %></label>
+      <input id="<%- idPrefix %>-weightTolerance" class="form-control" name="weightTolerance" type="number" required min="0" max="9999" step="1">
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-3">
+      <label for="<%- idPrefix %>-weightTimeout" class="control-label"><%- t('settings', 'setting:weightTimeout') %></label>
+      <input id="<%- idPrefix %>-weightTimeout" class="form-control" name="weightTimeout" type="number" required min="0" max="600" step="1">
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-3">
+      <label for="<%- idPrefix %>-weightRefUnit" class="control-label"><%- t('settings', 'setting:weightRefUnit') %></label>
+      <input id="<%- idPrefix %>-weightRefUnit" class="form-control" name="weightRefUnit" type="number" required min="1" step="0.001">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="<%- idPrefix %>-weightCurrentValue" class="control-label"><%- t('settings', 'setting:weightCurrentValue') %></label>
+      <input id="<%- idPrefix %>-weightCurrentValue" class="form-control" readonly>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="<%- idPrefix %>-weightWeighedValue" class="control-label"><%- t('settings', 'setting:weightWeighedValue') %></label>
+      <div class="input-group">
+        <input id="<%- idPrefix %>-weightWeighedValue" class="form-control" type="number" min="1">
+        <span class="input-group-btn">
+          <button id="<%- idPrefix %>-weightRefUnitCalc" class="btn btn-default" type="button"><%- t('settings', 'setting:weightRefUnitCalc') %></button>
+          <button id="<%- idPrefix %>-weightTare" class="btn btn-default" type="button"><%- t('settings', 'setting:weightTare') %></button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <% if (t.has('settings', 'weight:help')) { %>
+  <ol>
+    <li>Upewnij się, że waga jest pusta.</li>
+    <li>Wpisz <em>Hasło</em> i wciśnij przycisk <em>Taruj.</em></li>
+    <li>Włóż do wagi przedmiot o znanej wadze (np. 1 kg).</li>
+    <li>Wpisz wagę włożonego przedmiotu do pola <em>Referencyjna waga</em> (np. <code>1000</code>).</li>
+    <li>Kliknij przycisk <em>Oblicz</em> i <em>Zapisz ustawienia</em>.</li>
+  </ol>
+  <% } %>
+</div>

@@ -1,0 +1,13 @@
+{
+  "name": "custom-img",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "morkai",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^8.1.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8"
+  }
+}

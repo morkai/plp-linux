@@ -1,0 +1,49 @@
+<div>
+  <p class="dashboard-orderFinishedDialog-label is-first"><%- t('dashboard', 'orderFinishedDialog:orderNo') %></p>
+  <p class="dashboard-orderFinishedDialog-value"><%- order.no %></p>
+  <div class="row">
+    <div class="col-md-4">
+      <p class="dashboard-orderFinishedDialog-label"><%- t('dashboard', 'orderFinishedDialog:quantity') %></p>
+      <p class="dashboard-orderFinishedDialog-value"><%- order.quantity %></p>
+    </div>
+    <div class="col-md-4">
+      <p class="dashboard-orderFinishedDialog-label"><%- t('dashboard', 'orderFinishedDialog:successCounter') %></p>
+      <p class="dashboard-orderFinishedDialog-value"><%- order.successCounter %></p>
+    </div>
+    <div class="col-md-4">
+      <p class="dashboard-orderFinishedDialog-label"><%- t('dashboard', 'orderFinishedDialog:failureCounter') %></p>
+      <p class="dashboard-orderFinishedDialog-value"><%- order.failureCounter %></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <p class="dashboard-orderFinishedDialog-label"><%- t('dashboard', 'orderFinishedDialog:startedAt') %></p>
+      <p class="dashboard-orderFinishedDialog-value"><%- order.startedAt %></p>
+    </div>
+    <div class="col-md-4">
+      <p class="dashboard-orderFinishedDialog-label"><%- t('dashboard', 'orderFinishedDialog:finishedAt') %></p>
+      <p class="dashboard-orderFinishedDialog-value"><%- order.finishedAt %></p>
+    </div>
+    <div class="col-md-4">
+      <p class="dashboard-orderFinishedDialog-label"><%- t('dashboard', 'orderFinishedDialog:duration') %></p>
+      <p class="dashboard-orderFinishedDialog-value"><%- order.duration %></p>
+    </div>
+  </div>
+  <% if (remainingOrdersCount > 0) { %>
+  <button class="btn btn-lg btn-block btn-success dialog-answer" type="button" autofocus data-answer="selectNextOrderNo">
+    <%- t('dashboard', 'orderFinishedDialog:selectNextOrderNo') %> <kbd><%- selectNextOrderNoHotkey %></kbd>
+  </button>
+  <% } %>
+  <% if (remainingOrdersCount > 1) { %>
+  <button class="btn btn-lg btn-block btn-warning dialog-answer" type="button" data-answer="selectAnotherOrderNo">
+    <%- t('dashboard', 'orderFinishedDialog:selectAnotherOrderNo') %> <kbd><%- selectAnotherOrderNoHotkey %></kbd>
+  </button>
+  <% } %>
+  <button class="btn btn-lg btn-block btn-<%- remainingOrdersCount ? 'danger' : 'primary' %> dialog-answer" type="button" <%- remainingOrdersCount ? '' : 'autofocus' %> data-answer="reset">
+    <% if (remote) { %>
+    <%- t('dashboard', 'orderFinishedDialog:close') %> <kbd><%- closeDialogHotkey %></kbd>
+    <% } else { %>
+    <%- t('dashboard', 'orderFinishedDialog:reset') %> <kbd><%- resetOrderHotkey %></kbd>
+    <% } %>
+  </button>
+</div>

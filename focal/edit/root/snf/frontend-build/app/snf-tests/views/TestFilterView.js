@@ -1,0 +1,3 @@
+// Part of <https://miracle.systems/p/walkner-snf> licensed under <CC BY-NC-SA 4.0>
+
+define(["underscore","app/core/util/forms/dateTimeRange","app/core/views/FilterView","app/snf-tests/templates/filter"],function(e,t,r,n){"use strict";return r.extend({template:n,events:e.assign({"click a[data-date-time-range]":t.handleRangeEvent},r.prototype.events),defaultFormData:function(){return{result:[!0,!1]}},termToForm:{startedAt:t.rqlToForm,result:function(e,t,r){r.result=[t.args[1].toString()]}},afterRender:function(){r.prototype.afterRender.call(this),this.toggleButtonGroup("result")},serializeFormToQuery:function(e){var r=this.getButtonGroupValue("result");t.formToRql(this,e),1===r.length&&e.push({name:"eq",args:["result","true"===r[0]]})}})});

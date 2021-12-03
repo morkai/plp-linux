@@ -1,0 +1,3 @@
+// Part of <https://miracle.systems/p/walkner-snf> licensed under <CC BY-NC-SA 4.0>
+
+define(["app/i18n","app/viewport"],function(e,o){"use strict";return function(r,n,s,a){function i(e){!1!==e.showLoadingMessage&&o.msg.loaded()}function d(r,n){var i=n.statusText;if("abort"===i)return void(!1!==r.showLoadingMessage&&o.msg.loaded());var d=n.responseJSON;d&&d.error&&(d.error.code?i=d.error.code:d.error.message&&(i=d.error.message)),!1!==r.showLoadingMessage&&o.msg.loadingFailed(e(a||"core",s||"MSG:LOADING_FAILURE",{code:i}))}return n.listenTo(r,"request",function(e,r,n){"read"===n.syncMethod&&(!1!==n.showLoadingMessage&&o.msg.loading(),r.done(i.bind(null,n)),r.fail(d.bind(null,n)))}),r}});

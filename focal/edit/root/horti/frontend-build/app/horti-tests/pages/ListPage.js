@@ -1,0 +1,1 @@
+define(["app/core/pages/FilteredListPage","../views/FilterView","../views/ListView"],function(e,i,t){"use strict";return e.extend({FilterView:i,ListView:t,actions:[]})});

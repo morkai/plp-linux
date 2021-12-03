@@ -1,0 +1,100 @@
+@import url(./common.css);
+@import url(./input.css);
+@import url(./orderFinishedDialog.css);
+@import url(./orderNoPickerDialog.css);
+@import url(./nc12PickerDialog.css);
+@import url(./log.css);
+@import url(./history.css);
+@import url(./carousel.css);
+@import url(./program.css);
+@import url(./hidLamps.css);
+@import url(./leds.css);
+@import url(./componentWeights.css);
+@import url(./continue.css);
+
+.is-dashboard > .message {
+  top: 17px;
+  font-size: 32px;
+}
+
+@media (max-width: 1024px) {
+  body {
+    overflow-x: hidden!important;
+    overflow-y: scroll!important;
+  }
+  .modal-open {
+    padding-right: 0!important;
+  }
+  .dashboard {
+    display: block;
+  }
+  .dashboard-progress {
+
+  }
+  .dashboard-leftColumn {
+    display: block;
+    width: auto;
+  }
+  .dashboard-rightColumn {
+    position: static;
+    display: block;
+    margin-left: 0;
+  }
+  .dashboard-input-orderNo {
+    flex: 1 1 auto;
+  }
+  .dashboard-input-nc12 {
+    flex: 1 1 auto;
+  }
+  .dashboard-input-buttons > .btn {
+    flex: 1 1 auto;
+  }
+  .dashboard-input-buttons > .dashboard-input-toggleWorkMode,
+  .dashboard-input-buttons > .dashboard-input-continue {
+    flex-grow: 0;
+    width: 185px;
+  }
+  .dashboard-log {
+    width: auto;
+    height: 275px!important;
+  }
+  .dashboard-history {
+    margin-top: 14px;
+  }
+  .dashboard-history > .list-group {
+    height: 231px!important;
+  }
+  .dashboard-program,
+  .dashboard-carousel {
+    margin-top: 0!important;
+    position: absolute;
+    top: 429px;
+    left: 14px;
+    right: 14px;
+  }
+  .dashboard-hidLamps,
+  .dashboard-leds {
+    top: 65px;
+    left: 14px;
+    right: 14px;
+  }
+  .is-waitingForHidLamps .dashboard-input,
+  .is-waitingForLeds .dashboard-input {
+    visibility: hidden;
+  }
+  .is-waitingForHidLamps .dashboard-carousel,
+  .is-waitingForHidLamps .dashboard-program,
+  .is-waitingForLeds .dashboard-carousel,
+  .is-waitingForLeds .dashboard-program {
+    margin-top: auto!important;
+  }
+  .is-waitingForHidLamps .dashboard-history,
+  .is-waitingForLeds .dashboard-history {
+    display: block;
+  }
+  .dashboard-continue {
+    top: 428px;
+    left: 14px;
+    right: 0;
+  }
+}

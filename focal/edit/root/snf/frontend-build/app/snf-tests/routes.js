@@ -1,0 +1,3 @@
+// Part of <https://miracle.systems/p/walkner-snf> licensed under <CC BY-NC-SA 4.0>
+
+define(["../router","../viewport","../user","./Test","./TestCollection","./pages/TestListPage","./pages/TestDetailsPage","i18n!app/nls/snf-tests"],function(e,s,t,n,a,i,o){"use strict";var l=t.auth("LOCAL","USER");e.map("/tests",l,function(e){s.showPage(new i({collection:new a(null,{rqlQuery:e.rql})}))}),e.map("/tests/:id",l,function(e){s.showPage(new o({model:new n({_id:e.params.id})}))})});

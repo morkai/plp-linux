@@ -1,0 +1,1 @@
+define(["app/user","app/router","app/viewport","./pages/DashboardPage","i18n!app/nls/horti-dashboard"],function(a,p,e,n){"use strict";p.map("/",a.auth("LOCAL","USER"),function(){e.showPage(new n)})});

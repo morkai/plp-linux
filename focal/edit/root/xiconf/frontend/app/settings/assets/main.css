@@ -1,0 +1,50 @@
+.settings-form {
+  display: flex;
+  flex: 1 0 auto;
+  align-items: stretch;
+}
+.settings-form > .list-group {
+  margin-bottom: 0;
+}
+.settings-form .list-group-item {
+  white-space: nowrap;
+  border-right: 0;
+}
+.settings-form > .panel {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-bottom: 0;
+}
+.settings-form > .panel > .panel-body {
+  display: none;
+  flex: 1 1 auto;
+}
+.settings-form > .panel > .panel-body.active {
+  display: block;
+}
+.settings-hasRowLast {
+  padding-bottom: 0;
+}
+.settings-form textarea[name="licenseKey"] {
+  font-family: Consolas, Menlo, Monaco, monospace;
+  height: 256px;
+}
+.settings-form input[readonly] {
+  cursor: default;
+}
+.settings-form input[name="password"] {
+  width: 100px;
+  display: inline-block;
+  vertical-align: top;
+}
+.settings-form textarea[name="serviceTagLabelCode"],
+.settings-form textarea[name="ftOrderPattern"] {
+  font-family: Consolas, Menlo, Monaco, monospace;
+}
+.settings-import select {
+  font-family: Consolas, Menlo, Monaco, monospace;
+}
+.control-label + .help-block {
+  margin-top: 0;
+}

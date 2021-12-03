@@ -1,0 +1,62 @@
+.history-filter .form-control[name="no"] {
+  width: 100px;
+}
+.history-filter .form-control[name="nc12"] {
+  width: 120px;
+}
+.history-tabs .tab-pane > pre {
+  border-top: none;
+  border-color: #DDD;
+  background: #fff;
+  overflow: auto;
+}
+.history-log,
+.history-log > tbody > tr:first-child > td {
+  border-top: none;
+}
+.history-log > tbody > tr > td:first-child {
+  border-right: none;
+  width: 1%;
+  font-family: Consolas, monospace;
+  color: #666;
+}
+.history-log > tbody > tr > td:last-child {
+  border-left: none;
+}
+.history-log code {
+  white-space: pre-line;
+}
+.history-details-metrics {
+  margin-top: 14px;
+}
+.history-details-leds .dashboard-leds,
+.history-details-hidLamps .dashboard-hidLamps {
+  display: block;
+  position: static;
+}
+.history-details-leds .dashboard-header,
+.history-details-hidLamps .dashboard-header {
+  display: none;
+}
+.history-details-leds .dashboard-leds-list,
+.history-details-hidLamps .dashboard-hidLamps-list {
+  box-shadow: none;
+  min-height: inherit;
+  max-height: none;
+  overflow: auto;
+  border-top: 0;
+}
+.history-details-leds .dashboard-leds-led,
+.history-details-hidLamps .dashboard-hidLamps-hidLamp {
+  border-right: 0;
+}
+.history-details-steps .xiconfPrograms-steps {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+.table > tbody > .history-entry.is-cancelled > td {
+  background-color: #eee;
+}
+.table > tbody > .history-entry.is-cancelled:hover > td {
+  background-color: #ddd;
+}

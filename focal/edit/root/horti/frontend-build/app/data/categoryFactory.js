@@ -1,0 +1,1 @@
+define(function(){"use strict";var e={};return{getCategory:function(n,t){return void 0===e[n]&&(e[n]={counter:0,assigned:{}}),"string"!=typeof(n=e[n]).assigned[t]&&(n.assigned[t]=n.counter.toString(36).toUpperCase(),n.counter+=1),n.assigned[t]}}});

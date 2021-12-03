@@ -1,0 +1,88 @@
+.dashboard-leds {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+.is-waitingForLeds .dashboard-leds {
+  display: block;
+}
+.dashboard-leds > .dashboard-header > .btn {
+  margin-right: 19px;
+  padding: 0;
+  line-height: 1;
+  font-size: 24px;
+  float: right;
+}
+.dashboard-leds > .dashboard-header > .btn > kbd[data-hotkey="reset"] {
+  margin: 2px 0 0 4px;
+  font-size: 11px;
+}
+.dashboard-leds-list {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  min-height: 267px;
+  max-height: 267px;
+  overflow-x: auto;
+  overflow-y: scroll;
+  box-shadow: 0 0.5em 1em rgba(0, 0, 0, .5);
+}
+.dashboard-leds-led {
+  margin: 0;
+  padding: 0.25em 0.5em;
+  display: flex;
+  border-top: 0;
+  border-left: 0;
+  border-color: #ccc;
+  -webkit-transition: background-color 100ms linear;
+  -moz-transition: background-color 100ms linear;
+  transition: background-color 100ms linear;
+}
+.dashboard-leds-led.blink {
+  background-color: yellow;
+}
+.dashboard-leds-led:last-child {
+  margin-bottom: 1.75em;
+}
+.dashboard-leds-status {
+  flex: 0 0 auto;
+}
+.dashboard-leds-status > .fa {
+  font-size: 3em;
+  line-height: 0.952;
+  width: 0.952em;
+  text-align: center;
+}
+.dashboard-leds-serialNumber {
+  margin: 0 0.24em 0 0.24em;
+  font-family: Consolas, monospace;
+  font-size: 3em;
+  line-height: 0.953;
+  flex: 0 0 auto;
+  white-space: pre;
+}
+.dashboard-leds-info {
+  flex: 1 1 auto;
+}
+.dashboard-leds-name {
+  display: block;
+  white-space: nowrap;
+}
+.dashboard-leds-error {
+  display: none;
+  padding-left: 0.75em;
+  overflow: hidden;
+  flex: 0 0 auto;
+  font-weight: bold;
+  text-align: right;
+  background-color: #f2dede;
+}
+.dashboard-leds-led.blink .dashboard-leds-error {
+  background-color: transparent;
+}
+.list-group-item-danger .dashboard-leds-error {
+  display: block;
+}

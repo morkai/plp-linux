@@ -1,0 +1,178 @@
+<div>
+  <% if (model.order) { %>
+  <div class="panel panel-primary history-details-order">
+    <div class="panel-heading">
+      <%- t('history', 'PANEL:TITLE:details:order') %>
+    </div>
+    <div class="panel-details">
+      <div class="props first">
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:no') %></div>
+          <div class="prop-value"><%- model.order.no %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:quantity') %></div>
+          <div class="prop-value"><%- model.order.quantity %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:successCounter') %></div>
+          <div class="prop-value"><%- model.order.successCounter %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:failureCounter') %></div>
+          <div class="prop-value"><%- model.order.failureCounter %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:startedAt') %></div>
+          <div class="prop-value"><%- time.format(model.order.startedAt, 'LL, HH:mm:ss.SSS') %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:finishedAt') %></div>
+          <div class="prop-value"><%- time.format(model.order.finishedAt, 'LL, HH:mm:ss.SSS') %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:duration') %></div>
+          <div class="prop-value"><%- time.toString(model.order.duration / 1000, false, true) %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+  <div class="panel panel-<%- model.cancelled ? 'default' : model.result === 'success'  ? 'success' : 'danger' %> history-details-entry">
+    <div class="panel-heading">
+      <%- t('history', 'PANEL:TITLE:details:entry') %>
+    </div>
+    <div class="panel-details">
+      <div class="props first">
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:prodLine') %></div>
+          <div class="prop-value"><%= model.prodLine || '-' %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:serviceTag') %></div>
+          <div class="prop-value"><%- model.serviceTag || '-' %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:nc12') %></div>
+          <div class="prop-value"><%- model.nc12 || '-' %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:gprsNc12') %></div>
+          <div class="prop-value"><%- model.gprsNc12 || '-' %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:programName') %></div>
+          <div class="prop-value"><%= model.programName || '-' %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:counter') %></div>
+          <div class="prop-value"><%- model.counter %><%- model.order ? ('/' + model.order.quantity) : '' %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:startedAt') %></div>
+          <div class="prop-value"><%- time.format(model.startedAt, 'LL, HH:mm:ss.SSS') %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:finishedAt') %></div>
+          <div class="prop-value"><%- time.format(model.finishedAt, 'LL, HH:mm:ss.SSS') %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:duration') %></div>
+          <div class="prop-value"><%- time.toString(model.duration / 1000, false, true) %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:errorCode') %></div>
+          <div class="prop-value"><%- model.errorCode ? t('history', 'error:' + model.errorCode) : '-' %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:exception') %></div>
+          <div class="prop-value"><%= model.exception || '-' %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:workflowFile') %></div>
+          <div class="prop-value"><%= model.workflowFile || '-' %></div>
+        </div>
+        <div class="prop">
+          <div class="prop-name"><%- t('history', 'PROPERTY:featureFile') %></div>
+          <div class="prop-value"><%= model.featureFile || '-' %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="history-tabs">
+    <ul class="nav nav-tabs">
+      <li data-tab="log"><a href="#<%- idPrefix %>-log" data-toggle="tab"><%- t('history', 'tab:log') %></a></li>
+      <% if (model.output) { %>
+      <li data-tab="output"><a href="#<%- idPrefix %>-output" data-toggle="tab"><%- t('history', 'tab:output') %></a></li>
+      <% } %>
+      <% if (model.gprsOrderFile) { %>
+      <li data-tab="gprsOrderFile"><a href="#<%- idPrefix %>-gprsOrderFile" data-toggle="tab"><%- t('history', 'tab:gprsOrderFile') %></a></li>
+      <% } %>
+      <% if (model.workflow) { %>
+      <li data-tab="workflow"><a href="#<%- idPrefix %>-workflow" data-toggle="tab"><%- t('history', 'tab:workflow') %></a></li>
+      <% } %>
+      <% if (model.feature) { %>
+      <li data-tab="feature" data-highlight><a href="#<%- idPrefix %>-feature" data-toggle="tab"><%- t('history', 'tab:feature') %></a></li>
+      <% } %>
+      <% if (model.leds) { %>
+      <li data-tab="leds"><a href="#<%- idPrefix %>-leds" data-toggle="tab"><%- t('history', 'tab:leds') %></a></li>
+      <% } %>
+      <% if (model.hidLamps) { %>
+      <li data-tab="hidLamps"><a href="#<%- idPrefix %>-hidLamps" data-toggle="tab"><%- t('history', 'tab:hidLamps') %></a></li>
+      <% } %>
+      <% if (model.gprsInputFile) { %>
+      <li data-tab="gprsInputFile" data-highlight><a href="#<%- idPrefix %>-gprsInputFile" data-toggle="tab"><%- t('history', 'tab:gprsInputFile') %></a></li>
+      <% } %>
+      <% if (model.gprsOutputFile) { %>
+      <li data-tab="gprsOutputFile" data-highlight><a href="#<%- idPrefix %>-gprsOutputFile" data-toggle="tab"><%- t('history', 'tab:gprsOutputFile') %></a></li>
+      <% } %>
+      <% if (model.program) { %>
+      <li data-tab="program"><a href="#<%- idPrefix %>-program" data-toggle="tab"><%- t('history', 'tab:program') %></a></li>
+      <% } %>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane" id="<%- idPrefix %>-log">
+        <table class="table table-bordered history-log">
+          <tbody>
+            <% log.forEach(function(logEntry) { %>
+            <tr>
+              <td><time datetime="<%- logEntry.datetime %>"><%- logEntry.time %></time></td>
+              <td><%- logEntry.text %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <% if (model.output) { %>
+      <div class="tab-pane" id="<%- idPrefix %>-output"><pre><code><%= model.output || '-' %></code></pre></div>
+      <% } %>
+      <% if (model.gprsOrderFile) { %>
+      <div class="tab-pane" id="<%- idPrefix %>-gprsOrderFile"><pre><code><%= model.gprsOrderFile || '-' %></code></pre></div>
+      <% } %>
+      <% if (model.workflow) { %>
+      <div class="tab-pane" id="<%- idPrefix %>-workflow"><pre><code><%= model.workflow || '-' %></code></pre></div>
+      <% } %>
+      <% if (model.feature) { %>
+      <div class="tab-pane" id="<%- idPrefix %>-feature"><pre><code class="xml"><%= model.feature || '-' %></code></pre></div>
+      <% } %>
+      <% if (model.leds) { %>
+      <div class="tab-pane history-details-leds" id="<%- idPrefix %>-leds"></div>
+      <% } %>
+      <% if (model.hidLamps) { %>
+      <div class="tab-pane history-details-hidLamps" id="<%- idPrefix %>-hidLamps"></div>
+      <% } %>
+      <% if (model.gprsInputFile) { %>
+      <div class="tab-pane" id="<%- idPrefix %>-gprsInputFile"><pre><code class="json"><%= model.gprsInputFile || '-' %></code></pre></div>
+      <% } %>
+      <% if (model.gprsOutputFile) { %>
+      <div class="tab-pane" id="<%- idPrefix %>-gprsOutputFile"><pre><code class="xml"><%= model.gprsOutputFile || '-' %></code></pre></div>
+      <% } %>
+      <% if (model.program) { %>
+      <div class="tab-pane" id="<%- idPrefix %>-program">
+        <div class="history-details-steps"></div>
+        <div class="history-details-metrics"></div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>

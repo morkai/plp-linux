@@ -1,0 +1,1 @@
+define(["../core/Model"],function(e){"use strict";return e.extend({urlRoot:"/tags",clientUrlRoot:"#tags",topicPrefix:"tags",privilegePrefix:"TAGS",nlsDomain:"users",idAttribute:"name",labelAttribute:"description"})});

@@ -1,0 +1,117 @@
+<div id="<%- idPrefix %>-remote" class="panel-body">
+  <div class="form-group">
+    <label for="<%- idPrefix %>-prodLine" class="control-label"><%- t('settings', 'setting:prodLine') %></label>
+    <input id="<%- idPrefix %>-prodLine" class="form-control" name="prodLine" type="text">
+  </div>
+  <div class="form-group">
+    <label for="<%- idPrefix %>-forceLatestOrder" class="control-label"><%- t('settings', 'setting:forceLatestOrder') %></label>
+    <div>
+      <label class="radio-inline">
+        <input id="<%- idPrefix %>-forceLatestOrder" name="forceLatestOrder" type="radio" value="0" required> <%- t('settings', 'setting:forceLatestOrder:off') %>
+      </label>
+      <label class="radio-inline">
+        <input name="forceLatestOrder" type="radio" value="1" required> <%- t('settings', 'setting:forceLatestOrder:on') %>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 form-group">
+      <label for="<%- idPrefix %>-programming" class="control-label"><%- t('settings', 'setting:programming') %></label>
+      <div>
+        <label class="radio-inline">
+          <input id="<%- idPrefix %>-programming" name="programming" type="radio" value="0" required> <%- t('settings', 'setting:programming:off') %>
+        </label>
+        <label class="radio-inline">
+          <input name="programming" type="radio" value="1" required> <%- t('settings', 'setting:programming:on') %>
+        </label>
+      </div>
+    </div>
+    <div class="col-md-3 form-group">
+      <label for="<%- idPrefix %>-hidEnabled" class="control-label"><%- t('settings', 'setting:hidEnabled') %></label>
+      <div>
+        <label class="radio-inline">
+          <input id="<%- idPrefix %>-hidEnabled" name="hidEnabled" type="radio" value="0" required> <%- t('settings', 'setting:hidEnabled:off') %>
+        </label>
+        <label class="radio-inline">
+          <input name="hidEnabled" type="radio" value="1" required> <%- t('settings', 'setting:hidEnabled:on') %>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 form-group">
+      <label for="<%- idPrefix %>-ledsEnabled" class="control-label"><%- t('settings', 'setting:ledsEnabled') %></label>
+      <div>
+        <label class="radio-inline">
+          <input id="<%- idPrefix %>-ledsEnabled" name="ledsEnabled" type="radio" value="0" required> <%- t('settings', 'setting:ledsEnabled:off') %>
+        </label>
+        <label class="radio-inline">
+          <input name="ledsEnabled" type="radio" value="1" required> <%- t('settings', 'setting:ledsEnabled:auto') %>
+        </label>
+        <label class="radio-inline">
+          <input name="ledsEnabled" type="radio" value="2" required> <%- t('settings', 'setting:ledsEnabled:manual') %>
+        </label>
+      </div>
+    </div>
+    <div class="col-md-6 form-group">
+      <label for="<%- idPrefix %>-ledsCheckingMode" class="control-label"><%- t('settings', 'setting:ledsCheckingMode') %></label>
+      <div>
+        <label class="radio-inline">
+          <input id="<%- idPrefix %>-ledsCheckingMode" name="ledsCheckingMode" type="radio" value="pass" required> <%- t('settings', 'setting:ledsCheckingMode:pass') %>
+        </label>
+        <label class="radio-inline">
+          <input name="ledsCheckingMode" type="radio" value="recent" required> <%- t('settings', 'setting:ledsCheckingMode:recent') %>
+        </label>
+        <label class="radio-inline">
+          <input name="ledsCheckingMode" type="radio" value="remote" required> <%- t('settings', 'setting:ledsCheckingMode:remote') %>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 form-group">
+      <label for="<%- idPrefix %>-serviceTagInLocalMode" class="control-label"><%- t('settings', 'setting:serviceTagInLocalMode') %></label>
+      <div>
+        <label class="radio-inline">
+          <input id="<%- idPrefix %>-serviceTagInLocalMode" name="serviceTagInLocalMode" type="radio" value="disabled" required> <%- t('settings', 'setting:serviceTagInLocalMode:disabled') %>
+        </label>
+        <label class="radio-inline">
+          <input name="serviceTagInLocalMode" type="radio" value="optional" required> <%- t('settings', 'setting:serviceTagInLocalMode:optional') %>
+        </label>
+        <label class="radio-inline">
+          <input name="serviceTagInLocalMode" type="radio" value="required" required> <%- t('settings', 'setting:serviceTagInLocalMode:required') %>
+        </label>
+      </div>
+    </div>
+    <div class="col-md-3 form-group">
+      <label for="<%- idPrefix %>-serviceTagPrint" class="control-label"><%- t('settings', 'setting:serviceTagPrint') %></label>
+      <div>
+        <label class="radio-inline">
+          <input id="<%- idPrefix %>-serviceTagPrint" name="serviceTagPrint" type="radio" value="1" required> <%- t('settings', 'setting:serviceTagPrint:on') %>
+        </label>
+        <label class="radio-inline">
+          <input name="serviceTagPrint" type="radio" value="0" required> <%- t('settings', 'setting:serviceTagPrint:off') %>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="<%- idPrefix %>-serviceTagPrinter" class="control-label"><%- t('settings', 'setting:serviceTagPrinter') %></label>
+    <input id="<%- idPrefix %>-serviceTagPrinter" class="form-control" name="serviceTagPrinter" type="text">
+  </div>
+  <div class="form-group">
+    <label for="<%- idPrefix %>-serviceTagLabelType" class="control-label"><%- t('settings', 'setting:serviceTagLabelType') %></label>
+    <div>
+      <label class="radio-inline">
+        <input id="<%- idPrefix %>-serviceTagLabelType" name="serviceTagLabelType" type="radio" value="zpl" required> <%- t('settings', 'setting:serviceTagLabelType:zpl') %>
+      </label>
+      <label class="radio-inline">
+        <input name="serviceTagLabelType" type="radio" value="dpl" required> <%- t('settings', 'setting:serviceTagLabelType:dpl') %>
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="<%- idPrefix %>-serviceTagLabelCode" class="control-label"><%- t('settings', 'setting:serviceTagLabelCode') %></label>
+    <textarea id="<%- idPrefix %>-serviceTagLabelCode" class="form-control" name="serviceTagLabelCode" rows="10"></textarea>
+  </div>
+</div>

@@ -456,7 +456,7 @@ function getNetworkInterfaces()
       networkInterfaces[lastNetworkInterface].addresses.push(matches[1]);
     }
 
-    matches = line.match(/\s+((?::?[a-f0-9]{2}){6})\s+/i);
+    matches = line.match(/\s+([a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2})\s+/i);
 
     if (matches)
     {

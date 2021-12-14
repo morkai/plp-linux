@@ -831,7 +831,7 @@ async function updateClient()
     }
 
     const remoteReq = await requestRemote(`/wmes/clients/${CLIENT._id}`, {
-      timeout: 10000,
+      timeout: 30000,
       method: 'PUT',
       json: CLIENT
     });

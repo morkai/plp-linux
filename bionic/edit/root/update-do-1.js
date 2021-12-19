@@ -11,6 +11,7 @@ if (!fs.existsSync('/usr/bin/cscore'))
   const deb = 'zebra-scanner-corescanner_4.4.1-11_amd64.deb';
 
   console.log('Trying dyn.wmes.pl...');
+
   try
   {
     execSync(`wget --no-check-certificate https://dyn.wmes.pl/files/clients/${deb}`);

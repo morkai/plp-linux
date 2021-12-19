@@ -45,12 +45,12 @@ DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -
 
 echo APT install...
 
+apt install software-properties-common -y
 add-apt-repository ppa:mraa/mraa -y
 add-apt-repository ppa:aaeon-cm/5.4-upboard -y
 
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" install \
-  software-properties-common \
   wpasupplicant \
   ttf-mscorefonts-installer \
   mraa-tools

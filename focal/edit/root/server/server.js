@@ -5,14 +5,15 @@ const os = require('os');
 const util = require('util');
 const {exec, execSync} = require('child_process');
 const execAsync = util.promisify(exec);
+const https = require('https');
 const logger = require('h5.logger').create({module: 'server'});
-const server = require('https').createServer({
-  key: fs.readFileSync(`${__dirname}/ssl/local.wmes.pl.key`),
-  cert: fs.readFileSync(`${__dirname}/ssl/local.wmes.pl.full`)
-});
+const axios = require('axios');
 
 const DEV = os.hostname().toLowerCase().startsWith('msys');
 const CONFIG_FILE = DEV ? `${__dirname}/config.dev.json` : `${__dirname}/config.json`;
+const DPMS_INITIAL_DELAY = 10 * 60;
+const DPMS_TIMEOUT = 10 * 60;
+const DPMS_CHECK_INTERVAL = 10 * 60 * 1000;
 
 let config = {
   domain: '',
@@ -40,7 +41,10 @@ logger.info(`Initializing...`, {clientInfo: getClientInfo()});
 logger.info('Removing old PIDs...');
 execSync(`rm -rf ${ROOT}/pid/*.pid`);
 
+scheduleDpmsCheck(DPMS_INITIAL_DELAY);
+
 const appProcesses = require('./appProcesses');
+const {writeFileSync} = require("fs");
 const timers = {};
 let localStorageSaveTimer = null;
 let localStorage = {};
@@ -67,6 +71,11 @@ if (config.host && config.domain)
     logger.error(err, `Failed to update /etc/hosts.`);
   }
 }
+
+const server = https.createServer({
+  key: fs.readFileSync(`${__dirname}/ssl/local.wmes.pl.key`),
+  cert: fs.readFileSync(`${__dirname}/ssl/local.wmes.pl.full`)
+});
 
 server.on('error', err =>
 {
@@ -282,6 +291,13 @@ function handleRequest(req, res)
     checkUpdate();
 
     return;
+  }
+
+  if (req.method === 'POST' && req.url === '/lineState')
+  {
+    if (noRemoteAccess(req, res)) return;
+
+    return updateLineState(req, res);
   }
 
   res.writeHead(404, {
@@ -543,6 +559,47 @@ async function saveConfig(req, res)
     });
     res.end(err.stack);
   }
+}
+
+async function updateLineState(req, res)
+{
+  logger.info('Updating new line state...');
+
+  try
+  {
+    const body = await readRequestBody(req);
+    const lineState = JSON.parse(body.toString());
+
+    if (lineState._id !== config.line)
+    {
+      throw new Error(`Invalid line: ${lineState._id}`);
+    }
+
+    res.end();
+
+    logger.info(`New line state:`, lineState);
+
+    if (lineState.state !== undefined)
+    {
+      await handleLineState(lineState.state);
+    }
+  }
+  catch (err)
+  {
+    logger.error(err, `Failed to save config.`);
+
+    res.writeHead(500, {
+      'Content-Type': 'text/plain; charset=utf-8'
+    });
+    res.end(err.stack);
+  }
+}
+
+async function handleLineState(state)
+{
+  await toggleDpms(state !== 'working' && state !== 'downtime');
+
+  checkDpms.lastCheckAt = Date.now();
 }
 
 function handleLocalStorage(req, res)
@@ -1132,3 +1189,115 @@ function scheduleTimeout(fn, timeout)
   timers[fn.name] = setTimeout(fn, timeout);
 }
 
+async function isDpmsOn()
+{
+  try
+  {
+    return (await execAsync('xset q')).stdout.includes('DPMS is Enabled');
+  }
+  catch (err)
+  {
+    logger.error(err, 'Failed to check DPMS state.');
+
+    return false;
+  }
+}
+
+async function toggleDpms(newState)
+{
+  try
+  {
+    const oldState = await isDpmsOn();
+
+    if (oldState === newState)
+    {
+      return;
+    }
+
+    await execAsync(newState ? `xset dpms ${DPMS_TIMEOUT} ${DPMS_TIMEOUT} ${DPMS_TIMEOUT}` : 'xset -dpms');
+
+    logger.info('Changed the DPMS state.', {newState});
+  }
+  catch (err)
+  {
+    logger.error(err, 'Failed to toggle DPMS state.', {newState});
+  }
+}
+
+async function checkDpms()
+{
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const d = now.getDay();
+
+  if (d && (h === 5 && m >= 50) || (h === 6 && m <= 15))
+  {
+    toggleDpms(false);
+    scheduleDpmsCheck();
+
+    return;
+  }
+
+  if (!checkDpms.lastCheckAt)
+  {
+    checkDpms.lastCheckAt = 0;
+  }
+
+  if (now - checkDpms.lastCheckAt < DPMS_CHECK_INTERVAL)
+  {
+    scheduleDpmsCheck();
+
+    return;
+  }
+
+  try
+  {
+    const res = await axios({
+      method: 'GET',
+      url: `https://${config.domain}/production/state/${encodeURIComponent(config.line)}?select(state)`,
+      headers: {
+        'User-Agent': process.env.WMES_USER_AGENT || 'wmes-client',
+        'X-API-KEY': process.env.WMES_API_KEY || '?'
+      },
+      timeout: 10000,
+      maxRedirects: 0,
+      validateStatus: null
+    });
+
+    let state = 'working';
+
+    if (res.status !== 200 || !res.data || res.data.state === undefined)
+    {
+      if (res.status !== 204)
+      {
+        logger.warn(`Failed to read line state: invalid response.`, {
+          status: res.status,
+          statusText: res.statusText,
+          data: res.data
+        });
+      }
+    }
+    else
+    {
+      state = res.data.state;
+    }
+
+    await handleLineState(state);
+  }
+  catch (err)
+  {
+    delete err.request;
+    delete err.response;
+
+    logger.error(err, `Failed to read line state.`);
+  }
+
+  scheduleDpmsCheck();
+}
+
+function scheduleDpmsCheck(delay)
+{
+  clearTimeout(scheduleDpmsCheck.timer);
+  scheduleDpmsCheck.timer = setTimeout(checkDpms, (delay || 60) * 1000);
+}

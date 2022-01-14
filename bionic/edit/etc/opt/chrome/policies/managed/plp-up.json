@@ -37,6 +37,7 @@
   "HardwareAccelerationModeEnabled": true,
   "IncognitoModeAvailability": 1,
   "NetworkPredictionOptions": 2,
+  "EnableMediaRouter": false,
   "PrintingEnabled": false,
   "SafeBrowsingEnabled": false,
   "SearchSuggestEnabled": false,

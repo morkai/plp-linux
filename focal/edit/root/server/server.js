@@ -44,7 +44,6 @@ execSync(`rm -rf ${ROOT}/pid/*.pid`);
 scheduleDpmsCheck(DPMS_INITIAL_DELAY);
 
 const appProcesses = require('./appProcesses');
-const {writeFileSync} = require("fs");
 const timers = {};
 let localStorageSaveTimer = null;
 let localStorage = {};
@@ -409,8 +408,16 @@ function getVersions()
     node: process.versions.node,
     mongodb,
     java,
-    net: DEV ? 'DEV' : tryExec('dotnet --list-runtimes').split(' ')[1] || ''
+    net: DEV ? 'DEV' : getNetVersions()
   };
+}
+
+function getNetVersions()
+{
+  return tryExec('dotnet --list-runtimes')
+    .split('\n')
+    .map(line => line.split(' ')[1])
+    .filter(v => !!v);
 }
 
 function getHardware()
@@ -1097,7 +1104,7 @@ function scheduleUpdate()
   logger.debug('Scheduled next update check.', {
     nextCheckAt: new Date(now.getTime() + delay),
     nextCheckDelay: delay / 1000
-  })
+  });
 
   scheduleTimeout(scheduleUpdate, delay);
 

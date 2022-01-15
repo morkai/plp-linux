@@ -408,8 +408,16 @@ function getVersions()
     node: process.versions.node,
     mongodb,
     java,
-    net: DEV ? 'DEV' : tryExec('dotnet --list-runtimes').split(' ')[1] || ''
+    net: DEV ? 'DEV' : getNetVersions()
   };
+}
+
+function getNetVersions()
+{
+  return tryExec('dotnet --list-runtimes')
+    .split('\n')
+    .map(line => line.split(' ')[1])
+    .filter(v => !!v);
 }
 
 function getHardware()
@@ -1096,7 +1104,7 @@ function scheduleUpdate()
   logger.debug('Scheduled next update check.', {
     nextCheckAt: new Date(now.getTime() + delay),
     nextCheckDelay: delay / 1000
-  })
+  });
 
   scheduleTimeout(scheduleUpdate, delay);
 
@@ -1124,7 +1132,7 @@ async function checkUpdate()
   {
     const availableVersionsRes = await execAsync(`curl --insecure https://dyn.wmes.pl/wmes/clients/updates`);
     const availableVersions = JSON.parse(availableVersionsRes.stdout)
-      .filter(v => v > currentVersion && v < 50)
+      .filter(v => v > currentVersion)
       .sort((a, b) => a - b);
 
     if (!Array.isArray(availableVersions))

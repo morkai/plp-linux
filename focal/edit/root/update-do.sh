@@ -1,8 +1,5 @@
 #!/bin/bash
 
-chown --from=1000:1000 -R root:root /
-chown --from=1000:1000 root:root /proc /sys
-
 base_url=http://dyn.wmes.pl
 
 echo Checking proxy...
@@ -38,14 +35,15 @@ echo APT upgrade...
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
 
 echo APT install...
-
-echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" install \
-  software-properties-common
+  dotnet-runtime-6.0
 
 echo update-do-1.js...
 node /root/update-do-1.js
 rm /root/update-do-1.js
+
+echo Remove unattended-upgrades...
+apt-get remove --purge unattended-upgrades
 
 echo APT cleanup...
 apt-get autoremove -y
@@ -72,6 +70,6 @@ chmod +x /root/set-permissions.sh
 echo Reboot...
 killall xinit
 sleep 1
-echo -e '#!/bin/bash\nsleep 3\nreboot\n' > /tmp/reboot3s.sh
+echo -e '#!/bin/bash\nsystemctl stop cscored\nsleep 3\nreboot\n' > /tmp/reboot3s.sh
 chmod +x /tmp/reboot3s.sh
 nohup /tmp/reboot3s.sh > /dev/null 2>&1 &

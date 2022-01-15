@@ -271,6 +271,7 @@ async function sendCode(stationNo)
       url: `https://${config.domain}/ct/todos/${config.line}/${stationNo}`
         + `?id=${readResult.id}&time=${readResult.time}`,
       headers: {
+        'User-Agent': process.env.WMES_USER_AGENT || 'wmes-client',
         'X-API-KEY': process.env.WMES_API_KEY || '?'
       },
       timeout: 5000,

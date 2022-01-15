@@ -34,30 +34,19 @@ echo update-do-0.js...
 node /root/update-do-0.js
 rm /root/update-do-0.js
 
-echo node.js update...
-if [[ `node -v` == v12* ]] ;
-then
-  curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-fi
-
 echo APT upgrade...
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" upgrade
 
 echo APT install...
-
-apt install software-properties-common -y
-add-apt-repository ppa:mraa/mraa -y
-add-apt-repository ppa:aaeon-cm/5.4-upboard -y
-
-echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" install \
-  wpasupplicant \
-  ttf-mscorefonts-installer \
-  mraa-tools
+  dotnet-runtime-6.0
 
 echo update-do-1.js...
 node /root/update-do-1.js
 rm /root/update-do-1.js
+
+echo Remove unattended-upgrades...
+apt-get remove --purge unattended-upgrades
 
 echo APT cleanup...
 apt-get autoremove -y
@@ -84,6 +73,6 @@ chmod +x /root/set-permissions.sh
 echo Reboot...
 killall xinit
 sleep 1
-echo -e '#!/bin/bash\nsleep 3\nreboot\n' > /tmp/reboot3s.sh
+echo -e '#!/bin/bash\nsystemctl stop cscored\nsleep 3\nreboot\n' > /tmp/reboot3s.sh
 chmod +x /tmp/reboot3s.sh
 nohup /tmp/reboot3s.sh > /dev/null 2>&1 &

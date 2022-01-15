@@ -25,7 +25,7 @@ if (!fs.existsSync('/usr/bin/cscore'))
   {
     console.log(`Installing ${deb}...`);
 
-    execSync('apt-get install pkg-config libudev-dev');
+    execSync('apt-get install -y pkg-config libudev-dev');
     execSync(`dpkg -i /root/${deb}`);
     execSync(`rm -f /root/${deb}`);
     execSync('systemctl stop cscored');
@@ -42,7 +42,7 @@ else if (!serverConfig.apps.includes('xiconf'))
   execSync('systemctl disable cscored');
 }
 
-if (execSync('uname -r').toString().trim().startsWith('4'))
+if (false && execSync('uname -r').toString().trim().startsWith('4'))
 {
   console.log('Updating kernel...');
 

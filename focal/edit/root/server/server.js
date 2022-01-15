@@ -408,7 +408,10 @@ function getVersions()
     node: process.versions.node,
     mongodb,
     java,
-    net: DEV ? 'DEV' : getNetVersions()
+    net: DEV ? 'DEV' : getNetVersions(),
+    horti: JSON.parse(fs.readFileSync(`${ROOT}/horti/package.json`, 'utf8')).version,
+    snf: JSON.parse(fs.readFileSync(`${ROOT}/snf/package.json`, 'utf8')).version,
+    xiconf: JSON.parse(fs.readFileSync(`${ROOT}/xiconf/package.json`, 'utf8')).version
   };
 }
 

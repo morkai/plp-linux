@@ -493,7 +493,7 @@ function hideOverlay()
     app = 'operator';
   }
 
-  var iframeEl = $(`iframe[data-app="${app}"]`);
+  const iframeEl = $(`iframe[data-app="${app}"]`);
 
   if (iframeEl)
   {
@@ -560,7 +560,7 @@ function updateConfig()
 
 function togglePowerOptions()
 {
-  var el = $('#powerOptions');
+  const el = $('#powerOptions');
 
   el.classList.toggle('hidden');
 
@@ -682,9 +682,11 @@ async function resolveHost()
         method: 'PUT',
         json: CLIENT
       });
+      const domain = el.value === '192.168.1.250' ? 'dev.wmes.pl' : 'ket.wmes.pl';
 
       if (res.status === 204)
       {
+        $('input[name="domain"]').value = domain;
         el.checked = true;
 
         setUpProdLines();
@@ -700,6 +702,7 @@ async function resolveHost()
         Object.assign(CONFIG, config);
         updateConfig();
 
+        $('input[name="domain"]').value = domain;
         el.checked = true;
 
         setUpProdLines();
@@ -879,8 +882,8 @@ async function setUpProdLines()
     {
       const body = await res.json();
 
-      var inputEl = $('input[name="line"]');
-      var selectEl = document.createElement('select');
+      const inputEl = $('input[name="line"]');
+      const selectEl = document.createElement('select');
 
       selectEl.append(document.createElement('option'));
 
@@ -888,7 +891,7 @@ async function setUpProdLines()
 
       body.collection.forEach(prodLine =>
       {
-        var optionEl = document.createElement('option');
+        const optionEl = document.createElement('option');
 
         optionEl.value = prodLine._id;
         optionEl.textContent = prodLine._id;

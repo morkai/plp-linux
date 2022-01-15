@@ -682,9 +682,11 @@ async function resolveHost()
         method: 'PUT',
         json: CLIENT
       });
+      const domain = el.value === '192.168.1.250' ? 'dev.wmes.pl' : 'ket.wmes.pl';
 
       if (res.status === 204)
       {
+        $('input[name="domain"]').value = domain;
         el.checked = true;
 
         setUpProdLines();
@@ -700,6 +702,7 @@ async function resolveHost()
         Object.assign(CONFIG, config);
         updateConfig();
 
+        $('input[name="domain"]').value = domain;
         el.checked = true;
 
         setUpProdLines();

@@ -1135,7 +1135,20 @@ async function checkUpdate()
   {
     const availableVersionsRes = await execAsync(`curl --insecure https://dyn.wmes.pl/wmes/clients/updates`);
     const availableVersions = JSON.parse(availableVersionsRes.stdout)
-      .filter(v => v > currentVersion)
+      .filter(v =>
+      {
+        if (v <= currentVersion)
+        {
+          return false;
+        }
+
+        if (v >= 50 && currentVersion < 50)
+        {
+          return false;
+        }
+
+        return true;
+      })
       .sort((a, b) => a - b);
 
     if (!Array.isArray(availableVersions))

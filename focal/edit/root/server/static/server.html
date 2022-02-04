@@ -46,6 +46,10 @@
             <input type="radio" name="host" value="192.168.1.250" required>
             <span>Deweloperska (192.168.1.250)</span>
           </label>
+          <label id="wlan">
+            <input type="checkbox" name="wlan" value="1">
+            <span>Wi-Fi</span>
+          </label>
           <label style="margin-left: 40px">
             <span style="width: 250px">Statyczne IP:</span>
             <input class="config-value" name="staticIp" style="width: 240px" type="text" placeholder="0.0.0.0/24"
@@ -102,6 +106,10 @@
         <span>Obciążenie malarnii</span>
       </label>
       <label>
+        <input type="checkbox" name="apps" value="ps-hang">
+        <span>Zawieszanie malarnii</span>
+      </label>
+      <label>
         <input type="checkbox" name="apps" value="isa">
         <span>Pola odkładcze</span>
       </label>
@@ -140,6 +148,10 @@
       <label>
         <input type="checkbox" name="apps" value="wh-pickup">
         <span>Kompletacja</span>
+      </label>
+      <label>
+        <input type="checkbox" name="apps" value="problem-area">
+        <span>Pole problemów</span>
       </label>
       <label>
         <input type="checkbox" name="apps" value="remote" style="margin-top: 3px">

@@ -152,7 +152,7 @@ if (networkInterfaces.eth0 || networkInterfaces.eth1)
   }
 }
 
-if (networkInterfaces.wlan0)
+if (config.wlan && networkInterfaces.wlan0)
 {
   newNetplan += `
   wifis:

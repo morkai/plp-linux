@@ -5,5 +5,7 @@
   "remote": "",
   "staticIp": "",
   "line": "",
-  "station": 0
+  "station": 0,
+  "orientation": "normal",
+  "wlan": true
 }

@@ -523,7 +523,8 @@ async function saveConfig(req, res)
   {
     const body = await readRequestBody(req);
     const newConfig = JSON.parse(body.toString());
-    const setup = newConfig.staticIp !== config.staticIp;
+    const setup = newConfig.staticIp !== config.staticIp
+      || newConfig.wlan !== config.wlan;
     const orientation = newConfig.orientation !== config.orientation;
 
     config = newConfig;

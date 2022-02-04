@@ -23,6 +23,9 @@ body {
   background-size: 71.97916%;
   background-position: center;
   background-repeat: no-repeat;
+  overflow: hidden;
+}
+#overlay.is-config {
   overflow: auto;
 }
 iframe {
@@ -98,7 +101,7 @@ iframe {
 #icons {
   position: fixed;
   bottom: 0;
-  right: 0;
+  right: 17px;
   display: flex;
 }
 .icon {
@@ -224,8 +227,9 @@ iframe {
 #powerOptions {
   position: fixed;
   bottom: 100px;
-  right: 0;
+  right: 17px;
   display: flex;
+  flex-direction: column;
   box-shadow: -3px 3px 18px #999;
   z-index: 10000002;
   background: #fff;
@@ -237,7 +241,7 @@ iframe {
   color: #0e0e0e;
 }
 #powerOptions > a + a {
-  border-left: 1px solid #eee;
+  border-top: 1px solid #eee;
 }
 #powerOptions > a:hover {
   background: #00E487;
@@ -245,13 +249,6 @@ iframe {
 }
 .hidden {
   display: none!important;
-}
-#powerOptions.dev {
-  flex-direction: column;
-}
-#powerOptions.dev > a + a {
-  border-left: none;
-  border-top: 1px solid #eee;
 }
 #powerOptions .dev {
   display: none;

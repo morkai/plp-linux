@@ -55,7 +55,7 @@ if (output && mode && rate)
   execSync(`xrandr --screen 0 --display :0 --output ${output} --mode ${mode} --rate ${rate}`);
 
   logger.debug('Setting orientation...');
-  execSync(`xrandr --screen 0 --display :0 --orientation ${orientation}`);
+  execSync(`xrandr --screen 0 --display :0 --orientation ${ORIENTATIONS.normal}`);
 
   execSync(`xinput list`, {encoding: 'utf8'}).split('\n').forEach(line =>
   {

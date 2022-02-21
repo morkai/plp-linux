@@ -1291,7 +1291,7 @@ async function checkDpms()
 
     let state = 'working';
 
-    if (res.status !== 200 || !res.data || res.data.state === undefined)
+    if (res.status !== 200 || !res.data || !res.data.state)
     {
       if (res.status !== 204)
       {

@@ -965,7 +965,7 @@ function startServices(services)
   services.forEach(service =>
   {
     execSync(`systemctl start ${service}`);
-  })
+  });
 }
 
 function updateEtcHosts()
@@ -985,7 +985,25 @@ function updateEtcHosts()
       && !line.includes('dyn.wmes.pl');
   });
 
-  etcHosts.push(`${config.host} ${config.domain} dyn.wmes.pl`);
+  try
+  {
+    const nslookup = execSync(`nslookup ${config.domain}`, {encoding: 'utf8', timeout: 5000});
+    const matches = nslookup.match(/answer:.*?Address:.*?([0-9.]+)/is);
+
+    if (!matches)
+    {
+      throw new Error(nslookup);
+    }
+
+    etcHosts.push(`${matches[1]} dyn.wmes.pl`);
+  }
+  catch (err)
+  {
+    logger.warn(err, `Failed to resolve the IP.`, {domain: config.domain});
+
+    setTimeout(updateEtcHosts, 10000);
+  }
+
   etcHosts.push('');
 
   fs.writeFileSync('/etc/hosts', etcHosts.join('\n'));

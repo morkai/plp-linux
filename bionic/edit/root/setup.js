@@ -152,7 +152,7 @@ if (networkInterfaces.eth0 || networkInterfaces.eth1)
   }
 }
 
-if (networkInterfaces.wlan0)
+if (config.wlan && networkInterfaces.wlan0)
 {
   newNetplan += `
   wifis:
@@ -181,14 +181,15 @@ console.log('Setting hostname...');
 const mac = networkInterfaces.eth0 ? networkInterfaces.eth0.mac : '00:00:00:00:00:00';
 const oldHostname = fs.readFileSync('/etc/hostname', 'utf8').trim();
 const newHostname = `wmes-` + mac.toLowerCase().replace(/:/g, '').substring(6);
-const etcHosts = fs.readFileSync('/etc/hosts', 'utf8').trim().split('\n').map(line =>
+const oldEtcHosts = fs.readFileSync('/etc/hosts', 'utf8');
+const newEtcHosts = oldEtcHosts.trim().split('\n').map(line =>
 {
   if (line.startsWith('#'))
   {
     return line;
   }
 
-  const hosts = line.trim().split(/\s+/);
+  let hosts = line.trim().split(/\s+/);
   const addr = hosts.shift();
 
   if (addr === '127.0.0.1')
@@ -200,18 +201,17 @@ const etcHosts = fs.readFileSync('/etc/hosts', 'utf8').trim().split('\n').map(li
   }
   else if (addr === '127.0.1.1')
   {
-    while (hosts.length)
-    {
-      hosts.pop();
-    }
-
-    hosts.push(newHostname);
+    hosts = [newHostname];
+  }
+  else
+  {
+    hosts = hosts.filter(host => host !== 'dev.wmes.pl' && host !== 'ket.wmes.pl');
   }
 
   return `${addr} ${hosts.join(' ')}`;
 });
 
-fs.writeFileSync('/etc/hosts', etcHosts.join('\n') + '\n');
+fs.writeFileSync('/etc/hosts', newEtcHosts.join('\n') + '\n');
 fs.writeFileSync('/etc/hostname', newHostname);
 
 reboot = reboot || newHostname !== oldHostname;

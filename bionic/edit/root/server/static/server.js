@@ -528,6 +528,8 @@ function toggleConfig()
 
 function updateConfig()
 {
+  $('#wlan input').checked = CONFIG.wlan;
+
   const hostEl = $('input[name="host"][value="' + CONFIG.host + '"]');
 
   if (hostEl)
@@ -587,7 +589,8 @@ async function saveConfig(e)
     staticIp: '',
     line: '',
     station: 0,
-    orientation: $(`input[name="orientation"]:checked`).value
+    orientation: $(`input[name="orientation"]:checked`).value,
+    wlan: $('#wlan input').checked
   };
 
   for (let el of $all('.config-value'))
@@ -942,7 +945,11 @@ function updateNetworkInterfaces()
     });
   });
 
+  $('#wlan').style.display = CLIENT.networkInterfaces.wlan0 ? '' : 'none';
+
   $('#networkInterfaces').innerHTML = html;
+
+  $('#config').style.paddingBottom = (Math.max($('#info').clientHeight, $('#icons').clientHeight) + 20) + 'px';
 
   scheduleNetworkInterfacesUpdate();
 }

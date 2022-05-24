@@ -18,7 +18,7 @@ let output = null;
 let mode = null;
 let rate = null;
 
-execSync('xrandr --screen 0 --display :0', {encoding: 'utf8'}).split('\n').forEach(line =>
+execSync('xrandr --screen "0" --display ":0"', {encoding: 'utf8'}).split('\n').forEach(line =>
 {
   if (!output)
   {
@@ -52,10 +52,10 @@ logger.debug('Parameters:', {
 if (output && mode && rate)
 {
   logger.debug('Setting mode & rate...');
-  execSync(`xrandr --screen 0 --display :0 --output ${output} --mode ${mode} --rate ${rate}`);
+  execSync(`xrandr --screen "0" --display ":0" --output ${output} --mode ${mode} --rate ${rate}`);
 
   logger.debug('Setting orientation...');
-  execSync(`xrandr --screen 0 --display :0 --orientation ${ORIENTATIONS.normal}`);
+  execSync(`xrandr --screen "0" --display ":0" --orientation "${orientation}"`);
 
   execSync(`xinput list`, {encoding: 'utf8'}).split('\n').forEach(line =>
   {
@@ -67,11 +67,18 @@ if (output && mode && rate)
 
       logger.debug('Setting transform...', {id});
 
-      execSync(`xinput set-prop "${id}" "Coordinate Transformation Matrix" ${transform}`);
+      execSync(`xinput set-prop "${id}" --type=float "Coordinate Transformation Matrix" ${ORIENTATIONS.normal}`);
     }
   });
 
-  logger.debug('Fixing google-chrome preferences...');
+  const [width, height] = mode.split('x');
+
+  logger.debug('Fixing google-chrome preferences...', {
+    top: 0,
+    right: +width,
+    bottom: +height,
+    left: 0
+  });
 
   try
   {
@@ -81,8 +88,6 @@ if (output && mode && rate)
     {
       preferences.browser = {};
     }
-
-    const [width, height] = mode.split('x');
 
     preferences.browser.window_placement = {
       bottom: +height,

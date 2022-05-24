@@ -970,14 +970,13 @@ function startServices(services)
 
 function updateEtcHosts()
 {
-  logger.debug(`Updating /etc/hosts...`);
-
   if (DEV)
   {
     return;
   }
 
-  const etcHosts = fs.readFileSync('/etc/hosts', 'utf8').split('\n').filter(line =>
+  const oldEtcHosts = fs.readFileSync('/etc/hosts', 'utf8');
+  const etcHosts = oldEtcHosts.split('\n').filter(line =>
   {
     return line.trim().length !== 0
       && !line.includes(config.host)
@@ -996,17 +995,26 @@ function updateEtcHosts()
     }
 
     etcHosts.push(`${matches[1]} dyn.wmes.pl`);
+
+    setTimeout(updateEtcHosts, 5 * 60 * 1000);
   }
   catch (err)
   {
     logger.warn(err, `Failed to resolve the IP.`, {domain: config.domain});
 
-    setTimeout(updateEtcHosts, 10000);
+    return setTimeout(updateEtcHosts, 10 * 1000);
   }
 
   etcHosts.push('');
 
-  fs.writeFileSync('/etc/hosts', etcHosts.join('\n'));
+  const newEtcHosts = etcHosts.join('\n');
+
+  if (newEtcHosts !== oldEtcHosts)
+  {
+    logger.debug(`Updating /etc/hosts...`);
+
+    fs.writeFileSync('/etc/hosts', newEtcHosts);
+  }
 }
 
 function updateOrientation()

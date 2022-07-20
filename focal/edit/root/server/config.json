@@ -7,5 +7,5 @@
   "line": "",
   "station": 0,
   "orientation": "normal",
-  "wlan": true
+  "wlan": false
 }

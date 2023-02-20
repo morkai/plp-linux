@@ -988,15 +988,24 @@ function updateEtcHosts()
 
   try
   {
-    const nslookup = execSync(`nslookup ${config.domain}`, {encoding: 'utf8', timeout: 5000});
-    const matches = nslookup.match(/answer:.*?Address:.*?([0-9.]+)/is);
+    const resolve = execSync('systemd-resolve --status', {encoding: 'utf8', timeout: 5000});
+    const resolveMatches = resolve.match(/DNS Servers:\s+([0-9.]+)/is);
 
-    if (!matches)
+    if (!resolveMatches)
+    {
+      throw new Error(resolve);
+    }
+
+    const dnsServer = resolveMatches[1];
+    const nslookup = execSync(`nslookup ${config.domain} ${dnsServer}`, {encoding: 'utf8', timeout: 5000});
+    const nslookupMatches = nslookup.match(/answer:.*?Address:.*?([0-9.]+)/is);
+
+    if (!nslookupMatches)
     {
       throw new Error(nslookup);
     }
 
-    etcHosts.push(`${matches[1]} dyn.wmes.pl`);
+    etcHosts.push(`${nslookupMatches[1]} ${config.domain} dyn.wmes.pl`);
 
     setTimeout(updateEtcHosts, 5 * 60 * 1000);
   }

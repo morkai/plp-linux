@@ -863,21 +863,19 @@ async function updateClient()
 
 async function setUpProdLines()
 {
+  clearTimeout(setUpProdLines.timer);
+  setUpProdLines.timer = null;
+
   if ($('select[name="line"]'))
   {
     return;
   }
 
-  const hostEl = $('input[name="host"]:checked');
-
-  if (!hostEl)
-  {
-    return;
-  }
+  const domain = $('input[name="domain"]').value;
 
   try
   {
-    const res = await requestRemote(`https://${hostEl.value}/prodLines?deactivatedAt=null`, {
+    const res = await requestRemote(`https://${domain}/prodLines?deactivatedAt=null`, {
       timeout: 5000
     });
 
@@ -916,6 +914,8 @@ async function setUpProdLines()
   catch (err)
   {
     console.error(`Failed to fetch prod lines: ${err.message}`);
+
+    setUpProdLines.timer = setTimeout(setUpProdLines, 10000);
   }
 }
 

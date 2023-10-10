@@ -67,7 +67,7 @@ if (output && mode && rate)
 
       logger.debug('Setting transform...', {id});
 
-      execSync(`xinput set-prop "${id}" --type=float "Coordinate Transformation Matrix" ${ORIENTATIONS.normal}`);
+      execSync(`xinput set-prop "${id}" --type=float "Coordinate Transformation Matrix" ${transform}`);
     }
   });
 

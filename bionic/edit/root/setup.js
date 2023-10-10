@@ -28,6 +28,7 @@ if (!tryExec(`certutil -d sql:/root/.pki/nssdb -L`).includes('local.wmes.pl'))
 }
 
 let reboot = false;
+let first = false;
 
 if (fs.existsSync(`/root/setup`))
 {
@@ -44,6 +45,7 @@ if (fs.existsSync(`/root/setup`))
   tryExec(`sysctl -w kernel.unprivileged_userns_clone=1`);
 
   reboot = true;
+  first = true;
 }
 
 try
@@ -205,7 +207,20 @@ const newEtcHosts = oldEtcHosts.trim().split('\n').map(line =>
   }
   else
   {
-    hosts = hosts.filter(host => host !== 'dev.wmes.pl' && host !== 'ket.wmes.pl');
+    hosts = hosts.filter(host =>
+    {
+      if (host === 'local.wmes.pl')
+      {
+        return false;
+      }
+
+      if (first)
+      {
+        return !host.endsWith('.wmes.pl');
+      }
+
+      return true;
+    });
   }
 
   return `${addr} ${hosts.join(' ')}`;

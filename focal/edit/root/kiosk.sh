@@ -7,6 +7,8 @@ locale=pl_PL.utf8
 xset -dpms
 xset s off
 openbox-session &
+node /root/exited-chrome-cleanly.js
+node /root/set-resolution.js
 x11vnc -no6 -noipv6 -nevershared -forever -usepw -xkb -noxrecord -noxfixes -noxdamage -logfile /root/log/x11vnc.txt -display :0 &
 
 while true

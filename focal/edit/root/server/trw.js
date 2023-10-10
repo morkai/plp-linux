@@ -1,5 +1,7 @@
 'use strict';
 
+const {exec} = require('child_process');
+const fs = require('fs');
 const step = require('h5.step');
 const {list, Master} = require('pololu');
 const SerialPort = require('serialport');
@@ -25,6 +27,11 @@ exports.handleRequest = (req, res) =>
   if (req.url === '/trw/getIo')
   {
     return enqueue(getIo, req, res);
+  }
+
+  if (req.url === '/trw/printLabel')
+  {
+    return act(Number.MAX_SAFE_INTEGER, print, req, res);
   }
 
   res.writeHead(404);
@@ -67,6 +74,11 @@ function act(retryCount, action, req, res)
       'Content-Type': 'application/json'
     });
     res.end(JSON.stringify(result));
+
+    if (retryCount === Number.MAX_SAFE_INTEGER)
+    {
+      return;
+    }
 
     const nextAction = queue.shift();
 
@@ -257,6 +269,72 @@ function getNextIo(requests, result, done)
     {
       done(err);
     });
+}
+
+function print(req, done)
+{
+  const zplFile = `/var/tmp/wmes-trw-${Date.now()}${Math.random()}.zpl`;
+
+  step(
+    function()
+    {
+      fs.readdir('/dev/usb', this.parallel());
+      getBody(req, this.parallel());
+    },
+    function(err, files)
+    {
+      if (err)
+      {
+        return this.skip(err);
+      }
+
+      const {zpl} = req.body;
+
+      if (typeof zpl !== 'string' || !zpl.length)
+      {
+        return this.skip(new Error('No ZPL code.'));
+      }
+
+      (files || []).forEach(file =>
+      {
+        if (!/^lp[0-9]+$/.test(file))
+        {
+          return;
+        }
+
+        exec(`udevadm info -a /dev/usb/${file}`, {encoding: 'utf8'}, this.group());
+      });
+
+      fs.writeFile(zplFile, zpl, this.group());
+    },
+    function(err, results)
+    {
+      if (err)
+      {
+        return this.skip(err);
+      }
+
+      results.pop();
+
+      const printers = (results || [])
+        .filter(info => info.includes('ZPL') && info.includes('PRINTER'))
+        .map(info => info.match(/KERNEL=="(lp[0-9]+)"/s)[1])
+        .sort();
+
+      if (!printers.length)
+      {
+        return this.skip(new Error('ZPL printer not found.'));
+      }
+
+      exec(`cat "${zplFile}" > /dev/usb/${printers[0]}`, this.next());
+    },
+    function(err)
+    {
+      done(err);
+
+      fs.unlink(zplFile, () => {});
+    }
+  );
 }
 
 function getBody(req, done)

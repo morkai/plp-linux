@@ -36,7 +36,7 @@ DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -
 
 echo APT install...
 DEBIAN_FRONTEND=noninteractive apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" install \
-  dotnet-runtime-6.0
+  ethtool
 
 echo update-do-1.js...
 node /root/update-do-1.js

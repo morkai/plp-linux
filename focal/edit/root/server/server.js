@@ -176,7 +176,7 @@ function handleRequest(req, res)
 
     if (!DEV)
     {
-      setTimeout(() => execSync('shutdown -P now'), 333);
+      setTimeout(() => tryExecSync('ethtool -s eth0 wol g ; shutdown -P now'), 333);
     }
 
     return;
@@ -1359,4 +1359,20 @@ function scheduleDpmsCheck(delay)
 {
   clearTimeout(scheduleDpmsCheck.timer);
   scheduleDpmsCheck.timer = setTimeout(checkDpms, (delay || 60) * 1000);
+}
+
+function tryExecSync(cmd, timeout)
+{
+  try
+  {
+    return String(execSync(cmd, {timeout: (timeout || 120) * 1000}));
+  }
+  catch (err)
+  {
+    console.error(`Command failed:`);
+    console.error(cmd);
+    console.error(err.message);
+  }
+
+  return '';
 }

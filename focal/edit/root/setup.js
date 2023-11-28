@@ -237,6 +237,10 @@ if (reboot)
 
   tryExec(`reboot`);
 }
+else if (networkInterfaces.eth0)
+{
+  tryExec('ethtool -s eth0 wol g');
+}
 
 function tryExec(cmd, timeout)
 {

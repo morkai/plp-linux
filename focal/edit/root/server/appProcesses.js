@@ -12,7 +12,7 @@ const ENV = {
 module.exports = {
   'ps-load': {
     main: {
-      spawn: () => spawn(`${ROOT}/ps-load/node`, [`${ROOT}/ps-load/main.js`], {
+      spawn: () => spawn(process.execPath, [`${ROOT}/ps-load/main.js`], {
         cwd: `${ROOT}/ps-load`,
         env: {...ENV}
       })

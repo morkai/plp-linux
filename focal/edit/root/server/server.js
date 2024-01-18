@@ -63,7 +63,7 @@ if (config.host && config.domain)
 {
   try
   {
-    updateEtcHosts();
+    updateHosts();
   }
   catch (err)
   {
@@ -533,7 +533,7 @@ async function saveConfig(req, res)
 
     logger.info(`New config:`, config);
 
-    updateEtcHosts();
+    updateHosts();
 
     if (orientation)
     {
@@ -968,6 +968,12 @@ function startServices(services)
   });
 }
 
+function updateHosts()
+{
+  updateEtcHosts();
+  updateEtcNtp();
+}
+
 function updateEtcHosts()
 {
   if (DEV)
@@ -1023,6 +1029,19 @@ function updateEtcHosts()
     logger.debug(`Updating /etc/hosts...`);
 
     fs.writeFileSync('/etc/hosts', newEtcHosts);
+  }
+}
+
+function updateEtcNtp()
+{
+  const oldEtcNtp = fs.readFileSync('/etc/ntp.conf', 'utf8');
+  const newEtcNtp = oldEtcNtp.replace(/pool time.*?wmes.pl/, `pool time.${config.domain}`);
+
+  if (newEtcNtp !== oldEtcNtp)
+  {
+    logger.debug(`Updating /etc/ntp.conf...`);
+
+    fs.writeFileSync('/etc/ntp.conf', newEtcNtp);
   }
 }
 

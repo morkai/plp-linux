@@ -1,9 +1,9 @@
 'use strict';
 
+const fs = require('fs');
 const {execSync} = require('child_process');
 const logger = require('h5.logger').create({module: 'set-resolution'});
 const config = require('./server/config.json');
-const fs = require("fs");
 
 const ORIENTATIONS = {
   normal: '1 0 0 0 1 0 0 0 1',
@@ -14,6 +14,10 @@ const ORIENTATIONS = {
 
 const orientation = config.orientation || 'normal';
 const transform = ORIENTATIONS[orientation];
+const xinputOptions = {
+  encoding: 'utf8',
+  env: {...process.env, DISPLAY: ':0', LC_ALL: 'C'}
+};
 let output = null;
 let mode = null;
 let rate = null;
@@ -55,9 +59,9 @@ if (output && mode && rate)
   execSync(`xrandr --screen "0" --display ":0" --output ${output} --mode ${mode} --rate ${rate}`);
 
   logger.debug('Setting orientation...');
-  execSync(`xrandr --screen "0" --display ":0" --orientation "${orientation}"`);
+  execSync(`xrandr --screen "0" --display ":0" --output ${output} --rotate "${orientation}"`);
 
-  execSync(`xinput list`, {encoding: 'utf8'}).split('\n').forEach(line =>
+  execSync('xinput list', xinputOptions).split('\n').forEach(line =>
   {
     const matches = line.match(/id=([0-9]+)\s+\[slave\s+pointer/);
 
@@ -65,13 +69,37 @@ if (output && mode && rate)
     {
       const id = matches[1];
 
-      logger.debug('Setting transform...', {id});
+      try
+      {
+        const details = execSync(`xinput list --long "${id}"`, xinputOptions);
+        const absoluteAxes = details.split('Class originated from:').filter(axis =>
+          /Detail for Valuator [01]:/.test(axis) && /\bMode: absolute\b/.test(axis));
 
-      execSync(`xinput set-prop "${id}" --type=float "Coordinate Transformation Matrix" ${transform}`);
+        // Rotate absolute X/Y coordinates (e.g. a touchscreen), not mouse deltas.
+        // XTEST/VNC coordinates already refer to the rotated desktop.
+        const rotateInput = absoluteAxes.length === 2
+          && !/\bXTEST pointer\b/.test(line)
+          && !/\bTouch mode: dependent\b/.test(details);
+        const inputTransform = rotateInput ? transform : ORIENTATIONS.normal;
+
+        logger.debug('Setting transform...', {id, transform: inputTransform});
+
+        // Reset other pointers too, to undo transforms from earlier runs.
+        execSync(`xinput set-prop --type=float "${id}" "Coordinate Transformation Matrix" ${inputTransform}`, xinputOptions);
+      }
+      catch (err)
+      {
+        logger.error(err, `Failed to set transform for input device ${id}.`);
+      }
     }
   });
 
-  const [width, height] = mode.split('x');
+  let [width, height] = mode.split('x');
+
+  if (orientation === 'left' || orientation === 'right')
+  {
+    [width, height] = [height, width];
+  }
 
   logger.debug('Fixing google-chrome preferences...', {
     top: 0,

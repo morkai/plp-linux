@@ -47,108 +47,113 @@ console.bench = function(label, context, func)
   return result;
 };
 
-let chalk = null;
-
-try
+if (process.env.NODE_ENV === 'development')
 {
-  chalk = require('chalk');
-}
-catch (err) {} // eslint-disable-line no-empty
+  let chalk = null;
 
-if (chalk && process.env.NODE_ENV === 'development')
-{
-  const SEVERITY_COLORS = {
-    debug: chalk.bgRgb(255, 255, 255).rgb(0, 0, 0),
-    info: chalk.bgRgb(0, 0, 255).rgb(255, 255, 255),
-    warn: chalk.bgYellowBright.rgb(0, 0, 0),
-    error: chalk.bgRgb(255, 0, 0).rgb(255, 255, 255)
-  };
-
-  Object.assign(inspect.styles, {
-    name: 'white',
-    date: 'yellow'
-  });
-
-  require('h5.main/lib/utils/log').write = (log) =>
+  try
   {
-    let line = `>>> ${log.severity.padEnd(5)} ${formatDateTime(log.time, true)}`;
+    chalk = require('chalk');
+  }
+  catch (err)
+  {
+  } // eslint-disable-line no-empty
 
-    if (log.module)
+  if (chalk)
+  {
+    const SEVERITY_COLORS = {
+      debug: chalk.bgRgb(64, 64, 64).rgb(255, 255, 255),
+      info: chalk.bgRgb(0, 0, 255).rgb(255, 255, 255),
+      warn: chalk.bgYellowBright.rgb(0, 0, 0),
+      error: chalk.bgRgb(255, 0, 0).rgb(255, 255, 255)
+    };
+
+    Object.assign(inspect.styles, {
+      name: 'white',
+      date: 'yellow'
+    });
+
+    require('h5.main/lib/utils/log').write = (log) =>
     {
-      line += ` [${log.module}]`;
-    }
+      let line = `>>> ${log.severity.padEnd(5)} ${formatDateTime(log.time, true)}`;
 
-    if (log.submodule)
-    {
-      line += ` [${log.submodule}]`;
-    }
-
-    let errorStack = log.error ? log.error.stack : '';
-
-    if (log.message)
-    {
-      line += ` ${String(log.message).toString().trim()}`;
-    }
-    else if (errorStack)
-    {
-      const matches = errorStack.match(/^(?:Error:\s*)?(.*?)(\s{2,}at .*?)?$/s);
-
-      if (matches)
+      if (log.module)
       {
-        line += ` ${matches[1].trim()}`;
-        errorStack = (matches[2] || '').trim();
+        line += ` [${log.module}]`;
+      }
 
-        if (errorStack)
+      if (log.submodule)
+      {
+        line += ` [${log.submodule}]`;
+      }
+
+      let errorStack = log.error ? log.error.stack : '';
+
+      if (log.message)
+      {
+        line += ` ${String(log.message).toString().trim()}`;
+      }
+      else if (errorStack)
+      {
+        const matches = errorStack.match(/^(?:Error:\s*)?(.*?)(\s{2,}at .*?)?$/s);
+
+        if (matches)
         {
-          errorStack = `    ${errorStack}`;
+          line += ` ${matches[1].trim()}`;
+          errorStack = (matches[2] || '').trim();
+
+          if (errorStack)
+          {
+            errorStack = `    ${errorStack}`;
+          }
         }
+        else
+        {
+          line += ` ${errorStack.trim()}`;
+          errorStack = '';
+        }
+      }
+
+      const severityColors = SEVERITY_COLORS[log.severity];
+
+      if (chalk && severityColors)
+      {
+        console.log(severityColors(line));
       }
       else
       {
-        line += ` ${errorStack.trim()}`;
-        errorStack = '';
+        console.log(line);
       }
-    }
 
-    const severityColors = SEVERITY_COLORS[log.severity];
-
-    if (chalk && severityColors)
-    {
-      console.log(severityColors(line));
-    }
-    else
-    {
-      console.log(line);
-    }
-
-    if (log.error)
-    {
-      delete log.error.message;
-      delete log.error.stack;
-      delete log.error.code;
-      delete log.error.statusCode;
-
-      if (!Object.keys(log.error).length)
+      if (log.error)
       {
-        delete log.error;
+        delete log.error.message;
+        delete log.error.stack;
+        delete log.error.code;
+        delete log.error.statusCode;
+
+        if (!Object.keys(log.error).length)
+        {
+          delete log.error;
+        }
       }
-    }
 
-    if (errorStack)
-    {
-      console.log(errorStack);
-    }
+      if (errorStack)
+      {
+        console.log(errorStack);
+      }
 
-    delete log.appId;
-    delete log.severity;
-    delete log.time;
-    delete log.module;
-    delete log.submodule;
-    delete log.message;
+      delete log.appId;
+      delete log.severity;
+      delete log.time;
+      delete log.module;
+      delete log.submodule;
+      delete log.message;
 
-    if (Object.keys(log).length)
-    {
-      console.log(chalk.rgb(255, 255, 255)(inspect(log, {colors: true})));
-    }
-  };
+      if (Object.keys(log).length)
+      {
+        console.log(chalk.rgb(255, 255, 255)(inspect(log, {colors: true})));
+      }
+    };
+  }
 }

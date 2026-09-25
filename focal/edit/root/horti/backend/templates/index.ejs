@@ -18,22 +18,26 @@
 </div>
 <div id="app-viewport"></div>
 <script>
-<% Object.keys(appData).forEach(function(key) { %>
+<% Object.keys(appData).forEach(key => { %>
 window.<%- key %> = <%- appData[key] %>;
 <% }) %>
 </script>
+<% if (dev) { %>
 <script src="config.js"></script>
+<% } %>
 <script>
 if (/(Trident|Edge)\//.test(window.navigator.userAgent))
 {
   document.body.style.margin = '20px';
-  document.body.innerHTML = appLocale === 'pl'
-    ? 'Twoja przeglądarka nie jest wspierana. Wypróbuj <a href="https://www.google.com/chrome">Google Chrome</a>, <a href="https://www.mozilla.org/pl/firefox/new/">Firefox</a>, <a href="https://www.microsoftedgeinsider.com/">nowy Microsoft Edge</a> lub Operę!'
-    : 'Your browser is not supported. Try <a href="https://www.google.com/chrome">Google Chrome</a>, <a href="https://www.mozilla.org/pl/firefox/new/">Firefox</a>, <a href="https://www.microsoftedgeinsider.com/">the new Microsoft Edge</a> or Opera!';
+  document.body.innerHTML = 'Your browser is not supported. Try <a href="https://www.google.com/chrome">Google Chrome</a>, <a href="https://www.mozilla.org/pl/firefox/new/">Firefox</a> or <a href="https://www.microsoft.com/edge">the new Microsoft Edge</a>!';
 }
 </script>
+<% if (dev) { %>
 <script src="vendor/require/require.js"></script>
+<% } %>
 <script src="<%- mainJsFile %>"></script>
+<% if (dev) { %>
 <script src="main.js"></script>
+<% } %>
 </body>
 </html>

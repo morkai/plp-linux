@@ -1,0 +1,1 @@
+define([],function(){"use strict";return function(n,t=3){return t=Math.pow(10,t),n=Math.round(n*t)/t,isNaN(n)||!isFinite(n)?0:n}});

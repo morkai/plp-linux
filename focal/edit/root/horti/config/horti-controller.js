@@ -27,7 +27,6 @@ exports.updater = {
 };
 
 exports.events = {
-  collection: app => app.mongoose.model('Event').collection,
   userId: null,
   expressId: null,
   insertDelay: 1000,
@@ -66,9 +65,7 @@ exports['messenger/client:frontend'] = {
 
 exports.mongoose = {
   uri: mongodb.uri,
-  mongoClient: Object.assign(mongodb.mongoClient, {
-    poolSize: 5
-  }),
+  mongoClient: mongodb.mongoClient,
   maxConnectTries: 10,
   connectAttemptDelay: 500
 };

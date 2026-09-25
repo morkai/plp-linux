@@ -210,6 +210,9 @@ iframe {
 .hidden {
   display: none;
 }
+#network {
+  margin-right: 60px;
+}
 #apps {
   display: flex;
   flex-wrap: wrap;

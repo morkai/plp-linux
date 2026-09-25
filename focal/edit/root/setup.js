@@ -3,6 +3,9 @@
 const fs = require('fs');
 const {execSync} = require('child_process');
 const config = require('./server/config.json');
+let wifi;
+
+try { wifi = require('./.wifi.json'); } catch (err) {}
 
 console.log('Removing old logs...');
 
@@ -154,7 +157,7 @@ if (networkInterfaces.eth0 || networkInterfaces.eth1)
   }
 }
 
-if (config.wlan && networkInterfaces.wlan0)
+if (config.wlan && networkInterfaces.wlan0 && wifi)
 {
   newNetplan += `
   wifis:
@@ -162,10 +165,8 @@ if (config.wlan && networkInterfaces.wlan0)
       dhcp4: true
       optional: true
       access-points:
-        "ML_WLAN":
-          password: "AN/APQ-99"
-        "007-2G":
-          password: "internet daj"`;
+        "${wifi.ap}":
+          password: "${wifi.password}"`;
 }
 
 newNetplan += '\n';
@@ -199,6 +200,11 @@ const newEtcHosts = oldEtcHosts.trim().split('\n').map(line =>
     if (!hosts.includes('local.wmes.pl'))
     {
       hosts.push('local.wmes.pl');
+    }
+
+    if (!hosts.includes('builder.arduino.cc'))
+    {
+      hosts.push('builder.arduino.cc');
     }
   }
   else if (addr === '127.0.1.1')

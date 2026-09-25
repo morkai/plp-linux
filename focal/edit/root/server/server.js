@@ -5,6 +5,7 @@ const os = require('os');
 const util = require('util');
 const {exec, execSync} = require('child_process');
 const execAsync = util.promisify(exec);
+const http = require('http');
 const https = require('https');
 const logger = require('h5.logger').create({module: 'server'});
 const axios = require('axios');
@@ -17,7 +18,6 @@ const DPMS_CHECK_INTERVAL = 10 * 60 * 1000;
 
 let config = {
   domain: '',
-  host: '',
   apps: [],
   remote: '',
   staticIp: '',
@@ -27,7 +27,7 @@ let config = {
 };
 
 const ROOT = `${__dirname}/..`;
-const PORT = DEV ? 444 : 443;
+const PORT = DEV ? 10082 : 443;
 const CONTENT_TYPES = {
   html: 'text/html',
   js: 'text/javascript',
@@ -59,7 +59,7 @@ catch (err)
   logger.error(err, `Failed to read localStorage.json.`);
 }
 
-if (config.host && config.domain)
+if (config.domain)
 {
   try
   {
@@ -71,7 +71,7 @@ if (config.host && config.domain)
   }
 }
 
-const server = https.createServer({
+const server = (DEV ? http : https).createServer({
   key: fs.readFileSync(`${__dirname}/ssl/local.wmes.pl.key`),
   cert: fs.readFileSync(`${__dirname}/ssl/local.wmes.pl.full`)
 });
@@ -279,6 +279,13 @@ function handleRequest(req, res)
     if (noRemoteAccess(req, res)) return;
 
     return require('./trw').handleRequest(req, res);
+  }
+
+  if (req.url.startsWith('/arduino'))
+  {
+    if (noRemoteAccess(req, res)) return;
+
+    return require('./arduino').handleRequest(req, res);
   }
 
   if (req.method === 'GET' && req.url === '/update')
@@ -976,6 +983,8 @@ function updateHosts()
 
 function updateEtcHosts()
 {
+  logger.debug(`Updating /etc/hosts...`);
+
   if (DEV)
   {
     return;
@@ -985,33 +994,81 @@ function updateEtcHosts()
   const etcHosts = oldEtcHosts.split('\n').filter(line =>
   {
     return line.trim().length !== 0
-      && !line.includes(config.host)
       && !line.includes(config.domain)
       && !line.includes('dyn.wmes.pl');
   });
 
   try
   {
-    const resolve = execSync('systemd-resolve --status', {encoding: 'utf8', timeout: 5000});
-    const resolveMatches = resolve.match(/DNS Servers:\s+([0-9.]+)/is);
+    const dnsServers = [];
+    let nextDns = false;
 
-    if (!resolveMatches)
+    execSync('systemd-resolve --status', {encoding: 'utf8', timeout: 5000}).split('\n').forEach(line =>
     {
-      throw new Error(resolve);
+      if (line.includes('DNS Servers:'))
+      {
+        nextDns = true;
+      }
+      else if (/[A-Za-z0-9 ]+:/.test(line))
+      {
+        nextDns = false;
+      }
+
+      if (!nextDns)
+      {
+        return;
+      }
+
+      const matches = line.match(/([0-9.]+)/);
+
+      if (matches)
+      {
+        dnsServers.push(matches[1]);
+      }
+    });
+
+    if (!dnsServers.length)
+    {
+      logger.warn(`No DNS servers!`);
+
+      return setTimeout(updateEtcHosts, 60 * 1000);
     }
 
-    const dnsServer = resolveMatches[1];
-    const nslookup = execSync(`nslookup ${config.domain} ${dnsServer}`, {encoding: 'utf8', timeout: 5000});
-    const matches = nslookup.match(/answer:.*?Address:.*?([0-9.]+)/is);
+    let resolved = false;
 
-    if (!matches)
+    for (const dnsServer of dnsServers)
     {
-      throw new Error(nslookup);
+      const nslookup = execSync(`nslookup ${config.domain} ${dnsServer}`, {encoding: 'utf8', timeout: 5000});
+      const nslookupMatches = nslookup.match(/Address:\s+([0-9.]+)\s+/is);
+
+      if (!nslookupMatches)
+      {
+        continue;
+      }
+
+      const ipAddress = nslookupMatches[1];
+      const wget = execSync(`wget -qO- --no-proxy http://${ipAddress}/are-you-wmes`, {
+        encoding: 'utf8',
+        timeout: 3000,
+        stdio: ['ignore', 'pipe', 'pipe']
+      });
+
+      if (wget !== 'yes')
+      {
+        continue;
+      }
+
+      etcHosts.push(`${ipAddress} ${config.domain} dyn.wmes.pl`);
+
+      resolved = true;
     }
 
-    etcHosts.push(`${matches[1]} ${config.domain} dyn.wmes.pl`);
+    setTimeout(updateEtcHosts, (resolved ? 5 : 1) * 60 * 1000);
 
-    setTimeout(updateEtcHosts, 5 * 60 * 1000);
+    if (!resolved)
+    {
+      return;
+    }
   }
   catch (err)
   {
@@ -1026,8 +1083,6 @@ function updateEtcHosts()
 
   if (newEtcHosts !== oldEtcHosts)
   {
-    logger.debug(`Updating /etc/hosts...`);
-
     fs.writeFileSync('/etc/hosts', newEtcHosts);
   }
 }
@@ -1035,7 +1090,7 @@ function updateEtcHosts()
 function updateEtcNtp()
 {
   const oldEtcNtp = fs.readFileSync('/etc/ntp.conf', 'utf8');
-  const newEtcNtp = oldEtcNtp.replace(/pool time.*?wmes.pl/, `pool time.${config.domain}`);
+  const newEtcNtp = oldEtcNtp.replace(/pool time\..*?\.[a-z]+\n/, `pool time.${config.domain}\n`);
 
   if (newEtcNtp !== oldEtcNtp)
   {
@@ -1188,7 +1243,7 @@ async function checkUpdate()
 
   try
   {
-    const availableVersionsRes = await execAsync(`curl --insecure https://dyn.wmes.pl/wmes/clients/updates`);
+    const availableVersionsRes = await execAsync(`curl --insecure https://${config.domain}/wmes/clients/updates`);
     const availableVersions = JSON.parse(availableVersionsRes.stdout)
       .filter(v =>
       {
@@ -1251,7 +1306,7 @@ async function update(currentVersion, newVersion)
   try { await execAsync(`rm -rf ${ROOT}/update.7z ${ROOT}/update-do.sh ${ROOT}/update-do.js`); }
   catch (err) {}
 
-  const newVersionUrl = `https://dyn.wmes.pl/wmes/clients/updates/${newVersion}`;
+  const newVersionUrl = `https://${config.domain}/wmes/clients/updates/${newVersion}`;
 
   await execAsync(`wget --no-check-certificate --connect-timeout=3 --read-timeout=3 -t 1 -O ${ROOT}/update.7z ${newVersionUrl}`);
   await execAsync(`7zr x -y -o${ROOT} ${ROOT}/update.7z`);

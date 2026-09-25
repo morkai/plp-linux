@@ -1,0 +1,1 @@
+define(["app/user"],function(r){"use strict";return function(a,e){const n=(Array.isArray(a)?a:a.selector.args).find(r=>"eq"===r.name&&r.args[0]===e&&"mine"===r.args[1]);n&&(n.args[1]=r.data._id)}});

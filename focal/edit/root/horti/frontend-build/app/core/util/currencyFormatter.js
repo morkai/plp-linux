@@ -1,0 +1,1 @@
+define(["app/i18n"],function(t){"use strict";const e=new Map;function r(r){return e.has(r)||e.set(r,new Intl.NumberFormat(t.config.locale,{style:"currency",currency:r})),e.get(r)}return{registerFormatter:function(t,r){e.set(t,r)},getFormatter:r,format:function(t,e="PLN"){return r(e).format(t)}}});

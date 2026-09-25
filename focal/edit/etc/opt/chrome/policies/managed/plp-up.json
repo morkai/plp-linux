@@ -17,6 +17,7 @@
   "AllowOutdatedPlugins": true,
   "AlternateErrorPagesEnabled": true,
   "AlwaysOpenPdfExternally": false,
+  "AutoplayAllowed": true,
   "AutoFillEnabled": false,
   "AutofillAddressEnabled": false,
   "AutofillCreditCardEnabled": false,

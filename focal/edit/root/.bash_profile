@@ -20,6 +20,8 @@ then
   node /root/setup.js >>/root/log/setup.txt 2>&1
   ( sleep 20 ; node /root/setup.js >>/root/log/setup.txt 2>&1 ) &
 
+  pulseaudio --system --daemonize --log-target=journal
+
   /root/start-server.sh
   /root/start-kiosk.sh
 fi

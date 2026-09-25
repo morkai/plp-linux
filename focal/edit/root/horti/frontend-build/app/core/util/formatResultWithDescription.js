@@ -1,1 +1,1 @@
-define(["underscore"],function(e){"use strict";return function(r,s,t){if(e.isEmpty(t[s]))return e.escape(t[r]);var i='<div class="select2-result-with-description">';return i+="<h3>"+e.escape(t[r])+"</h3>",i+="<p>"+e.escape(t[s])+"</p>",i+="</div>"}});
+define(["underscore"],function(e){"use strict";return function(t,i,r){if(t.id&&(r=t,t="text",i="description"),e.isEmpty(r[i]))return e.escape(r[t]);var s='<div class="select2-result-with-description">';return s+="<h3>"+e.escape(r[t])+"</h3>",s+="<p>"+e.escape(r[i])+"</p>",s+="</div>"}});

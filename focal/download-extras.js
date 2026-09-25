@@ -4,7 +4,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const request = require('request-promise-native');
+const request = require('request');
 
 const DIST = 'focal';
 const UPDATE_URI = `https://packages.ubuntu.com/${DIST}-updates/amd64/\${package}/download`;
@@ -69,10 +69,7 @@ function updateNext()
     console.log(`\t${newVersion}`);
 
     request(downloadUri)
-      .on('error', err =>
-      {
-        console.log(err.message);
-      })
+      .on('error', err => console.log(err.message))
       .on('end', updateNext)
       .pipe(fs.createWriteStream(path.join(NEW_PACKAGES_PATH, newFile)));
   });

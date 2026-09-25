@@ -1,7 +1,7 @@
 'use strict';
 
-const {execSync, readFileSync, spawn} = require('child_process');
-const {writeFile} = require('fs');
+const {execSync, spawn} = require('child_process');
+const {readFileSync, writeFile} = require('fs');
 const axios = require('axios');
 
 const config = {
@@ -15,8 +15,12 @@ let pin = null;
 let lastAt = 0;
 let publishing = false;
 let buffer = [];
+let apiKey = null;
 
-try { buffer = JSON.stringify(fs.readFileSync(`${__dirname}/buffer.json`, 'utf8')); }
+try { buffer = JSON.parse(readFileSync(`${__dirname}/buffer.json`, 'utf8')); }
+catch (err) {}
+
+try { apiKey = readFileSync(`${__dirname}/../apikey.txt`, 'utf8').trim(); }
 catch (err) {}
 
 if (!execSync(`uname -a`).includes('upboard'))
@@ -124,9 +128,21 @@ async function publish()
 
   try
   {
-    await axios.post(`https://${config.domain}/paintShop/load/update`, {
-      secretKey: config.secretKey,
-      items
+    const headers = {};
+
+    if (apiKey)
+    {
+      headers['x-api-key'] = apiKey;
+    }
+
+    await axios({
+      method: 'POST',
+      url: `https://${config.domain}/paintShop/load/update`,
+      headers,
+      data: {
+        secretKey: config.secretKey,
+        items
+      }
     });
 
     writeFile(`${__dirname}/buffer.json`, '[]', () => {});

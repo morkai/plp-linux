@@ -91,9 +91,7 @@ exports.pubsub = {
 
 exports.mongoose = {
   uri: mongodb.uri,
-  mongoClient: Object.assign(mongodb.mongoClient, {
-    poolSize: 5
-  }),
+  mongoClient: mongodb.mongoClient,
   maxConnectTries: 10,
   connectAttemptDelay: 500
 };

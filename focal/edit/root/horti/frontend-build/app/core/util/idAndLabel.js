@@ -1,1 +1,1 @@
-define(["underscore"],function(e){"use strict";return function(n,t){var r={id:n.id,text:n.getLabel()};return t&&e.assign(r,t),r}});
+define(["underscore"],function(e){"use strict";return function(n,t,r){var i={id:n.id,text:n.getLabel(r)};return t&&e.assign(i,t),i}});

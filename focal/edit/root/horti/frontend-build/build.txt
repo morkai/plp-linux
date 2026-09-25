@@ -11,6 +11,10 @@ app/core/assets/dataTables.css
 ----------------
 app/core/assets/dataTables.css
 
+app/core/assets/datePickerBreadcrumb.css
+----------------
+app/core/assets/datePickerBreadcrumb.css
+
 app/core/assets/dateTimeRange.css
 ----------------
 app/core/assets/dateTimeRange.css
@@ -59,6 +63,7 @@ app/core/assets/./messages.css
 app/core/assets/./resultTips.css
 app/core/assets/./notifications.css
 app/core/assets/./menu.css
+app/core/assets/./datePickerBreadcrumb.css
 app/core/assets/main.css
 
 app/core/assets/menu.css
@@ -289,16 +294,19 @@ app/controller.js
 app/horti-dashboard/templates/program.js
 app/horti-dashboard/templates/programStep.js
 app/horti-dashboard/views/ProgramView.js
+app/core/util/decimalSeparator.js
 app/horti-dashboard/templates/setup.js
 app/horti-dashboard/templates/setupSn.js
 app/horti-dashboard/views/SetupView.js
+app/horti-dashboard/templates/metricEditor.js
+app/nls/horti-dashboard.js
+app/nls/pl/horti-dashboard.js
+i18n!app/nls/horti-dashboard
+app/horti-dashboard/views/MetricEditorView.js
 app/horti-dashboard/templates/zone.js
 app/horti-dashboard/views/ZoneView.js
 app/horti-dashboard/templates/page.js
 app/horti-dashboard/pages/DashboardPage.js
-app/nls/horti-dashboard.js
-app/nls/pl/horti-dashboard.js
-i18n!app/nls/horti-dashboard
 app/horti-dashboard/routes.js
 app/nls/events.js
 app/nls/pl/events.js
@@ -357,3 +365,7 @@ app/nls/core.js
 app/nls/pl/core.js
 i18n!app/nls/core
 horti-main.js
+vendor/select2-lang/en.js
+vendor/select2-lang/pl.js
+vendor/moment/lang/en.js
+vendor/moment/lang/pl.js

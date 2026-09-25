@@ -44,14 +44,9 @@ CONFIG.apps.forEach(app =>
   $('#frames').appendChild(frame);
 });
 
-if (!CONFIG.host || !CONFIG.apps.length)
+if (!CONFIG.apps.length)
 {
   toggleConfig();
-}
-
-if (!CONFIG.host)
-{
-  resolveHost();
 }
 
 const messageHandlers = {
@@ -112,14 +107,9 @@ for (const el of $all('input[name="apps"]'))
   el.addEventListener('change', () => toggleStationValidity());
 }
 
-for (const el of $all('input[name="host"]'))
-{
-  el.addEventListener('change', () => setUpProdLines());
-}
-
 setInterval(focusActiveApp, 5000);
 
-if (CONFIG.host && CONFIG.apps.length)
+if (CONFIG.apps.length)
 {
   start();
 }
@@ -357,7 +347,7 @@ function syncClock()
 {
   const xhr = new XMLHttpRequest();
 
-  xhr.timeout = 45000;
+  xhr.timeout = 30000;
 
   xhr.onreadystatechange = function()
   {
@@ -530,13 +520,6 @@ function updateConfig()
 {
   $('#wlan input').checked = CONFIG.wlan;
 
-  const hostEl = $('input[name="host"][value="' + CONFIG.host + '"]');
-
-  if (hostEl)
-  {
-    hostEl.checked = true;
-  }
-
   const orientationEl = $('input[name="orientation"][value="' + CONFIG.orientation + '"]');
 
   if (orientationEl)
@@ -583,7 +566,6 @@ async function saveConfig(e)
 
   const newConfig = {
     domain: '',
-    host: null,
     apps: [],
     remote: '',
     staticIp: '',
@@ -596,13 +578,6 @@ async function saveConfig(e)
   for (let el of $all('.config-value'))
   {
     newConfig[el.name] = el.type === 'number' ? +el.value : el.value;
-  }
-
-  const hostEl = $(`input[name="host"]:checked`);
-
-  if (hostEl)
-  {
-    newConfig.host = hostEl.value;
   }
 
   for (let el of $all(`input[name="apps"]:checked`))
@@ -668,62 +643,6 @@ function noKiosk()
   console.log('Requesting no kiosk...');
 
   request('/noKiosk', {method: 'POST'});
-}
-
-async function resolveHost()
-{
-  for (let el of $all('input[name="host"]'))
-  {
-    const host = el.value;
-
-    console.log(`Resolving host: ${host}...`);
-
-    try
-    {
-      const res = await requestRemote(`https://${host}/wmes/clients/${CLIENT._id}`, {
-        timeout: 2000,
-        method: 'PUT',
-        json: CLIENT
-      });
-      const domain = el.value === '192.168.1.250' ? 'dev.wmes.pl' : 'ket.wmes.pl';
-
-      if (res.status === 204)
-      {
-        $('input[name="domain"]').value = domain;
-        el.checked = true;
-
-        setUpProdLines();
-        reloadNetworkInterfaces();
-
-        return;
-      }
-
-      if (res.status === 200)
-      {
-        const {config} = await res.json();
-
-        Object.assign(CONFIG, config);
-        updateConfig();
-
-        $('input[name="domain"]').value = domain;
-        el.checked = true;
-
-        setUpProdLines();
-        reloadNetworkInterfaces();
-
-        return;
-      }
-    }
-    catch (err)
-    {
-      console.log(`Failed to resolve host: ${host}: ${err.message}`);
-    }
-  }
-
-  if (!$('input[name="host"]:checked'))
-  {
-    setTimeout(resolveHost, 5000);
-  }
 }
 
 function requestRemote(resource, options = {})
@@ -839,7 +758,7 @@ async function updateClient()
     const remoteReq = await requestRemote(`/wmes/clients/${CLIENT._id}`, {
       timeout: 30000,
       method: 'PUT',
-      json: CLIENT
+      json: {...CLIENT, time: Date.now()}
     });
 
     if (remoteReq.status >= 200 && remoteReq.status < 300)

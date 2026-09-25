@@ -4,22 +4,19 @@ module.exports = {
   uri: process.env.HORTI_MONGODB_URI || 'mongodb://127.0.0.1:27017/walkner-horti',
   keepAliveQueryInterval: 15000,
   mongoClient: {
-    poolSize: 5,
+    minPoolSize: 1,
+    maxPoolSize: 15,
     noDelay: true,
-    keepAlive: 1000,
+    keepAlive: true,
     connectTimeoutMS: 30000,
     socketTimeoutMS: 0,
     forceServerObjectId: false,
     writeConcern: {
       w: 1,
-      wtimeout: 5000
+      wtimeoutMS: 15000
     },
-    promiseLibrary: global.Promise,
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-    autoIndex: true
+    autoIndex: true,
+    enableUtf8Validation: false
   }
 };
 

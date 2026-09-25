@@ -1,0 +1,1 @@
+define([],function(){"use strict";var e=!1;return window.navigator.mediaDevices&&window.navigator.mediaDevices.enumerateDevices&&window.navigator.mediaDevices.enumerateDevices().then(function(n){e=n.some(function(e){return"videoinput"===e.kind})},function(){}),function(){return e}});

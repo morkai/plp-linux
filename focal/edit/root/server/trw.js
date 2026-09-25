@@ -4,7 +4,7 @@ const {exec} = require('child_process');
 const fs = require('fs');
 const step = require('h5.step');
 const {list, Master} = require('pololu');
-const SerialPort = require('serialport');
+const {SerialPort} = require('serialport');
 
 let queue = null;
 let master = null;
@@ -393,7 +393,8 @@ function getMaster(done)
         return this.skip(new Error(`Command port not found.`));
       }
 
-      const serialPort = new SerialPort(device.cmd, {
+      const serialPort = new SerialPort({
+        path: device.cmd,
         baudRate: 115200,
         dataBits: 8,
         stopBits: 1,

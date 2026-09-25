@@ -25,10 +25,10 @@ exports.use = useRequireCache;
 exports.save = saveRequireCacheToFile;
 exports.reset = resetRequireCache;
 
-for (var i = 0, l = process.argv.length; i < l; ++i)
+for (let i = 0, l = process.argv.length; i < l; ++i)
 {
-  var currentArg = process.argv[i];
-  var nextArg = process.argv[i + 1];
+  const currentArg = process.argv[i];
+  const nextArg = process.argv[i + 1];
 
   if (currentArg === '--cache-require' && nextArg)
   {
@@ -76,8 +76,8 @@ function isAbsolute(path)
 
 function buildRequireCache()
 {
-  var Module = require('module');
-  var requireCache = exports.cache.paths;
+  const Module = require('module');
+  const requireCache = exports.cache.paths;
 
   Module.prototype.require = function(request)
   {
@@ -91,7 +91,7 @@ function buildRequireCache()
       requireCache[this.idRel] = {};
     }
 
-    var resolvedRequest = Module._resolveFilename(request, this);
+    const resolvedRequest = Module._resolveFilename(request, this);
 
     if (isAbsolute(resolvedRequest))
     {
@@ -109,7 +109,7 @@ function useRequireCache()
     exports.cache = JSON.parse(fs.readFileSync(exports.path, 'utf8'));
   }
 
-  var requireCache = exports.cache;
+  const requireCache = exports.cache;
 
   Module._resolveFilename = function(request, parent, isMain, options)
   {
@@ -118,11 +118,11 @@ function useRequireCache()
       parent.idRel = makeRelative(parent.id);
     }
 
-    var parentRequireMap = requireCache.paths[parent.idRel];
+    const parentRequireMap = requireCache.paths[parent.idRel];
 
     if (parentRequireMap !== undefined)
     {
-      var resolvedRequest = parentRequireMap[request];
+      let resolvedRequest = parentRequireMap[request];
 
       if (resolvedRequest === undefined && isAbsolute(request))
       {
@@ -140,8 +140,8 @@ function useRequireCache()
 
   Module._extensions['.js'] = function(module, filename)
   {
-    var relativeFilename = makeRelative(filename);
-    var source = requireCache.sources[relativeFilename];
+    const relativeFilename = makeRelative(filename);
+    const source = requireCache.sources[relativeFilename];
 
     if (source === undefined)
     {
@@ -153,8 +153,8 @@ function useRequireCache()
 
   Module._extensions['.json'] = function(module, filename)
   {
-    var relativeFilename = makeRelative(filename);
-    var json = requireCache.sources[relativeFilename];
+    const relativeFilename = makeRelative(filename);
+    const json = requireCache.sources[relativeFilename];
 
     if (json === undefined)
     {
@@ -172,7 +172,7 @@ function saveRequireCacheToFile(path)
     path = exports.path;
   }
 
-  var requireCache = exports.cache;
+  const requireCache = exports.cache;
 
   resetRequireCache();
 
@@ -183,13 +183,13 @@ function saveRequireCacheToFile(path)
 
 function loadSources(requireCache)
 {
-  Object.keys(requireCache.paths).forEach(function(path)
+  Object.keys(requireCache.paths).forEach(path =>
   {
     loadSource(requireCache.sources, path);
 
-    var modules = requireCache.paths[path];
+    const modules = requireCache.paths[path];
 
-    Object.keys(modules).forEach(function(module)
+    Object.keys(modules).forEach(module =>
     {
       loadSource(requireCache.sources, modules[module]);
     });
@@ -205,8 +205,8 @@ function loadSource(sources, path)
     return;
   }
 
-  var source = fs.readFileSync(exports.root + path, 'utf8');
-  var minified = null;
+  const source = fs.readFileSync(exports.root + path, 'utf8');
+  let minified = null;
 
   if (/\.json$/.test(path))
   {

@@ -1,1 +1,1 @@
-define(["app/time"],function(t){"use strict";return function(r,e){var u=t.getMoment(r);return 1===e?u.hours(6):2===e?u.hours(14):u.hours(22),u.add(8,"hours").subtract(1,"seconds"),u.toDate()}});
+define(["app/time"],function(t){"use strict";return function(s,r){var u=t.getMoment(s);if(!r){const t=u.hours();t>=6&&t<14?r=1:t>=14&&t<22?r=2:(t<6&&u.subtract(1,"days"),r=3)}return u.startOf("day"),1===r?u.hours(14):2===r?u.hours(22):u.add(1,"days").hours(6),u.subtract(1,"milliseconds"),u.toDate()}});

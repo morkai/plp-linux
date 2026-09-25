@@ -57,6 +57,7 @@ do
     --overscroll-history-navigation=0 \
     --touch-events \
     --suppress-message-center-popups \
+    --autoplay-policy=no-user-gesture-required \
     'https://local.wmes.pl/'
   echo "`date -Is` Chrome dead!"
   sleep 1.5

@@ -29,23 +29,11 @@
     <div class="bounce3"></div>
   </div>
   <div id=config>
-    <h1>Konfiguracja</h1>
+    <h1>Konfiguracja klienta WMES</h1>
     <div style="display: flex">
       <div id="network">
         <h2>Sieć</h2>
         <h3>
-          <label>
-            <input type="radio" name="host" value="192.168.21.60" required>
-            <span>Fabryczna (192.)</span>
-          </label>
-          <label>
-            <input type="radio" name="host" value="161.87.64.46" required>
-            <span>Domenowa (161.)</span>
-          </label>
-          <label>
-            <input type="radio" name="host" value="192.168.1.250" required>
-            <span>Deweloperska</span>
-          </label>
           <label id="wlan">
             <input type="checkbox" name="wlan" value="1">
             <span>Wi-Fi</span>
@@ -70,7 +58,7 @@
           </label>
           <label>
             <span style="width: 290px">Nr stanowiska:</span>
-            <input class="config-value" name="station" width="75px" type="number" min="0" max="10">
+            <input class="config-value" name="station" width="75px" type="number" min="0" max="99">
           </label>
         </h3>
       </div>
@@ -110,12 +98,12 @@
         <span>Zawieszanie malarnii</span>
       </label>
       <label>
-        <input type="checkbox" name="apps" value="isa">
-        <span>Pola odkładcze</span>
+        <input type="checkbox" name="apps" value="ps-td">
+        <span>Zawieszanie malarnii</span>
       </label>
       <label>
-        <input type="checkbox" name="apps" value="ct-balluff" data-no-screen data-requires-station>
-        <span>Czas cyklu (Balluff)</span>
+        <input type="checkbox" name="apps" value="isa">
+        <span>Pola odkładcze</span>
       </label>
       <label>
         <input type="checkbox" name="apps" value="trw" data-requires-station>
@@ -128,6 +116,10 @@
       <label>
         <input type="checkbox" name="apps" value="horti">
         <span>Tester Horti</span>
+      </label>
+      <label>
+        <input type="checkbox" name="apps" value="ledBank">
+        <span>Bank płytek LED</span>
       </label>
       <label>
         <input type="checkbox" name="apps" value="gft">
@@ -160,6 +152,14 @@
       <label>
         <input type="checkbox" name="apps" value="cabling">
         <span>Przewody klientowskie</span>
+      </label>
+      <label>
+        <input type="checkbox" name="apps" value="smt-orders">
+        <span>SMT zlecenia</span>
+      </label>
+      <label>
+        <input type="checkbox" name="apps" value="smt-reels">
+        <span>SMT rolki</span>
       </label>
       <label>
         <input type="checkbox" name="apps" value="remote" style="margin-top: 3px">

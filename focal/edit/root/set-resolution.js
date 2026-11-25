@@ -117,10 +117,13 @@ if (output && mode && rate)
       preferences.browser = {};
     }
 
+    // Not maximized: Chrome 158 started maximized under openbox stays 1px short of the screen
+    // in both directions after entering the kiosk fullscreen (a 1919x1079 viewport on a 1920x1080 screen),
+    // which leaves a flickering or white 1px line at the screen edges.
     preferences.browser.window_placement = {
       bottom: +height,
       left: 0,
-      maximized: true,
+      maximized: false,
       right: +width,
       top: 0,
       work_area_bottom: +height,

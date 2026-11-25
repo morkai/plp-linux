@@ -288,6 +288,13 @@ function handleRequest(req, res)
     return require('./arduino').handleRequest(req, res);
   }
 
+  if (req.url.startsWith('/keyenceTest'))
+  {
+    if (noRemoteAccess(req, res)) return;
+
+    return require('./keyenceTest').handleRequest(req, res);
+  }
+
   if (req.method === 'GET' && req.url === '/update')
   {
     if (noRemoteAccess(req, res)) return;

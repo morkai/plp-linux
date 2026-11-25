@@ -1,7 +1,7 @@
 'use strict';
 
 const {execSync, spawn} = require('child_process');
-const {readFileSync, writeFile} = require('fs');
+const {writeFile, readFileSync} = require('fs');
 const axios = require('axios');
 
 const config = {
@@ -11,14 +11,21 @@ const config = {
   domain: 'wmes.pl',
   maxDuration: 8 * 3600 * 1000
 };
-let pin = null;
 let lastAt = 0;
 let publishing = false;
 let buffer = [];
 let apiKey = null;
+let startTimer = null;
+let publishTimer = null;
 
-try { buffer = JSON.parse(readFileSync(`${__dirname}/buffer.json`, 'utf8')); }
-catch (err) {}
+try
+{
+  buffer = JSON.parse(readFileSync(`${__dirname}/buffer.json`, 'utf8'));
+}
+catch (err)
+{
+  console.log('Failed to read buffer.json: ' + err.message);
+}
 
 try { apiKey = readFileSync(`${__dirname}/../apikey.txt`, 'utf8').trim(); }
 catch (err) {}
@@ -39,6 +46,8 @@ function idle()
 
 function start()
 {
+  clearTimeout(startTimer);
+
   Object.assign(
     config,
     require(`${__dirname}/../server/config.json`),
@@ -70,14 +79,16 @@ function start()
   {
     console.error(`mraa-gpio error: ${err.message}`);
 
-    setTimeout(start, 5000);
+    clearTimeout(startTimer);
+    startTimer = setTimeout(start, 5000);
   });
 
   mraa.on('close', () =>
   {
     console.log('mraa-gpio closed.');
 
-    setTimeout(start, 5000);
+    clearTimeout(startTimer);
+    startTimer = setTimeout(start, 5000);
   });
 
   mraa.stdin.write('\n');
@@ -113,9 +124,16 @@ function handleState(state)
   publish();
 }
 
-async function publish()
+function publish()
 {
+  clearTimeout(publishTimer);
+
   if (publishing)
+  {
+    return Promise.resolve();
+  }
+
+  if (!buffer.length)
   {
     return;
   }
@@ -126,45 +144,49 @@ async function publish()
 
   publishing = true;
 
-  try
-  {
-    const headers = {};
-
-    if (apiKey)
+  return Promise.resolve()
+    .then(() =>
     {
-      headers['x-api-key'] = apiKey;
-    }
+      const headers = {};
 
-    await axios({
-      method: 'POST',
-      url: `https://${config.domain}/paintShop/load/update`,
-      headers,
-      data: {
-        secretKey: config.secretKey,
-        items
+      if (apiKey)
+      {
+        headers['x-api-key'] = apiKey;
       }
-    });
 
-    writeFile(`${__dirname}/buffer.json`, '[]', () => {});
-
-    publishing = false;
-
-    if (buffer.length)
+      return axios({
+        method: 'POST',
+        url: `https://${config.domain}/paintShop/load/update`,
+        headers,
+        data: {
+          secretKey: config.secretKey,
+          items
+        }
+      });
+    })
+    .then(() =>
     {
-      setImmediate(publish);
-    }
-  }
-  catch (err)
-  {
-    console.log(`Failed to publish: ${err.message}`);
+      writeFile(`${__dirname}/buffer.json`, '[]', () => {});
 
-    buffer = items.concat(buffer);
-
-    writeFile(`${__dirname}/buffer.json`, JSON.stringify(buffer), () =>
-    {
       publishing = false;
 
-      setTimeout(publish, 5000);
+      if (buffer.length)
+      {
+        setImmediate(publish);
+      }
+    })
+    .catch(err =>
+    {
+      console.log(`Failed to publish: ${err.message}`);
+
+      buffer = items.concat(buffer);
+
+      writeFile(`${__dirname}/buffer.json`, JSON.stringify(buffer), () =>
+      {
+        publishing = false;
+
+        clearTimeout(publishTimer);
+        publishTimer = setTimeout(publish, 5000);
+      });
     });
-  }
 }
